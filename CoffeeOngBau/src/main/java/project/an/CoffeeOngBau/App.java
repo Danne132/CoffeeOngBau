@@ -5,8 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import project.an.CoffeeOngBau.Utils.DBUtils;
 
 import java.io.IOException;
+import java.sql.Connection;
 
 /**
  * JavaFX App
@@ -32,7 +34,10 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+//        launch();
+        Connection conn = DBUtils.openConnection("banhang", "root", "");
+        if(conn!=null) System.out.println("Thành công");
+        else System.out.println("Thất bại");
     }
 
 }
