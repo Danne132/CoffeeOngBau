@@ -80,7 +80,6 @@
     <!-- Footer -->
     <bottom>
         <HBox alignment="CENTER" spacing="10" style="-fx-background-color: #4E342E; -fx-padding: 10;">
-            <Label text="Quản lý nhân viên - Công ty TNHH CafePro" style="-fx-text-fill: #FFFFFF;" />
         </HBox>
     </bottom>
 </BorderPane>
