@@ -5,8 +5,9 @@ import java.sql.Timestamp;
 public class NhanVien {
     String id, tenNV, chucVu, SDT, email, username, password, idCardNumber;
     Timestamp createAt, updatedAt;
+    boolean isWorking;
 
-    public NhanVien(String id, String tenNV, String chucVu, String SDT, String email, String username, String password, String idCardNumber, Timestamp createAt, Timestamp updatedAt) {
+    public NhanVien(String id, String tenNV, String chucVu, String SDT, String email, String username, String password, String idCardNumber, Timestamp createAt, Timestamp updatedAt, boolean isWorking) {
         this.id = id;
         this.tenNV = tenNV;
         this.chucVu = chucVu;
@@ -17,6 +18,7 @@ public class NhanVien {
         this.idCardNumber = idCardNumber;
         this.createAt = createAt;
         this.updatedAt = updatedAt;
+        this.isWorking = isWorking;
     }
 
     public String getId() {
@@ -97,5 +99,13 @@ public class NhanVien {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public boolean isWorking() {
+        return isWorking;
+    }
+
+    public void setWorking(boolean working) {
+        isWorking = working;
     }
 }
