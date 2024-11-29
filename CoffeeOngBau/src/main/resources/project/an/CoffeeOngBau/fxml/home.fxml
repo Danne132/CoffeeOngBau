@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomeController">
+<BorderPane xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.an.CoffeeOngBau.Controller.HomeController">
     <!-- Header -->
     <top>
         <HBox spacing="10" style="-fx-background-color: #4E342E; -fx-padding: 10;">
             <Label style="-fx-text-fill: #FFFFFF; -fx-font-size: 20px;" text="☕ Quản Lý Cafe Ông Bầu" />
             <Region HBox.hgrow="ALWAYS" />
-            <MenuBar>
+            <MenuBar>	
                 <Menu text="Trang chủ" />
                 <Menu text="Quản lý đơn hàng" />
                 <Menu text="Quản lý nhân viên" />
