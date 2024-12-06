@@ -20,7 +20,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("fxml/home"), 640, 480);
+        scene = new Scene(loadFXML("fxml/login"));
         stage.setScene(scene);
         stage.show();
     }
@@ -35,13 +35,13 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-//        launch();
+        launch();
 //        Connection conn = DBUtils.openConnection("banhang", "root", "");
-        NhanVienRepository nv = new NhanVienRepository();
-        Connection conn = nv.getConn();
-
-        if(conn!=null) System.out.println("Thành công");
-        else System.out.println("Thất bại");
+//        NhanVienRepository nv = new NhanVienRepository();
+//        Connection conn = nv.getConn();
+//
+//        if(conn!=null) System.out.println("Thành công");
+//        else System.out.println("Thất bại");
     }
 
 }

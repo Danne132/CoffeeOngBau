@@ -1,0 +1,27 @@
+.root {
+    -fx-background-color: #EFEEEC;
+    -fx-padding: 50;
+    -fx-pref-width: 800px;
+    -fx-pref-height: 450px;
+}
+
+
+
+
+/* Định dạng cho trường nhập liệu */
+.input-field {
+    -fx-background-radius: 5;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+}
+
+/* Định dạng cho nút đăng nhập */
+.login-button {
+    -fx-background-color: #5D4037;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-background-radius: 5;
+    -fx-padding: 10;
+    -fx-cursor: hand;
+}
