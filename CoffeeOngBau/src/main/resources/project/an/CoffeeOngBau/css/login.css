@@ -3,9 +3,8 @@
     -fx-padding: 50;
     -fx-pref-width: 800px;
     -fx-pref-height: 450px;
+    -fx-background-image: url("/images/background.png")
 }
-
-
 
 
 /* Định dạng cho trường nhập liệu */

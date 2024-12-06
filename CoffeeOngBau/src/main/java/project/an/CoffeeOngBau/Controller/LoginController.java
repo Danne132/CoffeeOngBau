@@ -32,8 +32,8 @@ public class LoginController {
         while(ketQua.next()) {
 
             if(account.equals(ketQua.getString("account"))&&
-                    ComonUtils.hashPassword(password).equals(ketQua.getString("password")) ) {
-                DBUtils.closeConnection(conn);
+                    ComonUtils.hashPassword(password).equals(ketQua.getString("password")) )
+            {
 
             }
         }

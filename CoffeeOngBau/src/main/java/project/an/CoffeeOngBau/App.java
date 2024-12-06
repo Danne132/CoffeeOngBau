@@ -36,12 +36,6 @@ public class App extends Application {
 
     public static void main(String[] args) {
         launch();
-//        Connection conn = DBUtils.openConnection("banhang", "root", "");
-//        NhanVienRepository nv = new NhanVienRepository();
-//        Connection conn = nv.getConn();
-//
-//        if(conn!=null) System.out.println("Thành công");
-//        else System.out.println("Thất bại");
     }
 
 }
