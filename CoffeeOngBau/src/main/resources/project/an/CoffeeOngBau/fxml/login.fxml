@@ -21,7 +21,7 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Text>
-      <TextField layoutX="211.0" layoutY="181.0" prefHeight="44.0" prefWidth="378.0" style="-fx-background-radius: 7px;">
+      <TextField fx:id="accInput" layoutX="211.0" layoutY="181.0" prefHeight="44.0" prefWidth="378.0" style="-fx-background-radius: 7px;">
          <font>
             <Font size="20.0" />
          </font>
@@ -31,12 +31,12 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Text>
-      <TextField layoutX="211.0" layoutY="258.0" prefHeight="44.0" prefWidth="378.0" style="-fx-background-radius: 7px;">
+      <TextField fx:id="passInput" layoutX="211.0" layoutY="258.0" prefHeight="44.0" prefWidth="378.0" style="-fx-background-radius: 7px;">
          <font>
             <Font size="20.0" />
          </font>
       </TextField>
-      <Button layoutX="211.0" layoutY="336.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="378.0" style="-fx-background-color: #FFCB05; -fx-background-radius: 10px;" text="Đăng nhập" textAlignment="CENTER" textFill="#403d2f">
+      <Button fx:id="loginBtn" layoutX="211.0" layoutY="336.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="378.0" style="-fx-background-color: #FFCB05; -fx-background-radius: 10px;" text="Đăng nhập" textAlignment="CENTER" textFill="#403d2f">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
