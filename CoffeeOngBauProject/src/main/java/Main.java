@@ -2,6 +2,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import BLL.NhanVienBLL;
+import Utils.ComonUtils;
 
 public class Main {
 
@@ -17,10 +18,9 @@ public class Main {
 				String mk = scanner.nextLine();
 				
 //				nv1.dangKiTaiKhoan(tk, mk);
-			
-				
-				
-//				System.out.println(ComonUtils.encodePas(mk));
+
+
+				System.out.println(ComonUtils.encodePas(mk));
 				
 				if(nv1.checkLogin(tk, mk) == true) {
 					System.out.println("Đăng nhập thành công");
