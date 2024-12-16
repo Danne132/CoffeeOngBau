@@ -1,0 +1,41 @@
+.root{
+    -fx-background-color: white;
+}
+
+.left-background{
+    -fx-background-color: #EFEEEC;
+    -fx-border-color: #BB9B82;
+}
+
+.nav-button{
+    -fx-background-color: #BB9B82;
+    -fx-border-color: #FCD8BB;
+    -fx-text-fill: white;
+    -border-radius: 0px;
+    -background-radius: 0px;
+    -fx-cursor: hand;
+}
+
+.nav-button:hover{
+    -fx-background-color: #FFCC07;
+}
+
+.head{
+    -fx-background-color: #EFEEEC;
+    -fx-border-color: #BB9B82;
+}
+
+.sign-out-button{
+    -fx-background-color: white;
+    -fx-border-color: #776F2C;
+    -fx-border-radius: 100px;
+    -fx-background-radius: 100px;
+    -fx-effect: dropshadow(three-pass-box, #888888, 3,0,0,0);
+    -fx-cursor: hand;
+}
+
+.sign-out-button:hover{
+    -fx-background-color: #776F2C;
+    -fx-text-fill: white;
+}
+

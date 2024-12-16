@@ -8,7 +8,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.control.PasswordField?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-image: url('/images/background.png')" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.an.CoffeeOngBau.Controller.LoginController">
    <children>
       <ImageView fitHeight="546.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
@@ -36,11 +35,11 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Text>
-      <PasswordField fx:id="passInput" layoutX="211.0" layoutY="258.0" prefHeight="44.0" prefWidth="378.0" style="-fx-background-radius: 7px;">
+      <TextField fx:id="passInput" layoutX="211.0" layoutY="258.0" prefHeight="44.0" prefWidth="378.0" style="-fx-background-radius: 7px;">
          <font>
             <Font size="20.0" />
          </font>
-      </PasswordField>
+      </TextField>
       <Button fx:id="loginBtn" layoutX="211.0" layoutY="336.0" mnemonicParsing="false" onAction="#Login" prefHeight="50.0" prefWidth="378.0" style="-fx-background-color: #FFCB05; -fx-background-radius: 10px;" text="Đăng nhập" textAlignment="CENTER" textFill="#403d2f">
          <font>
             <Font name="System Bold" size="20.0" />

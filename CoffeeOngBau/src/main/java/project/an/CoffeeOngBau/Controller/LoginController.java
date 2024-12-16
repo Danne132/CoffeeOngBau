@@ -64,8 +64,8 @@ public class LoginController {
 
             // Lấy Stage hiện tại
             Stage stage = (Stage) accInput.getScene().getWindow();
-            stage.setScene(scene); // Đổi Scene
-            stage.setTitle("Home Screen"); // Đổi tiêu đề (nếu cần)
+            stage.setScene(scene);
+            stage.setTitle("Home Screen");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
