@@ -252,7 +252,7 @@
                         </AnchorPane>
                         <AnchorPane layoutX="-0.8" layoutY="8.0" prefHeight="30.0" prefWidth="883.0" styleClass="head" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Button fx:id="logOutBtn" layoutX="27.0" layoutY="9.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="72.0" styleClass="sign-out-button" text="Đăng xuất">
+                              <Button fx:id="logOutBtn" layoutX="27.0" layoutY="9.0" mnemonicParsing="false" onAction="#logout" prefHeight="22.0" prefWidth="72.0" styleClass="sign-out-button" text="Đăng xuất">
                                  <font>
                                     <Font size="10.0" />
                                  </font>

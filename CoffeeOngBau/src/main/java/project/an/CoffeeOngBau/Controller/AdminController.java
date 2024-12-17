@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import project.an.CoffeeOngBau.Models.Entities.currentAccount;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -82,22 +83,30 @@ public class AdminController implements Initializable {
 
     private String username, chucVu;
 
-    private void logout(){
+    @FXML
+    public void logout(){
         alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Đăng xuất");
         alert.setHeaderText(null);
         alert.setContentText("Bạn có chắc muốn đăng xuất?");
         Optional<ButtonType> option = alert.showAndWait();
 
-        if(option.get().equals(ButtonType.OK))
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/admin.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        if(option.get().equals(ButtonType.OK)){
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/login.fxml"));
+            Scene scene = null;
+            logOutBtn.getScene().getWindow().hide();
+            try {
+                scene = new Scene(fxmlLoader.load());
+                // Lấy Stage hiện tại
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.setTitle("Login Form");
+                stage.show();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
-        // Lấy Stage hiện tại
-        Stage stage = (Stage) accInput.getScene().getWindow();
-        stage.setScene(scene);
-        stage.setTitle("Home Screen");
-        stage.show();
+        }
     }
 
     private void displayName(){
