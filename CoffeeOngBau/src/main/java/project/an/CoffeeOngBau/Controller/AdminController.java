@@ -241,6 +241,7 @@ public class AdminController implements Initializable {
             alert.setTitle("Lỗi thêm sản phẩm");
             alert.setHeaderText(null);
             alert.setContentText("Hãy điền đủ thông tin sản phẩm");
+            alert.showAndWait();
         }
     }
 
@@ -253,5 +254,16 @@ public class AdminController implements Initializable {
             image = new Image(file.toURI().toString(), 113, 125, false, true);
             productImage.setImage(image);
         }
+    }
+
+    private void setAutoMaSP(){
+        String getMaLoai;
+        for(String key : loaisps.keySet()){
+            if(loaisps.get(key) == productLoaiSPCBB.getValue()){
+                getMaLoai = key;
+                break;
+            }
+        }
+        String maSP = 
     }
 }
