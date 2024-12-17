@@ -1,13 +1,20 @@
 package project.an.CoffeeOngBau.Controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import project.an.CoffeeOngBau.Models.Entities.currentAccount;
 
-public class AdminController {
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
+public class AdminController implements Initializable {
     @FXML
     private AnchorPane adminForm;
 
@@ -64,4 +71,44 @@ public class AdminController {
 
     @FXML
     private Button sellNavBtn;
+
+    @FXML
+    private Label chucVuText;
+
+    @FXML
+    private Label userNameText;
+
+    private Alert alert;
+
+    private String username, chucVu;
+
+    private void logout(){
+        alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Đăng xuất");
+        alert.setHeaderText(null);
+        alert.setContentText("Bạn có chắc muốn đăng xuất?");
+        Optional<ButtonType> option = alert.showAndWait();
+
+        if(option.get().equals(ButtonType.OK))
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/admin.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+
+        // Lấy Stage hiện tại
+        Stage stage = (Stage) accInput.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Home Screen");
+        stage.show();
+    }
+
+    private void displayName(){
+        username = currentAccount.username;
+        chucVu = currentAccount.chucVu;
+        String user = username + " - " + chucVu;
+        userNameText.setText(user);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        displayName();
+    }
 }

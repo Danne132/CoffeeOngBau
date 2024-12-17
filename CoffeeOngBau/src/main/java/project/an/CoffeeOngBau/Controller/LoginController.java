@@ -46,7 +46,7 @@ public class LoginController {
             if(account.equals(ketQua.getString("username"))&&
                     ComonUtils.hashPassword(password).equals(ketQua.getString("password")))
             {
-                currentAccount.username = account;
+                currentAccount.username = ketQua.getString("tenNV");
                 currentAccount.chucVu = ketQua.getString("chucVu");
                 showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đăng nhập thành công!");
                 switchToHomeScreen();
