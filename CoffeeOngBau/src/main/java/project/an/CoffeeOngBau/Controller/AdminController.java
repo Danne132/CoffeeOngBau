@@ -82,6 +82,12 @@ public class AdminController implements Initializable {
     private Alert alert;
 
     private String username, chucVu;
+    private String[] productCategoriesList;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        displayName();
+    }
 
     @FXML
     public void logout(){
@@ -114,10 +120,5 @@ public class AdminController implements Initializable {
         chucVu = currentAccount.chucVu;
         String user = username + " - " + chucVu;
         userNameText.setText(user);
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        displayName();
     }
 }
