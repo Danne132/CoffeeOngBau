@@ -27,15 +27,65 @@
 
 .sign-out-button{
     -fx-background-color: white;
-    -fx-border-color: #776F2C;
+    -fx-border-color: #FFCC07;
     -fx-border-radius: 100px;
     -fx-background-radius: 100px;
-    -fx-effect: dropshadow(three-pass-box, #888888, 3,0,0,0);
     -fx-cursor: hand;
 }
 
 .sign-out-button:hover{
     -fx-background-color: #776F2C;
     -fx-text-fill: white;
+}
+
+.board{
+    -fx-background-color: #EFEEEC;
+}
+
+.shadow{
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5,0,0,0);
+}
+
+.trasparent{
+    -fx-background-color: trasparent;
+}
+
+.background-main{
+    -fx-background-color: #FFCC07;
+}
+
+.board-radius{
+    -fx-background-radius: 8px;
+}
+
+.white-background{
+    -fx-background-color: white;
+}
+
+.table-view{
+    -fx-background-color: white;
+    -fx-border-radius: 5px;
+    -fx-border-color: #FCD8BB;
+    -fx-border-width: 1px;
+    -fx-padding: 0px;
+}
+
+.table-view .column-header-background{
+    -fx-background-color: #FFCC07;
+    -fx-background-radius: 5px 5px 0 0;
+    -fx-background-insets: 0 0 0 0;
+}
+
+.btn{
+    -fx-background-color: #FFCC07;
+    -fx-background-radius: 5px;
+    -fx-border-color: #FFE890;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.btn:hover{
+    -fx-background-color: #FFE890;
+    -fx-border-color: #FFCC07;
 }
 

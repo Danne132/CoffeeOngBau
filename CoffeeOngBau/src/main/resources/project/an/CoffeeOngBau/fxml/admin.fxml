@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,39 +31,34 @@
                      <children>
                         <AnchorPane layoutX="9.0" prefHeight="173.0" prefWidth="218.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <ImageView fitHeight="117.0" fitWidth="108.0" layoutX="55.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="117.0" fitWidth="108.0" layoutX="55.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="55.0" AnchorPane.topAnchor="14.0">
                                  <image>
                                     <Image url="@../images/logo.png" />
                                  </image>
                               </ImageView>
-                              <Label alignment="CENTER" layoutX="48.0" layoutY="122.0" text="Cafe Ông Bầu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                              <Label alignment="CENTER" layoutX="48.0" layoutY="122.0" text="Cafe Ông Bầu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="122.0">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Label>
                            </children>
                         </AnchorPane>
-                        <Button layoutX="4.0" layoutY="253.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="218.0" styleClass="nav-button" text="Hóa đơn" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <Button layoutX="1.0" layoutY="253.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="218.0" styleClass="nav-button" text="Hóa đơn" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Button>
-                        <Button layoutX="-1.0" layoutY="312.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="220.0" styleClass="nav-button" text="Sản phẩm" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <Button layoutX="1.0" layoutY="311.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="220.0" styleClass="nav-button" text="Sản phẩm" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Button>
-                        <Button layoutX="3.0" layoutY="374.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="220.0" styleClass="nav-button" text="Khuyến mãi" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <Button layoutX="1.0" layoutY="373.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="229.0" styleClass="nav-button" text="Thống kê" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Button>
-                        <Button layoutX="3.0" layoutY="436.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="229.0" styleClass="nav-button" text="Thống kê" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="3.0" layoutY="492.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="230.0" styleClass="nav-button" text="Nhân viên" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <Button layoutX="1.0" layoutY="435.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="230.0" styleClass="nav-button" text="Nhân viên" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -65,29 +72,296 @@
                   </AnchorPane>
                </left>
                <center>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                  <AnchorPane prefHeight="512.0" prefWidth="882.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutX="-0.8" layoutY="8.0" prefHeight="54.0" prefWidth="883.0" styleClass="head" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane layoutX="341.0" layoutY="36.8" prefHeight="563.0" prefWidth="882.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="37.0">
                            <children>
-                              <Button layoutX="28.0" layoutY="17.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="91.0" styleClass="sign-out-button" text="Đăng xuất" />
-                              <Label layoutX="133.0" layoutY="14.0" text="Hoàng Duy An">
+                              <AnchorPane layoutX="11.0" layoutY="14.0" prefHeight="178.0" prefWidth="859.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                                 <styleClass>
+                                    <String fx:value="board" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <ScrollPane layoutX="135.0" layoutY="-11.0" prefHeight="189.6" prefWidth="859.2" styleClass="trasparent" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <content>
+                                          <AnchorPane prefHeight="163.0" prefWidth="1006.0">
+                                             <children>
+                                                <AnchorPane layoutX="21.0" layoutY="9.0" prefHeight="142.0" prefWidth="263.0">
+                                                   <styleClass>
+                                                      <String fx:value="background-main" />
+                                                      <String fx:value="board-radius" />
+                                                      <String fx:value="shadow" />
+                                                   </styleClass>
+                                                   <children>
+                                                      <ImageView fitHeight="61.0" fitWidth="66.0" layoutX="14.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../images/order_number.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="91.0" layoutY="18.0" prefHeight="22.0" prefWidth="140.0" text="Tổng đơn hôm nay" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="32.20000000000002">
+                                                         <font>
+                                                            <Font name="System Bold" size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0">
+                                                         <font>
+                                                            <Font name="System Bold" size="25.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane layoutX="312.0" layoutY="9.0" prefHeight="142.0" prefWidth="263.0">
+                                                   <styleClass>
+                                                      <String fx:value="background-main" />
+                                                      <String fx:value="board-radius" />
+                                                      <String fx:value="shadow" />
+                                                   </styleClass>
+                                                   <children>
+                                                      <ImageView fitHeight="61.0" fitWidth="66.0" layoutX="14.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../images/order_number.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="91.0" layoutY="18.0" prefHeight="22.0" prefWidth="140.0" text="Thu nhập hôm nay" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="32.20000000000002">
+                                                         <font>
+                                                            <Font name="System Bold" size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0đ">
+                                                         <font>
+                                                            <Font name="System Bold" size="25.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane layoutX="600.0" layoutY="9.0" prefHeight="142.0" prefWidth="263.0">
+                                                   <styleClass>
+                                                      <String fx:value="background-main" />
+                                                      <String fx:value="board-radius" />
+                                                      <String fx:value="shadow" />
+                                                   </styleClass>
+                                                   <children>
+                                                      <ImageView fitHeight="61.0" fitWidth="66.0" layoutX="14.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../images/order_number.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="91.0" layoutY="18.0" prefHeight="22.0" prefWidth="140.0" text="Tổng thu nhập" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="32.20000000000002">
+                                                         <font>
+                                                            <Font name="System Bold" size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0đ">
+                                                         <font>
+                                                            <Font name="System Bold" size="25.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane layoutX="891.0" layoutY="9.0" prefHeight="142.0" prefWidth="263.0">
+                                                   <styleClass>
+                                                      <String fx:value="background-main" />
+                                                      <String fx:value="board-radius" />
+                                                      <String fx:value="shadow" />
+                                                   </styleClass>
+                                                   <children>
+                                                      <ImageView fitHeight="61.0" fitWidth="66.0" layoutX="14.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../images/order_number.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="91.0" layoutY="18.0" prefHeight="22.0" prefWidth="140.0" text="Khách hàng" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="32.20000000000002">
+                                                         <font>
+                                                            <Font name="System Bold" size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0">
+                                                         <font>
+                                                            <Font name="System Bold" size="25.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </AnchorPane>
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="11.0" layoutY="206.0" prefHeight="342.0" prefWidth="859.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="212.0">
+                                 <styleClass>
+                                    <String fx:value="board" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <AnchorPane layoutX="11.0" layoutY="10.0" prefHeight="305.0" prefWidth="422.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="416.0" AnchorPane.topAnchor="16.0">
+                                       <styleClass>
+                                          <String fx:value="shadow" />
+                                          <String fx:value="board-radius" />
+                                          <String fx:value="board" />
+                                       </styleClass>
+                                       <children>
+                                          <AreaChart layoutY="-48.0" prefHeight="305.0" prefWidth="381.0" title="Thu nhập" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <xAxis>
+                                              <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                          </AreaChart>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane layoutX="574.0" layoutY="15.0" prefHeight="305.0" prefWidth="384.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0">
+                                       <styleClass>
+                                          <String fx:value="shadow" />
+                                          <String fx:value="board-radius" />
+                                          <String fx:value="board" />
+                                       </styleClass>
+                                       <children>
+                                          <BarChart layoutX="-147.0" layoutY="-48.0" prefHeight="352.0000000000001" prefWidth="430.0" title="Đơn hàng" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <xAxis>
+                                              <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                          </BarChart>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </AnchorPane>
+                              <Separator layoutX="14.0" layoutY="201.0" prefHeight="4.0" prefWidth="854.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="201.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="-0.8" layoutY="8.0" prefHeight="30.0" prefWidth="883.0" styleClass="head" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Button layoutX="27.0" layoutY="9.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="72.0" styleClass="sign-out-button" text="Đăng xuất">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Button>
+                              <Label layoutX="108.0" layoutY="10.0" text="Hoàng Duy An">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="218.0" layoutY="5.0" text="-">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="277.0" layoutY="12.0" text="-">
+                              <Label layoutX="235.0" layoutY="10.0" text="Quản lý">
                                  <font>
-                                    <Font name="System Bold" size="20.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="292.0" layoutY="14.0" text="Quản lý">
-                                 <font>
-                                    <Font name="System Bold" size="20.0" />
+                                    <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="-7.0" layoutY="54.4" prefHeight="539.0" prefWidth="486.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="-7.0" AnchorPane.topAnchor="54.0" />
+                        <AnchorPane layoutX="218.0" layoutY="180.0" prefHeight="600.0" prefWidth="882.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="37.0">
+                           <children>
+                              <AnchorPane layoutX="14.0" layoutY="15.2" prefHeight="533.0" prefWidth="466.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="15.0">
+                                 <styleClass>
+                                    <String fx:value="board-radius" />
+                                    <String fx:value="shadow" />
+                                    <String fx:value="board" />
+                                    <String fx:value="white-background" />
+                                 </styleClass>
+                                 <children>
+                                    <AnchorPane layoutX="176.0" layoutY="14.0" prefHeight="125.0" prefWidth="113.0">
+                                       <styleClass>
+                                          <String fx:value="shadow" />
+                                          <String fx:value="white-background" />
+                                       </styleClass>
+                                    </AnchorPane>
+                                    <Label layoutX="14.0" layoutY="157.0" text="Mã sản phẩm:" AnchorPane.leftAnchor="14.0" />
+                                    <TextField layoutX="105.0" layoutY="153.0" prefHeight="26.0" prefWidth="328.0" AnchorPane.leftAnchor="104.0" AnchorPane.rightAnchor="14.0" />
+                                    <Label layoutX="14.0" layoutY="191.0" text="Tên sản phẩm:" />
+                                    <TextField layoutX="105.0" layoutY="187.0" prefHeight="26.0" prefWidth="328.0" AnchorPane.leftAnchor="104.0" AnchorPane.rightAnchor="14.0" />
+                                    <Label layoutX="14.0" layoutY="227.0" text="Loại sản phẩm:" />
+                                    <ComboBox layoutX="105.0" layoutY="223.0" prefWidth="150.0" promptText="Chọn loại sản phẩm" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="14.0" />
+                                    <Label layoutX="14.0" layoutY="264.0" text="Đơn giá:" />
+                                    <TextField layoutX="105.0" layoutY="260.0" prefHeight="26.0" prefWidth="328.0" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="14.0" />
+                                    <Label layoutX="14.0" layoutY="300.0" text="Mô tả:" />
+                                    <TextArea layoutX="104.0" layoutY="300.0" prefHeight="61.0" prefWidth="347.0" wrapText="true" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="14.0" />
+                                    <Label layoutX="14.0" layoutY="378.0" text="Ghi chú:" />
+                                    <TextArea layoutX="104.0" layoutY="378.0" prefHeight="61.0" prefWidth="347.0" wrapText="true" AnchorPane.leftAnchor="104.0" AnchorPane.rightAnchor="14.0" />
+                                    <Label layoutX="14.0" layoutY="454.0" text="Trạng thái:" />
+                                    <ComboBox layoutX="105.0" layoutY="450.0" prefWidth="150.0" promptText="Đang bán" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="14.0" />
+                                    <Button layoutX="36.0" layoutY="493.0" mnemonicParsing="false" prefWidth="75.0" text="Thêm mới">
+                                       <styleClass>
+                                          <String fx:value="btn" />
+                                          <String fx:value="shadow" />
+                                       </styleClass>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Button>
+                                    <Button layoutX="141.0" layoutY="493.0" mnemonicParsing="false" prefWidth="75.0" text="Cập nhật">
+                                       <styleClass>
+                                          <String fx:value="btn" />
+                                          <String fx:value="shadow" />
+                                       </styleClass>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Button>
+                                    <Button layoutX="254.0" layoutY="493.0" mnemonicParsing="false" prefWidth="75.0" text="Xóa">
+                                       <styleClass>
+                                          <String fx:value="btn" />
+                                          <String fx:value="shadow" />
+                                       </styleClass>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Button>
+                                    <Button layoutX="360.0" layoutY="493.0" mnemonicParsing="false" prefWidth="75.0" text="Hủy">
+                                       <styleClass>
+                                          <String fx:value="btn" />
+                                          <String fx:value="shadow" />
+                                       </styleClass>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Button>
+                                    <Button layoutX="302.0" layoutY="112.0" mnemonicParsing="false" text="+">
+                                       <styleClass>
+                                          <String fx:value="btn" />
+                                          <String fx:value="shadow" />
+                                       </styleClass>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="535.0" layoutY="83.0" prefHeight="200.0" prefWidth="200.0" />
+                              <AnchorPane layoutX="490.4" layoutY="15.2" prefHeight="533.0" prefWidth="378.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="490.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="15.0">
+                                 <styleClass>
+                                    <String fx:value="board-radius" />
+                                    <String fx:value="shadow" />
+                                    <String fx:value="board" />
+                                    <String fx:value="white-background" />
+                                 </styleClass>
+                                 <children>
+                                    <TableView layoutX="115.0" layoutY="132.0" prefHeight="390.0" prefWidth="360.0" stylesheets="@../css/home.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="132.0">
+                                      <columns>
+                                        <TableColumn prefWidth="75.0" styleClass="column-header-background" text="Mã SP" />
+                                        <TableColumn prefWidth="116.80000305175781" styleClass="column-header-background" text="Tên SP" />
+                                          <TableColumn prefWidth="68.00006103515625" styleClass="column-header-background" text="Loại SP" />
+                                          <TableColumn styleClass="column-header-background" text="Đơn giá" />
+                                          <TableColumn prefWidth="53.60003662109375" styleClass="column-header-background" text="Trạng thái" />
+                                      </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                    <Label layoutX="14.0" layoutY="24.0" text="Tên sản phẩm" AnchorPane.leftAnchor="14.0" />
+                                    <Label layoutX="16.0" layoutY="75.0" text="Loại sản phẩm" AnchorPane.leftAnchor="14.0" />
+                                    <TextField layoutX="16.0" layoutY="42.0" prefHeight="26.0" prefWidth="306.0" AnchorPane.leftAnchor="16.0" />
+                                    <ComboBox layoutX="17.0" layoutY="93.0" prefWidth="150.0" AnchorPane.leftAnchor="14.0" />
+                                    <Label layoutX="219.0" layoutY="75.0" text="Trạng thái" />
+                                    <ComboBox layoutX="220.0" layoutY="93.0" prefWidth="150.0" />
+                                    <Button layoutX="334.0" layoutY="42.0" mnemonicParsing="false" text="Tìm" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
                      </children>
                   </AnchorPane>
                </center>
