@@ -18,6 +18,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
@@ -29,7 +32,7 @@
                <left>
                   <AnchorPane prefHeight="600.0" prefWidth="217.0" styleClass="left-background" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutX="9.0" prefHeight="173.0" prefWidth="218.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane layoutX="1.6" layoutY="1.6" prefHeight="151.0" prefWidth="216.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
                            <children>
                               <ImageView fitHeight="117.0" fitWidth="108.0" layoutX="55.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="55.0" AnchorPane.topAnchor="14.0">
                                  <image>
@@ -43,31 +46,45 @@
                               </Label>
                            </children>
                         </AnchorPane>
-                        <Button layoutX="1.0" layoutY="253.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="218.0" styleClass="nav-button" text="Hóa đơn" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="1.0" layoutY="311.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="220.0" styleClass="nav-button" text="Sản phẩm" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="1.0" layoutY="373.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="229.0" styleClass="nav-button" text="Thống kê" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="1.0" layoutY="435.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="230.0" styleClass="nav-button" text="Nhân viên" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="4.0" layoutY="185.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="218.0" styleClass="nav-button" text="Bán hàng" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Button>
+                        <GridPane layoutX="1.0" layoutY="176.0" prefHeight="276.0" prefWidth="216.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="176.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Button fx:id="sellNavBtn" mnemonicParsing="false" prefHeight="238.0" prefWidth="215.0" styleClass="nav-button" text="Bán hàng">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="employNavBtn" mnemonicParsing="false" prefHeight="85.0" prefWidth="249.0" styleClass="nav-button" text="Nhân viên" GridPane.rowIndex="4">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="85.0" prefWidth="245.0" styleClass="nav-button" text="Thống kê" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="productNavBtn" mnemonicParsing="false" prefHeight="85.0" prefWidth="230.0" styleClass="nav-button" text="Sản phẩm" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="orderNavBtn" mnemonicParsing="false" prefHeight="85.0" prefWidth="233.0" styleClass="nav-button" text="Hóa đơn" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </GridPane>
                      </children>
                   </AnchorPane>
                </left>
@@ -235,7 +252,7 @@
                         </AnchorPane>
                         <AnchorPane layoutX="-0.8" layoutY="8.0" prefHeight="30.0" prefWidth="883.0" styleClass="head" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Button layoutX="27.0" layoutY="9.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="72.0" styleClass="sign-out-button" text="Đăng xuất">
+                              <Button fx:id="logOutBtn" layoutX="27.0" layoutY="9.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="72.0" styleClass="sign-out-button" text="Đăng xuất">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -339,7 +356,7 @@
                                     <String fx:value="white-background" />
                                  </styleClass>
                                  <children>
-                                    <TableView layoutX="115.0" layoutY="132.0" prefHeight="390.0" prefWidth="360.0" stylesheets="@../css/home.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="132.0">
+                                    <TableView fx:id="productTable" layoutX="115.0" layoutY="132.0" prefHeight="390.0" prefWidth="360.0" stylesheets="@../css/home.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="132.0">
                                       <columns>
                                         <TableColumn prefWidth="75.0" styleClass="column-header-background" text="Mã SP" />
                                         <TableColumn prefWidth="116.80000305175781" styleClass="column-header-background" text="Tên SP" />

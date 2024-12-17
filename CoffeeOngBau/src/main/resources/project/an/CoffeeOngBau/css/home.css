@@ -4,25 +4,26 @@
 
 .left-background{
     -fx-background-color: #EFEEEC;
-    -fx-border-color: #BB9B82;
+    -fx-border-color: #FFE890;
 }
 
 .nav-button{
-    -fx-background-color: #BB9B82;
-    -fx-border-color: #FCD8BB;
-    -fx-text-fill: white;
+    -fx-background-color: #FFCC07;
+    -fx-border-color: #FFE890;
+    -fx-text-fill: black;
     -border-radius: 0px;
     -background-radius: 0px;
     -fx-cursor: hand;
+    -fx-pref-height: 250px;
 }
 
 .nav-button:hover{
-    -fx-background-color: #FFCC07;
+    -fx-background-color: #FFE890;
 }
 
 .head{
     -fx-background-color: #EFEEEC;
-    -fx-border-color: #BB9B82;
+    -fx-border-color: #FFE890;
 }
 
 .sign-out-button{
