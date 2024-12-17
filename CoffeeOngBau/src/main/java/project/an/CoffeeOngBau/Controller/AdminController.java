@@ -256,14 +256,31 @@ public class AdminController implements Initializable {
         }
     }
 
-    private void setAutoMaSP(){
-        String getMaLoai;
+    private String setAutoMaSP(){
+        String getMaLoai = "";
+        String maSP = "";
         for(String key : loaisps.keySet()){
             if(loaisps.get(key) == productLoaiSPCBB.getValue()){
                 getMaLoai = key;
                 break;
             }
         }
-        String maSP = 
+        String sqlSelect = "SELECT maSP FROM sanpham WHERE loaiSP = ? ORDER BY maSP DESC LIMIT 1";
+        Statement lenh;
+        try {
+            lenh = conn.createStatement();
+            ResultSet ketQua = lenh.executeQuery(sqlSelect);
+            if(ketQua.next()){
+                String lastMaSP = ketQua.getString("maSP");
+                int number = Integer.parseInt(lastMaSP.substring(getMaLoai.length()));
+                DBUtils.closeConnection(conn);
+                return getMaLoai + String.format("%03d", number + 1);
+            } else {
+                DBUtils.closeConnection(conn);
+                return getMaLoai + "001";
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
