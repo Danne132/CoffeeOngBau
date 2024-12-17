@@ -285,7 +285,7 @@
                                        </children>
                                     </AnchorPane>
                                     <Label layoutX="14.0" layoutY="157.0" text="Mã sản phẩm:" AnchorPane.leftAnchor="14.0" />
-                                    <TextField fx:id="productMaSPText" layoutX="105.0" layoutY="153.0" prefHeight="26.0" prefWidth="328.0" AnchorPane.leftAnchor="104.0" AnchorPane.rightAnchor="14.0" />
+                                    <TextField fx:id="productMaSPText" disable="true" layoutX="105.0" layoutY="153.0" prefHeight="26.0" prefWidth="328.0" AnchorPane.leftAnchor="104.0" AnchorPane.rightAnchor="14.0" />
                                     <Label layoutX="14.0" layoutY="191.0" text="Tên sản phẩm:" />
                                     <TextField fx:id="productTenSPText" layoutX="105.0" layoutY="187.0" prefHeight="26.0" prefWidth="328.0" AnchorPane.leftAnchor="104.0" AnchorPane.rightAnchor="14.0" />
                                     <Label layoutX="14.0" layoutY="227.0" text="Loại sản phẩm:" />
@@ -301,7 +301,7 @@
                                     <TextArea fx:id="productGhiChuText" layoutX="104.0" layoutY="378.0" prefHeight="61.0" prefWidth="347.0" wrapText="true" AnchorPane.leftAnchor="104.0" AnchorPane.rightAnchor="14.0" />
                                     <Label layoutX="14.0" layoutY="454.0" text="Trạng thái:" />
                                     <ComboBox fx:id="productTrangThaiCBB" layoutX="105.0" layoutY="450.0" prefWidth="150.0" promptText="Đang bán" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="14.0" />
-                                    <Button fx:id="productAddBtn" layoutX="36.0" layoutY="493.0" mnemonicParsing="false" prefWidth="75.0" text="Thêm mới">
+                                    <Button fx:id="productAddBtn" layoutX="36.0" layoutY="493.0" mnemonicParsing="false" onAction="#addSP" prefWidth="75.0" text="Thêm mới">
                                        <styleClass>
                                           <String fx:value="btn" />
                                           <String fx:value="shadow" />

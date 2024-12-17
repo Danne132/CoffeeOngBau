@@ -21,10 +21,7 @@ import project.an.CoffeeOngBau.Utils.DBUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.*;
 
 public class AdminController implements Initializable {
@@ -242,6 +239,32 @@ public class AdminController implements Initializable {
             alert.setHeaderText(null);
             alert.setContentText("Hãy điền đủ thông tin sản phẩm");
             alert.showAndWait();
+        } else {
+            conn = DBUtils.openConnection("banhang", "root", "");
+            String sqlInsert = "INSERT INTO sanpham "
+                    + "(maSP, tenSP, loaiSP, donGia, anhSP, moTa, ghiChu, trangThai)"
+                    + "VALUES(?,?,?,?,?,?,?,?)";
+            try {
+                PreparedStatement lenh = conn.prepareStatement(sqlInsert);
+                lenh.setString(1, setAutoMaSP());
+                lenh.setString(2, productTenSPText.getText());
+                lenh.setString(3, productLoaiSPCBB.getSelectionModel().getSelectedItem());
+                lenh.setString(4, productDonGiaText.getText());
+                String path = currentAccount.path;
+                path = path.replace("\\", "\\\\");
+                lenh.setString(5, path);
+                lenh.setString(6, productMoTaText.getText());
+                lenh.setString(7, productTrangThaiCBB.getSelectionModel().getSelectedItem());
+
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Thêm sản phẩm");
+                alert.setHeaderText(null);
+                alert.setContentText("Thêm sản phẩm thành công");
+                alert.showAndWait();
+                showSPList();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -260,11 +283,12 @@ public class AdminController implements Initializable {
         String getMaLoai = "";
         String maSP = "";
         for(String key : loaisps.keySet()){
-            if(loaisps.get(key) == productLoaiSPCBB.getValue()){
+            if(loaisps.get(key) == productLoaiSPCBB.getSelectionModel().getSelectedItem()){
                 getMaLoai = key;
                 break;
             }
         }
+        conn = DBUtils.openConnection("banhang", "root", "");
         String sqlSelect = "SELECT maSP FROM sanpham WHERE loaiSP = ? ORDER BY maSP DESC LIMIT 1";
         Statement lenh;
         try {
