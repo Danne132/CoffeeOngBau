@@ -230,6 +230,15 @@ public class AdminController implements Initializable {
         productTrangThaiCBB.getSelectionModel().select(0);
     }
 
+    public void cleanSP(){
+        productMaSPText.setText("");
+        productTenSPText.setText("");
+        productDonGiaText.setText("");
+        productMoTaText.setText("");
+        productGhiChuText.setText("");
+        productImage.setImage(null);
+    }
+
     public void addSP(){
         if(productTenSPText.getText().isEmpty() ||
                 productDonGiaText.getText().isEmpty()||
@@ -240,27 +249,41 @@ public class AdminController implements Initializable {
             alert.setContentText("Hãy điền đủ thông tin sản phẩm");
             alert.showAndWait();
         } else {
+            String maSP = setAutoMaSP();
+            System.out.println(maSP);
             conn = DBUtils.openConnection("banhang", "root", "");
             String sqlInsert = "INSERT INTO sanpham "
-                    + "(maSP, tenSP, loaiSP, donGia, anhSP, moTa, ghiChu, trangThai)"
+                    + "(maSP, tenSP, loaiSP, donGia, anhSP, moTa, ghiChu, trangThai) "
                     + "VALUES(?,?,?,?,?,?,?,?)";
             try {
                 PreparedStatement lenh = conn.prepareStatement(sqlInsert);
-                lenh.setString(1, setAutoMaSP());
+                lenh.setString(1, maSP);
                 lenh.setString(2, productTenSPText.getText());
-                lenh.setString(3, productLoaiSPCBB.getSelectionModel().getSelectedItem());
-                lenh.setString(4, productDonGiaText.getText());
+                String getMaLoai = "";
+                for(String key : loaisps.keySet()){
+                    if(loaisps.get(key) == productLoaiSPCBB.getSelectionModel().getSelectedItem()){
+                        getMaLoai = key;
+                        break;
+                    }
+                }
+                lenh.setString(3, getMaLoai);
+                lenh.setDouble(4, Double.parseDouble(productDonGiaText.getText()));
                 String path = currentAccount.path;
                 path = path.replace("\\", "\\\\");
                 lenh.setString(5, path);
                 lenh.setString(6, productMoTaText.getText());
-                lenh.setString(7, productTrangThaiCBB.getSelectionModel().getSelectedItem());
+                String tt = productTrangThaiCBB.getSelectionModel().getSelectedItem();
+                if(tt == "Đang bán")
+                    lenh.setBoolean(7, true);
+                else
+                    lenh.setBoolean(7, false);
 
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Thêm sản phẩm");
                 alert.setHeaderText(null);
                 alert.setContentText("Thêm sản phẩm thành công");
                 alert.showAndWait();
+                DBUtils.closeConnection(conn);
                 showSPList();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -281,7 +304,6 @@ public class AdminController implements Initializable {
 
     private String setAutoMaSP(){
         String getMaLoai = "";
-        String maSP = "";
         for(String key : loaisps.keySet()){
             if(loaisps.get(key) == productLoaiSPCBB.getSelectionModel().getSelectedItem()){
                 getMaLoai = key;
@@ -290,18 +312,18 @@ public class AdminController implements Initializable {
         }
         conn = DBUtils.openConnection("banhang", "root", "");
         String sqlSelect = "SELECT maSP FROM sanpham WHERE loaiSP = ? ORDER BY maSP DESC LIMIT 1";
-        Statement lenh;
-        try {
-            lenh = conn.createStatement();
-            ResultSet ketQua = lenh.executeQuery(sqlSelect);
-            if(ketQua.next()){
-                String lastMaSP = ketQua.getString("maSP");
-                int number = Integer.parseInt(lastMaSP.substring(getMaLoai.length()));
-                DBUtils.closeConnection(conn);
-                return getMaLoai + String.format("%03d", number + 1);
-            } else {
-                DBUtils.closeConnection(conn);
-                return getMaLoai + "001";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelect)) {
+            preparedStatement.setString(1, getMaLoai);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    String lastMaSP = resultSet.getString("maSP");
+                    int number = Integer.parseInt(lastMaSP.substring(getMaLoai.length()));
+                    DBUtils.closeConnection(conn);
+                    return getMaLoai + String.format("%03d", number + 1);
+                } else {
+                    DBUtils.closeConnection(conn);
+                    return getMaLoai + "001";
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

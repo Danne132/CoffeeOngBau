@@ -50,6 +50,7 @@ public class LoginController {
                 currentAccount.chucVu = ketQua.getString("chucVu");
                 showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đăng nhập thành công!");
                 switchToHomeScreen();
+                break;
             } else
                 showAlert(Alert.AlertType.ERROR, "Lỗi đăng nhập", "Tên đăng nhập hoặc mật khẩu không đúng!");
                 System.out.println("Đăng nhập không thành công");
