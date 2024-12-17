@@ -1,5 +1,7 @@
 package project.an.CoffeeOngBau.Controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -8,12 +10,18 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import project.an.CoffeeOngBau.Models.Entities.LoaiSP;
+import project.an.CoffeeOngBau.Models.Entities.SanPham;
 import project.an.CoffeeOngBau.Models.Entities.currentAccount;
+import project.an.CoffeeOngBau.Utils.DBUtils;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
 
 public class AdminController implements Initializable {
     @FXML
@@ -35,6 +43,9 @@ public class AdminController implements Initializable {
     private Button productCancelBtn;
 
     @FXML
+    private Button productCategoryAddBtn;
+
+    @FXML
     private TableColumn<?, ?> productColDonGia;
 
     @FXML
@@ -53,7 +64,13 @@ public class AdminController implements Initializable {
     private Button productDeleteBtn;
 
     @FXML
+    private TextField productDonGiaText;
+
+    @FXML
     private AnchorPane productForm;
+
+    @FXML
+    private TextArea productGhiChuText;
 
     @FXML
     private ImageView productImage;
@@ -62,10 +79,25 @@ public class AdminController implements Initializable {
     private Button productImageImport;
 
     @FXML
+    private ComboBox<?> productLoaiSPCBB;
+
+    @FXML
+    private TextField productMaSPText;
+
+    @FXML
+    private TextArea productMoTaText;
+
+    @FXML
     private Button productNavBtn;
 
     @FXML
     private TableView<?> productTable;
+
+    @FXML
+    private TextField productTenSPText;
+
+    @FXML
+    private ComboBox<?> productTrangThaiCBB;
 
     @FXML
     private Button productUpdateBtn;
@@ -74,19 +106,48 @@ public class AdminController implements Initializable {
     private Button sellNavBtn;
 
     @FXML
-    private Label chucVuText;
-
-    @FXML
     private Label userNameText;
 
     private Alert alert;
 
     private String username, chucVu;
-    private String[] productCategoriesList;
+    private HashMap<String, String> loaisps = new HashMap<>();
+    private String[] trangthaisps = new String[]{"Đang bán", "Ngưng bán"};
+    private Connection conn;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         displayName();
+        getCategoryFromDB();
+        getProductStatus();
+    }
+
+    public ObservableList<SanPham> getSPList(){
+        ObservableList<SanPham> spList = FXCollections.observableArrayList();
+        conn = DBUtils.openConnection("banhang", "root", "");
+        String sqlSelect = "SELECT * FROM sanpham";
+        Statement lenh = null;
+        try {
+            lenh = conn.createStatement();
+            ResultSet ketQua = lenh.executeQuery(sqlSelect);
+            SanPham sp;
+            while(ketQua.next()){
+                sp = new SanPham(
+                        ketQua.getString("maSP"),
+                        ketQua.getString("tenSP"),
+                        ketQua.getString("loaiSP"),
+                        ketQua.getString("moTa"),
+                        ketQua.getString("ghiChu"),
+                        ketQua.getString("")
+                )
+            }
+            ObservableList list = FXCollections.observableArrayList(loaisps.values());
+            productLoaiSPCBB.setItems(list);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        DBUtils.closeConnection(conn);
     }
 
     @FXML
@@ -120,5 +181,34 @@ public class AdminController implements Initializable {
         chucVu = currentAccount.chucVu;
         String user = username + " - " + chucVu;
         userNameText.setText(user);
+    }
+
+    private void getCategoryFromDB()  {
+        conn = DBUtils.openConnection("banhang", "root", "");
+        String sqlSelect = "SELECT * FROM loaisp";
+        Statement lenh = null;
+        try {
+            lenh = conn.createStatement();
+            ResultSet ketQua = lenh.executeQuery(sqlSelect);
+            while(ketQua.next()){
+                String maLoai = ketQua.getString("maLoai");
+                String tenLoai = ketQua.getString("tenLoai");
+                loaisps.put(maLoai, tenLoai);
+            }
+            ObservableList list = FXCollections.observableArrayList(loaisps.values());
+            productLoaiSPCBB.setItems(list);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        DBUtils.closeConnection(conn);
+    }
+
+    private void getProductStatus(){
+        List<String> listTT = new ArrayList<>();
+        for(String trangthai : trangthaisps){
+            listTT.add(trangthai);
+        }
+        ObservableList list = FXCollections.observableArrayList(listTT);
+        productTrangThaiCBB.setItems(list);
     }
 }
