@@ -2,13 +2,13 @@ package project.an.CoffeeOngBau.Controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import project.an.CoffeeOngBau.Models.Entities.currentAccount;
 import project.an.CoffeeOngBau.Utils.ComonUtils;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 
@@ -46,6 +46,8 @@ public class LoginController {
             if(account.equals(ketQua.getString("username"))&&
                     ComonUtils.hashPassword(password).equals(ketQua.getString("password")))
             {
+                currentAccount.username = account;
+                currentAccount.chucVu = ketQua.getString("chucVu");
                 showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đăng nhập thành công!");
                 switchToHomeScreen();
             } else

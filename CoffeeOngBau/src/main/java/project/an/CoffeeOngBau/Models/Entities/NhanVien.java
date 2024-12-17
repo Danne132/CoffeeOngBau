@@ -15,7 +15,6 @@ public class NhanVien {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.idCardNumber = idCardNumber;
         this.createAt = createAt;
         this.updatedAt = updatedAt;
         this.isWorking = isWorking;

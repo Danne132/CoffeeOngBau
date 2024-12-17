@@ -24,9 +24,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.an.CoffeeOngBau.Controller.AdminController">
    <children>
-      <AnchorPane>
+      <AnchorPane fx:id="adminForm">
          <children>
             <BorderPane prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <left>
@@ -257,7 +257,7 @@
                                     <Font size="10.0" />
                                  </font>
                               </Button>
-                              <Label layoutX="108.0" layoutY="10.0" text="Hoàng Duy An">
+                              <Label fx:id="userNameText" layoutX="108.0" layoutY="10.0" text="Hoàng Duy An">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
@@ -267,14 +267,14 @@
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="235.0" layoutY="10.0" text="Quản lý">
+                              <Label fx:id="chucVuText" layoutX="235.0" layoutY="10.0" text="Quản lý">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="218.0" layoutY="180.0" prefHeight="600.0" prefWidth="882.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="37.0">
+                        <AnchorPane fx:id="productForm" layoutX="218.0" layoutY="180.0" prefHeight="600.0" prefWidth="882.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="37.0">
                            <children>
                               <AnchorPane layoutX="14.0" layoutY="15.2" prefHeight="533.0" prefWidth="466.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="15.0">
                                  <styleClass>
@@ -289,6 +289,9 @@
                                           <String fx:value="shadow" />
                                           <String fx:value="white-background" />
                                        </styleClass>
+                                       <children>
+                                          <ImageView fx:id="productImage" fitHeight="125.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
                                     </AnchorPane>
                                     <Label layoutX="14.0" layoutY="157.0" text="Mã sản phẩm:" AnchorPane.leftAnchor="14.0" />
                                     <TextField layoutX="105.0" layoutY="153.0" prefHeight="26.0" prefWidth="328.0" AnchorPane.leftAnchor="104.0" AnchorPane.rightAnchor="14.0" />
@@ -304,7 +307,7 @@
                                     <TextArea layoutX="104.0" layoutY="378.0" prefHeight="61.0" prefWidth="347.0" wrapText="true" AnchorPane.leftAnchor="104.0" AnchorPane.rightAnchor="14.0" />
                                     <Label layoutX="14.0" layoutY="454.0" text="Trạng thái:" />
                                     <ComboBox layoutX="105.0" layoutY="450.0" prefWidth="150.0" promptText="Đang bán" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="14.0" />
-                                    <Button layoutX="36.0" layoutY="493.0" mnemonicParsing="false" prefWidth="75.0" text="Thêm mới">
+                                    <Button fx:id="productAddBtn" layoutX="36.0" layoutY="493.0" mnemonicParsing="false" prefWidth="75.0" text="Thêm mới">
                                        <styleClass>
                                           <String fx:value="btn" />
                                           <String fx:value="shadow" />
@@ -312,7 +315,7 @@
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font></Button>
-                                    <Button layoutX="141.0" layoutY="493.0" mnemonicParsing="false" prefWidth="75.0" text="Cập nhật">
+                                    <Button fx:id="productUpdateBtn" layoutX="141.0" layoutY="493.0" mnemonicParsing="false" prefWidth="75.0" text="Cập nhật">
                                        <styleClass>
                                           <String fx:value="btn" />
                                           <String fx:value="shadow" />
@@ -320,7 +323,7 @@
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font></Button>
-                                    <Button layoutX="254.0" layoutY="493.0" mnemonicParsing="false" prefWidth="75.0" text="Xóa">
+                                    <Button fx:id="productDeleteBtn" layoutX="264.0" layoutY="493.0" mnemonicParsing="false" prefWidth="75.0" text="Xóa">
                                        <styleClass>
                                           <String fx:value="btn" />
                                           <String fx:value="shadow" />
@@ -328,7 +331,7 @@
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font></Button>
-                                    <Button layoutX="360.0" layoutY="493.0" mnemonicParsing="false" prefWidth="75.0" text="Hủy">
+                                    <Button fx:id="productCancelBtn" layoutX="360.0" layoutY="493.0" mnemonicParsing="false" prefWidth="75.0" text="Hủy">
                                        <styleClass>
                                           <String fx:value="btn" />
                                           <String fx:value="shadow" />
@@ -336,7 +339,7 @@
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font></Button>
-                                    <Button layoutX="302.0" layoutY="112.0" mnemonicParsing="false" text="+">
+                                    <Button fx:id="productImageImport" layoutX="302.0" layoutY="112.0" mnemonicParsing="false" text="+">
                                        <styleClass>
                                           <String fx:value="btn" />
                                           <String fx:value="shadow" />
@@ -347,7 +350,6 @@
                                     </Button>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane layoutX="535.0" layoutY="83.0" prefHeight="200.0" prefWidth="200.0" />
                               <AnchorPane layoutX="490.4" layoutY="15.2" prefHeight="533.0" prefWidth="378.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="490.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="15.0">
                                  <styleClass>
                                     <String fx:value="board-radius" />
@@ -358,11 +360,11 @@
                                  <children>
                                     <TableView fx:id="productTable" layoutX="115.0" layoutY="132.0" prefHeight="390.0" prefWidth="360.0" stylesheets="@../css/home.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="132.0">
                                       <columns>
-                                        <TableColumn prefWidth="75.0" styleClass="column-header-background" text="Mã SP" />
-                                        <TableColumn prefWidth="116.80000305175781" styleClass="column-header-background" text="Tên SP" />
-                                          <TableColumn prefWidth="68.00006103515625" styleClass="column-header-background" text="Loại SP" />
-                                          <TableColumn styleClass="column-header-background" text="Đơn giá" />
-                                          <TableColumn prefWidth="53.60003662109375" styleClass="column-header-background" text="Trạng thái" />
+                                        <TableColumn fx:id="productColMaSP" prefWidth="75.0" styleClass="column-header-background" text="Mã SP" />
+                                        <TableColumn fx:id="productColTenSP" prefWidth="116.80000305175781" styleClass="column-header-background" text="Tên SP" />
+                                          <TableColumn fx:id="productColLoaiSP" prefWidth="68.00006103515625" styleClass="column-header-background" text="Loại SP" />
+                                          <TableColumn fx:id="productColDonGia" styleClass="column-header-background" text="Đơn giá" />
+                                          <TableColumn fx:id="productColTrangThai" prefWidth="53.60003662109375" styleClass="column-header-background" text="Trạng thái" />
                                       </columns>
                                        <columnResizePolicy>
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
