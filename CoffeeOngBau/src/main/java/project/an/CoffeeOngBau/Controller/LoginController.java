@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import project.an.CoffeeOngBau.Models.Entities.currentAccount;
+import project.an.CoffeeOngBau.Models.Entities.current_data;
 import project.an.CoffeeOngBau.Utils.ComonUtils;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 
@@ -46,8 +46,8 @@ public class LoginController {
             if(account.equals(ketQua.getString("username"))&&
                     ComonUtils.hashPassword(password).equals(ketQua.getString("password")))
             {
-                currentAccount.username = ketQua.getString("tenNV");
-                currentAccount.chucVu = ketQua.getString("chucVu");
+                current_data.username = ketQua.getString("tenNV");
+                current_data.chucVu = ketQua.getString("chucVu");
                 DBUtils.closeConnection(conn);
                 showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đăng nhập thành công!");
                 switchToHomeScreen();

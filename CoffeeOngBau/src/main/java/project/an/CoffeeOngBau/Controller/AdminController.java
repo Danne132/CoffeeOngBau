@@ -13,9 +13,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import project.an.CoffeeOngBau.Models.Entities.LoaiSP;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
-import project.an.CoffeeOngBau.Models.Entities.currentAccount;
+import project.an.CoffeeOngBau.Models.Entities.current_data;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 
 import java.io.File;
@@ -150,17 +149,17 @@ public class AdminController implements Initializable {
             while(result.next()){
                 sp = new SanPham(
                         result.getString("maSP"),
-                        result.getString("tenSP"),
+                        result.getNString("tenSP"),
                         result.getString("loaiSP"),
-                        result.getString("moTa"),
-                        result.getString("ghiChu"),
+                        result.getNString("moTa"),
+                        result.getNString("ghiChu"),
                         result.getBoolean("trangThai")?"Đang bán":"Ngừng bán",
                         result.getString("anhSP"),
                         result.getDouble("donGia")
                 );
                 spList.add(sp);
             }
-
+            productTable.setItems(spList);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -195,8 +194,8 @@ public class AdminController implements Initializable {
     }
 
     private void displayName(){
-        username = currentAccount.username;
-        chucVu = currentAccount.chucVu;
+        username = current_data.username;
+        chucVu = current_data.chucVu;
         String user = username + " - " + chucVu;
         userNameText.setText(user);
     }
@@ -239,12 +238,13 @@ public class AdminController implements Initializable {
         productMoTaText.setText("");
         productGhiChuText.setText("");
         productImage.setImage(null);
+        current_data.id = "";
     }
 
     public void addSP(){
         if(productTenSPText.getText().isEmpty() ||
                 productDonGiaText.getText().isEmpty()||
-                currentAccount.path == null){
+                current_data.path == null){
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Lỗi thêm sản phẩm");
             alert.setHeaderText(null);
@@ -268,7 +268,7 @@ public class AdminController implements Initializable {
                 }
                 lenh.setString(3, getMaLoai);
                 lenh.setDouble(4, Double.parseDouble(productDonGiaText.getText()));
-                String path = currentAccount.path;
+                String path = current_data.path;
                 path = path.replace("\\", "\\\\");
                 System.out.println(path);
                 lenh.setString(5, path);
@@ -285,7 +285,6 @@ public class AdminController implements Initializable {
                 alert.setHeaderText(null);
                 alert.setContentText("Thêm sản phẩm thành công");
                 alert.showAndWait();
-                showSPList();
                 int rowsInserted = lenh.executeUpdate();
                 if (rowsInserted > 0) {
                     System.out.println("Thêm sản phẩm thành công");
@@ -296,6 +295,63 @@ public class AdminController implements Initializable {
                 throw new RuntimeException(e);
             }
             DBUtils.closeConnection(conn);
+            cleanSP();
+            showSPList();
+        }
+    }
+
+    public void selecteSP(){
+        SanPham sanPham = productTable.getSelectionModel().getSelectedItem();
+        int num = productTable.getSelectionModel().getSelectedIndex();
+        if((num - 1) < -1 ) return;
+        productMaSPText.setText(sanPham.getMaSP());
+        productTenSPText.setText(sanPham.getTenSP());
+        productDonGiaText.setText(String.valueOf(sanPham.getDonGia()));
+        productMoTaText.setText(sanPham.getMoTa());
+        productGhiChuText.setText(sanPham.getGhiChu());
+        current_data.path = sanPham.getAnhSP();
+        current_data.id = sanPham.getMaSP();
+        String path = "File:"+ current_data.path;
+        Image image = new Image(path, 113, 125, false, true);
+        productImage.setImage(image);
+
+    }
+
+    public void updateSP(){
+        if(productTenSPText.getText().isEmpty() ||
+                productDonGiaText.getText().isEmpty()||
+                current_data.path == null||current_data.id == null){
+            setAlert(Alert.AlertType.ERROR, "Lỗi thêm sản phẩm", "Hãy điền đủ thông tin sản phẩm!");
+        } else {
+            String path = current_data.path;
+            String maLoai = getMaLoai();
+            int isSell;
+            if(productTrangThaiCBB.getSelectionModel().getSelectedItem().equals("Đang bán")) isSell = 1;
+            else isSell = 0;
+            path.replace("\\", "\\\\");
+            String sqlUpdate = "UPDATE `sanpham` SET" +
+                    "`maSP`='"+productMaSPText.getText()+"',`tenSP`='"
+                    +productTenSPText.getText()+"',`loaiSP`='"
+                    +maLoai+
+                    "',`donGia`='"+productDonGiaText.getText()+"',`anhSP`='"
+                    +path+"',`moTa`='"+productMoTaText.getText()+"',`ghiChu`='"
+                    +productGhiChuText.getText()+"',`trangThai`='"
+                    +isSell+"' WHERE `maSP`='"+current_data.id+"'";
+            conn = DBUtils.openConnection("banhang", "root", "");
+            try {
+                Optional<ButtonType> optional = setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn có chắc muốn cập nhật thông tin của mặt hàng " + productMaSPText.getText() + "?");
+                if(optional.get().equals(ButtonType.OK)){
+                    prepare = conn.prepareStatement(sqlUpdate);
+                    prepare.executeUpdate();
+                    setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Cập nhật thông tin thành công!");
+                    showSPList();
+                    cleanSP();
+                } else {
+                    setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Đã hủy cập nhật!");
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -304,20 +360,14 @@ public class AdminController implements Initializable {
         openFile.getExtensionFilters().add(new FileChooser.ExtensionFilter("Open Image File", "*png", "*jpg"));
         File file = openFile.showOpenDialog(adminForm.getScene().getWindow());
         if(file != null){
-            currentAccount.path = file.getAbsolutePath();
+            current_data.path = file.getAbsolutePath();
             image = new Image(file.toURI().toString(), 113, 125, false, true);
             productImage.setImage(image);
         }
     }
 
     private String setAutoMaSP(){
-        String getMaLoai = "";
-        for(String key : loaisps.keySet()){
-            if(loaisps.get(key) == productLoaiSPCBB.getSelectionModel().getSelectedItem()){
-                getMaLoai = key;
-                break;
-            }
-        }
+        String getMaLoai = getMaLoai();
         conn = DBUtils.openConnection("banhang", "root", "");
         String sqlSelect = "SELECT maSP FROM sanpham WHERE loaiSP = ? ORDER BY maSP DESC LIMIT 1";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelect)) {
@@ -336,5 +386,24 @@ public class AdminController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Optional<ButtonType> setAlert(Alert.AlertType alertType, String title, String message){
+        alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText("");
+        alert.setContentText(message);
+        return alert.showAndWait();
+    }
+
+    private String getMaLoai(){
+        String maLoai = "";
+        for(String key : loaisps.keySet()){
+            if(loaisps.get(key) == productLoaiSPCBB.getSelectionModel().getSelectedItem()){
+                maLoai = key;
+                return maLoai;
+            }
+        }
+        return maLoai;
     }
 }

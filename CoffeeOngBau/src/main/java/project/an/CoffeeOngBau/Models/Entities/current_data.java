@@ -1,7 +1,8 @@
 package project.an.CoffeeOngBau.Models.Entities;
 
-public class currentAccount {
+public class current_data {
     public static String username;
     public static String path;
     public static String chucVu;
+    public static String id;
 }
