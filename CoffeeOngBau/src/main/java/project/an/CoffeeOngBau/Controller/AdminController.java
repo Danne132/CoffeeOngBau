@@ -115,6 +115,9 @@ public class AdminController implements Initializable {
     private HashMap<String, String> loaisps = new HashMap<>();
     private String[] trangthaisps = new String[]{"Đang bán", "Ngưng bán"};
     private Connection conn;
+    private PreparedStatement prepare;
+    private Statement statement;
+    private ResultSet result;
     private ObservableList<SanPham> sanPhams;
     private Image image;
 
@@ -140,21 +143,20 @@ public class AdminController implements Initializable {
         ObservableList<SanPham> spList = FXCollections.observableArrayList();
         conn = DBUtils.openConnection("banhang", "root", "");
         String sqlSelect = "SELECT * FROM sanpham";
-        Statement lenh = null;
         try {
-            lenh = conn.createStatement();
-            ResultSet ketQua = lenh.executeQuery(sqlSelect);
+            prepare = conn.prepareStatement(sqlSelect);
+            result = prepare.executeQuery(sqlSelect);
             SanPham sp;
-            while(ketQua.next()){
+            while(result.next()){
                 sp = new SanPham(
-                        ketQua.getString("maSP"),
-                        ketQua.getString("tenSP"),
-                        ketQua.getString("loaiSP"),
-                        ketQua.getString("moTa"),
-                        ketQua.getString("ghiChu"),
-                        ketQua.getString("trangThai"),
-                        ketQua.getString("anhSP"),
-                        ketQua.getDouble("donGia")
+                        result.getString("maSP"),
+                        result.getString("tenSP"),
+                        result.getString("loaiSP"),
+                        result.getString("moTa"),
+                        result.getString("ghiChu"),
+                        result.getBoolean("trangThai")?"Đang bán":"Ngừng bán",
+                        result.getString("anhSP"),
+                        result.getDouble("donGia")
                 );
                 spList.add(sp);
             }
@@ -252,9 +254,7 @@ public class AdminController implements Initializable {
             String maSP = setAutoMaSP();
             System.out.println(maSP);
             conn = DBUtils.openConnection("banhang", "root", "");
-            String sqlInsert = "INSERT INTO sanpham "
-                    + "(maSP, tenSP, loaiSP, donGia, anhSP, moTa, ghiChu, trangThai) "
-                    + "VALUES(?,?,?,?,?,?,?,?)";
+            String sqlInsert = "INSERT INTO `sanpham` (`maSP`, `tenSP`, `loaiSP`, `donGia`, `anhSP`, `moTa`, `ghiChu`, `trangThai`) VALUES(?,?,?,?,?,?,?,?)";
             try {
                 PreparedStatement lenh = conn.prepareStatement(sqlInsert);
                 lenh.setString(1, maSP);
@@ -270,24 +270,32 @@ public class AdminController implements Initializable {
                 lenh.setDouble(4, Double.parseDouble(productDonGiaText.getText()));
                 String path = currentAccount.path;
                 path = path.replace("\\", "\\\\");
+                System.out.println(path);
                 lenh.setString(5, path);
                 lenh.setString(6, productMoTaText.getText());
+                lenh.setString(7, productGhiChuText.getText());
                 String tt = productTrangThaiCBB.getSelectionModel().getSelectedItem();
                 if(tt == "Đang bán")
-                    lenh.setBoolean(7, true);
+                    lenh.setBoolean(8, true);
                 else
-                    lenh.setBoolean(7, false);
+                    lenh.setBoolean(8, false);
 
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Thêm sản phẩm");
                 alert.setHeaderText(null);
                 alert.setContentText("Thêm sản phẩm thành công");
                 alert.showAndWait();
-                DBUtils.closeConnection(conn);
                 showSPList();
+                int rowsInserted = lenh.executeUpdate();
+                if (rowsInserted > 0) {
+                    System.out.println("Thêm sản phẩm thành công");
+                } else {
+                    System.out.println("Không thể thêm sản phẩm.");
+                }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+            DBUtils.closeConnection(conn);
         }
     }
 

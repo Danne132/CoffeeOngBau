@@ -48,15 +48,16 @@ public class LoginController {
             {
                 currentAccount.username = ketQua.getString("tenNV");
                 currentAccount.chucVu = ketQua.getString("chucVu");
+                DBUtils.closeConnection(conn);
                 showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đăng nhập thành công!");
                 switchToHomeScreen();
                 break;
-            } else
+            } else{
+                DBUtils.closeConnection(conn);
                 showAlert(Alert.AlertType.ERROR, "Lỗi đăng nhập", "Tên đăng nhập hoặc mật khẩu không đúng!");
                 System.out.println("Đăng nhập không thành công");
+            }
         }
-
-        DBUtils.closeConnection(conn);
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message){

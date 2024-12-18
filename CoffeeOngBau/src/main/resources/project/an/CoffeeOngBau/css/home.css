@@ -63,19 +63,7 @@
     -fx-background-color: white;
 }
 
-.table-view{
-    -fx-background-color: white;
-    -fx-border-radius: 5px;
-    -fx-border-color: #FCD8BB;
-    -fx-border-width: 1px;
-    -fx-padding: 0px;
-}
 
-.table-view .column-header-background{
-    -fx-background-color: #FFCC07;
-    -fx-background-radius: 5px 5px 0 0;
-    -fx-background-insets: 0 0 0 0;
-}
 
 .btn{
     -fx-background-color: #FFCC07;
