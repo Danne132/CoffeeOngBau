@@ -270,7 +270,6 @@ public class AdminController implements Initializable {
                 lenh.setDouble(4, Double.parseDouble(productDonGiaText.getText()));
                 String path = current_data.path;
                 path = path.replace("\\", "\\\\");
-                System.out.println(path);
                 lenh.setString(5, path);
                 lenh.setString(6, productMoTaText.getText());
                 lenh.setString(7, productGhiChuText.getText());
@@ -323,18 +322,17 @@ public class AdminController implements Initializable {
                 current_data.path == null||current_data.id == null){
             setAlert(Alert.AlertType.ERROR, "Lỗi thêm sản phẩm", "Hãy điền đủ thông tin sản phẩm!");
         } else {
-            String path = current_data.path;
             String maLoai = getMaLoai();
+
             int isSell;
             if(productTrangThaiCBB.getSelectionModel().getSelectedItem().equals("Đang bán")) isSell = 1;
             else isSell = 0;
-            path.replace("\\", "\\\\");
             String sqlUpdate = "UPDATE `sanpham` SET" +
                     "`maSP`='"+productMaSPText.getText()+"',`tenSP`='"
                     +productTenSPText.getText()+"',`loaiSP`='"
                     +maLoai+
                     "',`donGia`='"+productDonGiaText.getText()+"',`anhSP`='"
-                    +path+"',`moTa`='"+productMoTaText.getText()+"',`ghiChu`='"
+                    +current_data.path+"',`moTa`='"+productMoTaText.getText()+"',`ghiChu`='"
                     +productGhiChuText.getText()+"',`trangThai`='"
                     +isSell+"' WHERE `maSP`='"+current_data.id+"'";
             conn = DBUtils.openConnection("banhang", "root", "");
@@ -369,9 +367,8 @@ public class AdminController implements Initializable {
     private String setAutoMaSP(){
         String getMaLoai = getMaLoai();
         conn = DBUtils.openConnection("banhang", "root", "");
-        String sqlSelect = "SELECT maSP FROM sanpham WHERE loaiSP = ? ORDER BY maSP DESC LIMIT 1";
+        String sqlSelect = "SELECT `maSP` FROM `sanpham` WHERE `loaiSP` = '"+getMaLoai+"'";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelect)) {
-            preparedStatement.setString(1, getMaLoai);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     String lastMaSP = resultSet.getString("maSP");
