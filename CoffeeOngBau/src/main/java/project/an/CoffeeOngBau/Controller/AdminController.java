@@ -367,7 +367,7 @@ public class AdminController implements Initializable {
     private String setAutoMaSP(){
         String getMaLoai = getMaLoai();
         conn = DBUtils.openConnection("banhang", "root", "");
-        String sqlSelect = "SELECT `maSP` FROM `sanpham` WHERE `loaiSP` = '"+getMaLoai+"'";
+        String sqlSelect = "SELECT * FROM `sanpham` WHERE `maSP` LIKE '"+getMaLoai+"%'";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelect)) {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
