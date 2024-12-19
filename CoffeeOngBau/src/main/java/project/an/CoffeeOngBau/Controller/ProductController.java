@@ -266,16 +266,12 @@ public class ProductController implements Initializable {
         productGhiChuText.setText(sanPham.getGhiChu());
         current_data.path = sanPham.getAnhSP();
         current_data.id = sanPham.getMaSP();
+        System.out.println(current_data.path);
         String path = "File:"+ current_data.path;
         Image image = new Image(path, 113, 125, false, true);
         productImage.setImage(image);
-        String loaiSP = null;
-        for(String key : loaisps.keySet()){
-            if(loaisps.get(key) == sanPham.getLoaiSP()){
-                loaiSP = key;
-                break;
-            }
-        }
+        String loaiSP = sanPham.getLoaiSP();
+        System.out.println(loaiSP);
         productLoaiSPCBB.getSelectionModel().select(loaiSP);
         productTrangThaiCBB.getSelectionModel().select(sanPham.getTrangThai()=="Đang bán"?0:1);
     }
@@ -287,16 +283,18 @@ public class ProductController implements Initializable {
             setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin sản phẩm!");
         } else {
             String maLoai = getMaLoai(productLoaiSPCBB);
-
+            System.out.println(maLoai);
             int isSell;
             if(productTrangThaiCBB.getSelectionModel().getSelectedItem().equals("Đang bán")) isSell = 1;
             else isSell = 0;
+            String path = current_data.path;
+            path = path.replace("\\", "\\\\");
             String sqlUpdate = "UPDATE `sanpham` SET" +
-                    "`maSP`='"+productMaSPText.getText()+"',`tenSP`='"
+                    "`tenSP`='"
                     +productTenSPText.getText()+"',`loaiSP`='"
                     +maLoai+
                     "',`donGia`='"+productDonGiaText.getText()+"',`anhSP`='"
-                    +current_data.path+"',`moTa`='"+productMoTaText.getText()+"',`ghiChu`='"
+                    +path+"',`moTa`='"+productMoTaText.getText()+"',`ghiChu`='"
                     +productGhiChuText.getText()+"',`trangThai`='"
                     +isSell+"' WHERE `maSP`='"+current_data.id+"'";
             conn = DBUtils.openConnection("banhang", "root", "");

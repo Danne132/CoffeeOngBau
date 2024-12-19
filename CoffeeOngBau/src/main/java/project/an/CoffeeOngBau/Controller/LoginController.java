@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import project.an.CoffeeOngBau.Models.Entities.current_data;
 import project.an.CoffeeOngBau.Utils.ComonUtils;
@@ -70,7 +71,9 @@ public class LoginController {
 
     private void switchToHomeScreen() {
         try {
+            StackPane stackPane = new StackPane();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/admin.fxml"));
+            fxmlLoader.setRoot(stackPane);
             Scene scene = new Scene(fxmlLoader.load());
 
             // Lấy Stage hiện tại

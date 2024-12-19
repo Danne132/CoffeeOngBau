@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -58,7 +59,6 @@ public class AdminController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         displayName();
-        loadProductView();
     }
 
     @FXML
@@ -94,15 +94,37 @@ public class AdminController implements Initializable {
         userNameText.setText(user);
     }
 
-    private void loadProductView(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/product.fxml"));
-        try {
-            Node productView = loader.load();
-            productController = loader.getController();
-            productForm.getChildren().setAll(productView);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//    private void loadProductView(){
+//        productForm.setVisible(true);
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/product.fxml"));
+//        try {
+//            Node productView = loader.load();
+//            productController = loader.getController();
+//            if (productController != null) {
+//                System.out.println("ProductController được khởi tạo thành công!");
+//            } else {
+//                System.out.println("ProductController chưa được khởi tạo!");
+//            }
+//            productForm.getChildren().setAll(productView);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//    }
 
+    public void addChildScene(Parent childRoot) {
+        productForm.getChildren().clear(); // xóa tất cả các con hiện tại
+        productForm.getChildren().add(childRoot);
+    }
+
+    @FXML
+    private void handleLoadProduct() {
+        try {
+            FXMLLoader productLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/product.fxml"));
+            Parent productRoot = productLoader.load();
+            addChildScene(productRoot);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
