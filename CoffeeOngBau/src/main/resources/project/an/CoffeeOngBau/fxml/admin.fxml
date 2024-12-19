@@ -317,7 +317,7 @@
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font></Button>
-                                    <Button fx:id="productDeleteBtn" layoutX="264.0" layoutY="493.0" mnemonicParsing="false" prefWidth="75.0" text="Xóa">
+                                    <Button fx:id="productDeleteBtn" layoutX="264.0" layoutY="493.0" mnemonicParsing="false" onAction="#deleteSP" prefWidth="75.0" text="Xóa">
                                        <styleClass>
                                           <String fx:value="btn" />
                                           <String fx:value="shadow" />
@@ -325,7 +325,7 @@
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font></Button>
-                                    <Button fx:id="productCancelBtn" layoutX="360.0" layoutY="493.0" mnemonicParsing="false" onAction="#cleanSP" prefWidth="75.0" text="Hủy">
+                                    <Button fx:id="productCancelBtn" layoutX="360.0" layoutY="493.0" mnemonicParsing="false" onAction="#reloadSP" prefWidth="75.0" text="Hủy">
                                        <styleClass>
                                           <String fx:value="btn" />
                                           <String fx:value="shadow" />
@@ -375,11 +375,11 @@
                                     </TableView>
                                     <Label layoutX="14.0" layoutY="24.0" text="Tên sản phẩm" AnchorPane.leftAnchor="14.0" />
                                     <Label layoutX="16.0" layoutY="75.0" text="Loại sản phẩm" AnchorPane.leftAnchor="14.0" />
-                                    <TextField layoutX="16.0" layoutY="42.0" prefHeight="26.0" prefWidth="306.0" AnchorPane.leftAnchor="16.0" />
-                                    <ComboBox layoutX="17.0" layoutY="93.0" prefWidth="150.0" AnchorPane.leftAnchor="14.0" />
+                                    <TextField fx:id="tenSPFindText" layoutX="16.0" layoutY="42.0" prefHeight="26.0" prefWidth="306.0" AnchorPane.leftAnchor="16.0" />
+                                    <ComboBox fx:id="loaiSPFindCBB" layoutX="17.0" layoutY="93.0" prefWidth="150.0" AnchorPane.leftAnchor="14.0" />
                                     <Label layoutX="219.0" layoutY="75.0" text="Trạng thái" />
-                                    <ComboBox layoutX="220.0" layoutY="93.0" prefWidth="150.0" />
-                                    <Button layoutX="334.0" layoutY="42.0" mnemonicParsing="false" text="Tìm" />
+                                    <ComboBox fx:id="trangThaiSPFindCBB" layoutX="220.0" layoutY="93.0" prefWidth="150.0" />
+                                    <Button fx:id="spFindBTN" layoutX="334.0" layoutY="42.0" mnemonicParsing="false" onAction="#findSP" text="Tìm" />
                                  </children>
                               </AnchorPane>
                            </children>

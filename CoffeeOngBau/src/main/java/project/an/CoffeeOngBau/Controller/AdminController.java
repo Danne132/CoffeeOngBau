@@ -108,6 +108,18 @@ public class AdminController implements Initializable {
     @FXML
     private Label userNameText;
 
+    @FXML
+    private TextField tenSPFindText;
+
+    @FXML
+    private ComboBox<String> trangThaiSPFindCBB;
+
+    @FXML
+    private ComboBox<String> loaiSPFindCBB;
+
+    @FXML
+    private Button spFindBTN;
+
     private Alert alert;
 
     private String username, chucVu;
@@ -125,11 +137,11 @@ public class AdminController implements Initializable {
         displayName();
         getCategoryFromDB();
         getProductStatus();
-        showSPList();
+        showSPList("SELECT * FROM sanpham");
     }
 
-    public void showSPList(){
-        sanPhams = getSPList();
+    public void showSPList(String sql){
+        sanPhams = getSPList(sql);
         productColMaSP.setCellValueFactory(new PropertyValueFactory<>("maSP"));
         productColTenSP.setCellValueFactory(new PropertyValueFactory<>("tenSP"));
         productColLoaiSP.setCellValueFactory(new PropertyValueFactory<>("loaiSP"));
@@ -138,10 +150,10 @@ public class AdminController implements Initializable {
         productTable.setItems(sanPhams);
     }
 
-    public ObservableList<SanPham> getSPList(){
+    public ObservableList<SanPham> getSPList(String sql){
         ObservableList<SanPham> spList = FXCollections.observableArrayList();
         conn = DBUtils.openConnection("banhang", "root", "");
-        String sqlSelect = "SELECT * FROM sanpham";
+        String sqlSelect = sql;
         try {
             prepare = conn.prepareStatement(sqlSelect);
             result = prepare.executeQuery(sqlSelect);
@@ -150,7 +162,7 @@ public class AdminController implements Initializable {
                 sp = new SanPham(
                         result.getString("maSP"),
                         result.getNString("tenSP"),
-                        result.getString("loaiSP"),
+                        loaisps.get(result.getString("loaiSP")),
                         result.getNString("moTa"),
                         result.getNString("ghiChu"),
                         result.getBoolean("trangThai")?"Đang bán":"Ngừng bán",
@@ -215,6 +227,7 @@ public class AdminController implements Initializable {
             ObservableList list = FXCollections.observableArrayList(loaisps.values());
             productLoaiSPCBB.setItems(list);
             productLoaiSPCBB.getSelectionModel().select(0);
+            loaiSPFindCBB.setItems(list);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -229,27 +242,28 @@ public class AdminController implements Initializable {
         ObservableList list = FXCollections.observableArrayList(listTT);
         productTrangThaiCBB.setItems(list);
         productTrangThaiCBB.getSelectionModel().select(0);
+        trangThaiSPFindCBB.setItems(list);
     }
 
-    public void cleanSP(){
+    public void reloadSP(){
         productMaSPText.setText("");
         productTenSPText.setText("");
         productDonGiaText.setText("");
         productMoTaText.setText("");
         productGhiChuText.setText("");
         productImage.setImage(null);
+        tenSPFindText.setText(null);
+        loaiSPFindCBB.setValue(null);
+        trangThaiSPFindCBB.setValue(null);
         current_data.id = "";
+        showSPList("SELECT * FROM sanpham");
     }
 
     public void addSP(){
         if(productTenSPText.getText().isEmpty() ||
                 productDonGiaText.getText().isEmpty()||
                 current_data.path == null){
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi thêm sản phẩm");
-            alert.setHeaderText(null);
-            alert.setContentText("Hãy điền đủ thông tin sản phẩm");
-            alert.showAndWait();
+            setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin sản phẩm!");
         } else {
             String maSP = setAutoMaSP();
             System.out.println(maSP);
@@ -294,8 +308,8 @@ public class AdminController implements Initializable {
                 throw new RuntimeException(e);
             }
             DBUtils.closeConnection(conn);
-            cleanSP();
-            showSPList();
+            reloadSP();
+            showSPList("SELECT * FROM sanpham");
         }
     }
 
@@ -313,16 +327,24 @@ public class AdminController implements Initializable {
         String path = "File:"+ current_data.path;
         Image image = new Image(path, 113, 125, false, true);
         productImage.setImage(image);
-
+        String loaiSP = null;
+        for(String key : loaisps.keySet()){
+            if(loaisps.get(key) == sanPham.getLoaiSP()){
+                loaiSP = key;
+                break;
+            }
+        }
+        productLoaiSPCBB.getSelectionModel().select(loaiSP);
+        productTrangThaiCBB.getSelectionModel().select(sanPham.getTrangThai()=="Đang bán"?0:1);
     }
 
     public void updateSP(){
         if(productTenSPText.getText().isEmpty() ||
                 productDonGiaText.getText().isEmpty()||
                 current_data.path == null||current_data.id == null){
-            setAlert(Alert.AlertType.ERROR, "Lỗi thêm sản phẩm", "Hãy điền đủ thông tin sản phẩm!");
+            setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin sản phẩm!");
         } else {
-            String maLoai = getMaLoai();
+            String maLoai = getMaLoai(productLoaiSPCBB);
 
             int isSell;
             if(productTrangThaiCBB.getSelectionModel().getSelectedItem().equals("Đang bán")) isSell = 1;
@@ -342,14 +364,36 @@ public class AdminController implements Initializable {
                     prepare = conn.prepareStatement(sqlUpdate);
                     prepare.executeUpdate();
                     setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Cập nhật thông tin thành công!");
-                    showSPList();
-                    cleanSP();
+                    showSPList("SELECT * FROM sanpham");
+                    reloadSP();
                 } else {
                     setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Đã hủy cập nhật!");
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    public void deleteSP(){
+        if(current_data.id == null){
+            setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin sản phẩm!");
+        } else {
+            Optional<ButtonType> optional = setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn muốn xóa sản phẩm này?");
+            if(optional.get().equals(ButtonType.OK)){
+                try {
+                    String sqlDelete = "DELETE FROM `sanpham` WHERE `maSP`='"+current_data.id+"'";
+                    conn = DBUtils.openConnection("banhang", "root", "");
+                    prepare = conn.prepareStatement(sqlDelete);
+                    prepare.executeUpdate();
+                    setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Đã xóa sản phẩm này!");
+                    DBUtils.closeConnection(conn);
+                    showSPList("SELECT * FROM sanpham");
+                    reloadSP();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else setAlert(Alert.AlertType.CONFIRMATION, "Thông tin", "Hủy xóa sản phẩm");
         }
     }
 
@@ -364,8 +408,25 @@ public class AdminController implements Initializable {
         }
     }
 
+    public void findSP(){
+        String sqlFind;
+        String maLoai = getMaLoai(loaiSPFindCBB);
+        String trangThai = trangThaiSPFindCBB.getValue()==null?"NULL":trangThaiSPFindCBB.getValue()=="Đang bán"?"1":"0";
+        String tenSP = tenSPFindText.getText();
+        maLoai = maLoai==null?"NULL":"'"+maLoai+"'";
+        System.out.println("mã loại"+maLoai);
+        System.out.println("trạng thái"+trangThai);
+        sqlFind = "SELECT * " +
+                "FROM sanpham " +
+                "WHERE " +
+                "    (`tenSP` LIKE '%"+tenSP+"%'OR'"+tenSP+"' IS NULL OR '"+tenSP+"' = '') AND " +
+                "    (`loaiSP` = "+maLoai+" OR "+maLoai+" IS NULL) AND" +
+                "    (`trangThai` = "+trangThai+" OR "+trangThai+" IS NULL);";
+        showSPList(sqlFind);
+    }
+
     private String setAutoMaSP(){
-        String getMaLoai = getMaLoai();
+        String getMaLoai = getMaLoai(productLoaiSPCBB);
         conn = DBUtils.openConnection("banhang", "root", "");
         String sqlSelect = "SELECT * FROM `sanpham` WHERE `maSP` LIKE '"+getMaLoai+"%'";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelect)) {
@@ -393,14 +454,16 @@ public class AdminController implements Initializable {
         return alert.showAndWait();
     }
 
-    private String getMaLoai(){
-        String maLoai = "";
+    private String getMaLoai(ComboBox<String> cbb){
+        String maLoai = null;
         for(String key : loaisps.keySet()){
-            if(loaisps.get(key) == productLoaiSPCBB.getSelectionModel().getSelectedItem()){
+            if(loaisps.get(key) == cbb.getSelectionModel().getSelectedItem()){
                 maLoai = key;
                 return maLoai;
             }
         }
+        System.out.println(maLoai);
         return maLoai;
     }
+
 }
