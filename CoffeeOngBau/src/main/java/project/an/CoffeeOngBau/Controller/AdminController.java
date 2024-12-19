@@ -120,6 +120,7 @@ public class AdminController implements Initializable {
     @FXML
     private void handleLoadProduct() {
         try {
+            productForm.setVisible(true);
             FXMLLoader productLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/product.fxml"));
             Parent productRoot = productLoader.load();
             addChildScene(productRoot);

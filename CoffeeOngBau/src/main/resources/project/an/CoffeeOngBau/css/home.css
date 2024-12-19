@@ -57,6 +57,7 @@
 
 .board-radius{
     -fx-background-radius: 8px;
+    -fx-border-radius:8px;
 }
 
 .white-background{
