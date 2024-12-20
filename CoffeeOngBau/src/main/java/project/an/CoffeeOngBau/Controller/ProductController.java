@@ -317,7 +317,7 @@ public class ProductController implements Initializable {
 
     public void deleteSP(){
         if(current_data.id == null){
-            setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin sản phẩm!");
+            setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy chọn sản phẩm cần xóa!");
         } else {
             Optional<ButtonType> optional = setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn muốn xóa sản phẩm này?");
             if(optional.get().equals(ButtonType.OK)){
@@ -368,21 +368,22 @@ public class ProductController implements Initializable {
     private String setAutoMaSP(){
         String getMaLoai = getMaLoai(productLoaiSPCBB);
         conn = DBUtils.openConnection("banhang", "root", "");
-        String sqlSelect = "SELECT * FROM `sanpham` WHERE `maSP` LIKE '"+getMaLoai+"%'";
+        String sqlSelect = "SELECT maSP FROM sanpham WHERE loaiSP LIKE ? ORDER BY maSP DESC LIMIT 1";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelect)) {
+            preparedStatement.setString(1, getMaLoai + "%");
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    String lastMaSP = resultSet.getString("maSP");
-                    int number = Integer.parseInt(lastMaSP.substring(getMaLoai.length()));
-                    DBUtils.closeConnection(conn);
-                    return getMaLoai + String.format("%03d", number + 1);
-                } else {
-                    DBUtils.closeConnection(conn);
+                if (!resultSet.next()) {
                     return getMaLoai + "001";
                 }
+                String lastMaNV = resultSet.getString("maSP");
+                System.out.println("Mã lớn nhất: " + lastMaNV);
+                int number = Integer.parseInt(lastMaNV.substring(getMaLoai.length()));
+                return getMaLoai + String.format("%03d", number + 1);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            DBUtils.closeConnection(conn);
         }
     }
 

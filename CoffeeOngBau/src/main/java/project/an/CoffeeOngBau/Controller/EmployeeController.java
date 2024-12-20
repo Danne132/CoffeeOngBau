@@ -144,6 +144,7 @@ public class EmployeeController implements Initializable {
                     break;
                 }
             }
+            String tt = employeeTrangThaiCBB.getSelectionModel().getSelectedItem();
             String path = current_data.path;
             path = path.replace("\\", "\\\\");
             conn = DBUtils.openConnection("banhang", "root", "");
@@ -158,7 +159,6 @@ public class EmployeeController implements Initializable {
                 lenh.setString(6, employeeSDTText.getText());
                 lenh.setString(7, employeeEmailText.getText());
                 lenh.setString(8, path);
-                String tt = employeeTrangThaiCBB.getSelectionModel().getSelectedItem();
                 if(tt == "Đang làm")
                     lenh.setBoolean(9, true);
                 else
@@ -182,9 +182,66 @@ public class EmployeeController implements Initializable {
     }
 
     public void updateNV() {
+        if(employeeTenNVText.getText().isEmpty() ||
+                (!employeeNamRd.isSelected() && !employeeNuRd.isSelected())||
+                employeeNgaySinhDP.getValue()==null|| employeeEmailText.getText().isEmpty()||
+                employeeSDTText.getText().isEmpty()||
+                current_data.path == null||current_data.id == null){
+            setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin!");
+        } else {
+            String cv = getMaCV(employeeChucVuCBB);
+            System.out.println(cv);
+            int isWork;
+            if(employeeTrangThaiCBB.getSelectionModel().getSelectedItem().equals("Đang làm")) isWork = 1;
+            else isWork = 0;
+            int gender = setGender()?1:0;
+            String path = current_data.path;
+            path = path.replace("\\", "\\\\");
+            String sqlUpdate = "UPDATE `nhanvien` SET" +
+                    "`tenNV`='"
+                    +employeeTenNVText.getText()+"',`gioiTinh`='"
+                    +gender+
+                    "',`ngaySinh`='"+Date.valueOf(employeeNgaySinhDP.getValue())+"',`chucVu`='"
+                    +cv+"',`SDT`='"+employeeSDTText.getText()+"',`email`='"
+                    +employeeEmailText.getText()+"',`anhNV`='"
+                    +path+"',`isWorking`='"+isWork+"' WHERE `maNV`='"+current_data.id+"'";
+            conn = DBUtils.openConnection("banhang", "root", "");
+            try {
+                Optional<ButtonType> optional = setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn có chắc muốn cập nhật thông tin của nhân viên " + employeeTenNVText.getText() + "?");
+                if(optional.get().equals(ButtonType.OK)){
+                    prepare = conn.prepareStatement(sqlUpdate);
+                    prepare.executeUpdate();
+                    setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Cập nhật thông tin thành công!");
+                    showSPList("SELECT * FROM nhanvien");
+                    reloadNV();
+                } else {
+                    setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Đã hủy cập nhật!");
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
     
     public void deleteNV() {
+        if(current_data.id == null){
+            setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy chọn nhân viên cần xóa!");
+        } else {
+            Optional<ButtonType> optional = setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn muốn xóa thông tin nhân viên này?");
+            if(optional.get().equals(ButtonType.OK)){
+                try {
+                    String sqlDelete = "DELETE FROM `nhanvien` WHERE `maNV`='"+current_data.id+"'";
+                    conn = DBUtils.openConnection("banhang", "root", "");
+                    prepare = conn.prepareStatement(sqlDelete);
+                    prepare.executeUpdate();
+                    setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Đã xóa thông tin nhân viên này!");
+                    DBUtils.closeConnection(conn);
+                    reloadNV();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else setAlert(Alert.AlertType.CONFIRMATION, "Thông tin", "Hủy xóa");
+        }
     }
 
     public void reloadNV() {
@@ -197,6 +254,7 @@ public class EmployeeController implements Initializable {
         employeeSDTText.setText("");
         employeeChucVuCBB.setValue(null);
         employeeTrangThaiCBB.setValue(null);
+        employeeImage.setImage(null);
         current_data.id = "";
         showSPList("SELECT * FROM nhanvien");
     }
@@ -349,21 +407,22 @@ public class EmployeeController implements Initializable {
     private String setAutoMaNV(){
         String getChucVu = getMaCV(employeeChucVuCBB);
         conn = DBUtils.openConnection("banhang", "root", "");
-        String sqlSelect = "SELECT * FROM `nhanvien` WHERE `chucVu` LIKE '"+getChucVu+"%'";
+        String sqlSelect = "SELECT maNV FROM nhanvien WHERE chucVu LIKE ? ORDER BY maNV DESC LIMIT 1";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelect)) {
+            preparedStatement.setString(1, getChucVu + "%");
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    String lastMaSP = resultSet.getString("maNV");
-                    int number = Integer.parseInt(lastMaSP.substring(getChucVu.length()));
-                    DBUtils.closeConnection(conn);
-                    return getChucVu + String.format("%03d", number + 1);
-                } else {
-                    DBUtils.closeConnection(conn);
-                        return getChucVu + "001";
+                if (!resultSet.next()) {
+                    return getChucVu + "001";
                 }
+                String lastMaNV = resultSet.getString("maNV");
+                System.out.println("Mã lớn nhất: " + lastMaNV);
+                int number = Integer.parseInt(lastMaNV.substring(getChucVu.length()));
+                return getChucVu + String.format("%03d", number + 1);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            DBUtils.closeConnection(conn);
         }
     }
 
