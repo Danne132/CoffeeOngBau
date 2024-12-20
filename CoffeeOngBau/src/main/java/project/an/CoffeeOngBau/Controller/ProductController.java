@@ -142,7 +142,7 @@ public class ProductController implements Initializable {
                         result.getNString("ghiChu"),
                         result.getBoolean("trangThai")?"Đang bán":"Ngừng bán",
                         result.getString("anhSP"),
-                        result.getDouble("donGia")
+                        result.getInt("donGia")
                 );
                 spList.add(sp);
             }

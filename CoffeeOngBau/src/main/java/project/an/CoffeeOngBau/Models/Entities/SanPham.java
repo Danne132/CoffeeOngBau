@@ -2,9 +2,9 @@ package project.an.CoffeeOngBau.Models.Entities;
 
 public class SanPham {
     private String maSP, tenSP, loaiSP, moTa, ghiChu, anhSP, trangThai;
-    private double donGia;
+    private int donGia;
 
-    public SanPham(String maSP, String tenSP, String loaiSP, String moTa, String ghiChu, String trangThai, String anhSP, double donGia) {
+    public SanPham(String maSP, String tenSP, String loaiSP, String moTa, String ghiChu, String trangThai, String anhSP, int donGia) {
         this.maSP = maSP;
         this.tenSP = tenSP;
         this.loaiSP = loaiSP;
@@ -15,7 +15,7 @@ public class SanPham {
         this.donGia = donGia;
     }
 
-    public SanPham(String maSP, String tenSP, String anhSP, double donGia){
+    public SanPham(String maSP, String tenSP, String anhSP, int donGia){
         this.maSP = maSP;
         this.tenSP = tenSP;
         this.anhSP = anhSP;
@@ -78,11 +78,11 @@ public class SanPham {
         this.anhSP = anhSP;
     }
 
-    public double getDonGia() {
+    public int getDonGia() {
         return donGia;
     }
 
-    public void setDonGia(double donGia) {
+    public void setDonGia(int donGia) {
         this.donGia = donGia;
     }
 }

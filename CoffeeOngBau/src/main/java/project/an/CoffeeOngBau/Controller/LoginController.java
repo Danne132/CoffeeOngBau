@@ -48,6 +48,7 @@ public class LoginController {
             {
                 current_data.username = ketQua.getString("tenNV");
                 current_data.chucVu = ketQua.getString("chucVu");
+                current_data.userid = ketQua.getString("maNV");
 
                 showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đăng nhập thành công!");
                 switchToHomeScreen();

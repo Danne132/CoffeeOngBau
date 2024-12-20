@@ -21,6 +21,10 @@
     -fx-background-color: #FFE890;
 }
 
+.nav-button-choose{
+    -fx-background-color: #FFE890;
+}
+
 .head{
     -fx-background-color: #EFEEEC;
     -fx-border-color: #FFE890;
@@ -63,8 +67,6 @@
 .white-background{
     -fx-background-color: white;
 }
-
-
 
 .btn{
     -fx-background-color: #FFCC07;

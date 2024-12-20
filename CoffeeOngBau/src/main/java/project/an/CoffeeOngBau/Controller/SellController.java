@@ -93,7 +93,7 @@ public class SellController implements Initializable {
                         result.getString("maSP"),
                         result.getNString("tenSP"),
                         result.getString("anhSP"),
-                        result.getDouble("donGia")
+                        result.getInt("donGia")
                 );
                 listData.add(sp);
             }
@@ -119,7 +119,7 @@ public class SellController implements Initializable {
                 AnchorPane pane = loader.load();
                 CardProductController cardP = loader.getController();
                 cardP.setData(cardList.get(i));
-                if(column == 3){
+                if(column == 5){
                     column = 0;
                     row++;
                 }

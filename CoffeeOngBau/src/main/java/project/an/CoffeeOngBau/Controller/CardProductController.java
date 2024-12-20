@@ -36,7 +36,7 @@ public class CardProductController implements Initializable {
     public void setData(SanPham sanPham){
         this.sanPham = sanPham;
         cardProductName.setText(sanPham.getTenSP());
-        cardProductPrice.setText(String.valueOf(sanPham.getDonGia()));
+        cardProductPrice.setText(String.valueOf(sanPham.getDonGia())+" đ");
         String path = "File:"+ sanPham.getAnhSP();
         image = new Image(path, 124, 124, false, true);
         cardProductImage.setImage(image);

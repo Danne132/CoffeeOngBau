@@ -34,6 +34,9 @@ public class AdminController implements Initializable {
     private Button sellNavBtn;
 
     @FXML
+    private Button reportNavBtn;
+
+    @FXML
     private Label userNameText;
 
     @FXML
@@ -54,10 +57,12 @@ public class AdminController implements Initializable {
     private String username, chucVu;
 
     ProductController productController;
+    List<Button> btns;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         displayName();
+        btns = new ArrayList<>(Arrays.asList(employNavBtn, orderNavBtn, productNavBtn, reportNavBtn, sellNavBtn));
     }
 
     @FXML
@@ -106,6 +111,8 @@ public class AdminController implements Initializable {
     @FXML
     private void handleLoadProduct() {
         try {
+            resetColorButton();
+            productNavBtn.getStyleClass().add("nav-button-choose");
             setViewInvisible();
             productForm.setVisible(true);
             FXMLLoader productLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/product.fxml"));
@@ -119,6 +126,8 @@ public class AdminController implements Initializable {
     @FXML
     private void handleLoadEmployee() {
         try {
+            resetColorButton();
+            employNavBtn.getStyleClass().add("nav-button-choose");
             setViewInvisible();
             employeeForm.setVisible(true);
             FXMLLoader employeeLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/employee.fxml"));
@@ -132,6 +141,8 @@ public class AdminController implements Initializable {
     @FXML
     private void handleLoadSell() {
         try {
+            resetColorButton();
+            sellNavBtn.getStyleClass().add("nav-button-choose");
             setViewInvisible();
             sellForm.setVisible(true);
             FXMLLoader employeeLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/sell.fxml"));
@@ -142,10 +153,32 @@ public class AdminController implements Initializable {
         }
     }
 
+    @FXML
+    private void handleLoadReport() {
+        try {
+            resetColorButton();
+            reportNavBtn.getStyleClass().add("nav-button-choose");
+            setViewInvisible();
+            reportForm.setVisible(true);
+            FXMLLoader employeeLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/report.fxml"));
+            Parent employeeRoot = employeeLoader.load();
+            addChildScene(reportForm,employeeRoot);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setViewInvisible(){
         productForm.setVisible(false);
         reportForm.setVisible(false);
         employeeForm.setVisible(false);
         sellForm.setVisible(false);
+    }
+
+    private void resetColorButton(){
+        for(Button btn : btns){
+            boolean hasStyle = btn.getStyleClass().contains("nav-button-choose");
+            if(hasStyle) btn.getStyleClass().remove("nav-button-choose");
+        }
     }
 }

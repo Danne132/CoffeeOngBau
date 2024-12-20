@@ -5,4 +5,5 @@ public class current_data {
     public static String path;
     public static String chucVu;
     public static String id;
+    public static String userid;
 }

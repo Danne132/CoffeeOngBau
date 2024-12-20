@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import java.lang.String?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.control.Separator?>
+<AnchorPane fx:id="productForm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.an.CoffeeOngBau.Controller.ReportController">
+    <children>
+        <AnchorPane layoutX="11.0" layoutY="14.0" prefHeight="178.0" prefWidth="859.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+            <styleClass>
+                <String fx:value="board" />
+                <String fx:value="shadow" />
+            </styleClass>
+            <children>
+                <ScrollPane layoutX="135.0" layoutY="-11.0" prefHeight="189.6" prefWidth="859.2" styleClass="trasparent" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <content>
+                        <AnchorPane prefHeight="163.0" prefWidth="1006.0">
+                            <children>
+                                <AnchorPane layoutX="21.0" layoutY="9.0" prefHeight="142.0" prefWidth="263.0">
+                                    <styleClass>
+                                        <String fx:value="background-main" />
+                                        <String fx:value="board-radius" />
+                                        <String fx:value="shadow" />
+                                    </styleClass>
+                                    <children>
+                                        <ImageView fitHeight="61.0" fitWidth="66.0" layoutX="14.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../images/order_number.png" />
+                                            </image>
+                                        </ImageView>
+                                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="91.0" layoutY="18.0" prefHeight="22.0" prefWidth="140.0" text="Tổng đơn hôm nay" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="32.20000000000002">
+                                            <font>
+                                                <Font name="System Bold" size="15.0" />
+                                            </font>
+                                        </Label>
+                                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0">
+                                            <font>
+                                                <Font name="System Bold" size="25.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane layoutX="312.0" layoutY="9.0" prefHeight="142.0" prefWidth="263.0">
+                                    <styleClass>
+                                        <String fx:value="background-main" />
+                                        <String fx:value="board-radius" />
+                                        <String fx:value="shadow" />
+                                    </styleClass>
+                                    <children>
+                                        <ImageView fitHeight="61.0" fitWidth="66.0" layoutX="14.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../images/order_number.png" />
+                                            </image>
+                                        </ImageView>
+                                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="91.0" layoutY="18.0" prefHeight="22.0" prefWidth="140.0" text="Thu nhập hôm nay" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="32.20000000000002">
+                                            <font>
+                                                <Font name="System Bold" size="15.0" />
+                                            </font>
+                                        </Label>
+                                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0đ">
+                                            <font>
+                                                <Font name="System Bold" size="25.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane layoutX="600.0" layoutY="9.0" prefHeight="142.0" prefWidth="263.0">
+                                    <styleClass>
+                                        <String fx:value="background-main" />
+                                        <String fx:value="board-radius" />
+                                        <String fx:value="shadow" />
+                                    </styleClass>
+                                    <children>
+                                        <ImageView fitHeight="61.0" fitWidth="66.0" layoutX="14.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../images/order_number.png" />
+                                            </image>
+                                        </ImageView>
+                                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="91.0" layoutY="18.0" prefHeight="22.0" prefWidth="140.0" text="Tổng thu nhập" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="32.20000000000002">
+                                            <font>
+                                                <Font name="System Bold" size="15.0" />
+                                            </font>
+                                        </Label>
+                                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0đ">
+                                            <font>
+                                                <Font name="System Bold" size="25.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane layoutX="891.0" layoutY="9.0" prefHeight="142.0" prefWidth="263.0">
+                                    <styleClass>
+                                        <String fx:value="background-main" />
+                                        <String fx:value="board-radius" />
+                                        <String fx:value="shadow" />
+                                    </styleClass>
+                                    <children>
+                                        <ImageView fitHeight="61.0" fitWidth="66.0" layoutX="14.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../images/order_number.png" />
+                                            </image>
+                                        </ImageView>
+                                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="91.0" layoutY="18.0" prefHeight="22.0" prefWidth="140.0" text="Khách hàng" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="32.20000000000002">
+                                            <font>
+                                                <Font name="System Bold" size="15.0" />
+                                            </font>
+                                        </Label>
+                                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0">
+                                            <font>
+                                                <Font name="System Bold" size="25.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </ScrollPane>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="11.0" layoutY="206.0" prefHeight="342.0" prefWidth="859.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="212.0">
+            <styleClass>
+                <String fx:value="board" />
+                <String fx:value="shadow" />
+            </styleClass>
+            <children>
+                <AnchorPane layoutX="11.0" layoutY="10.0" prefHeight="305.0" prefWidth="422.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="416.0" AnchorPane.topAnchor="16.0">
+                    <styleClass>
+                        <String fx:value="shadow" />
+                        <String fx:value="board-radius" />
+                        <String fx:value="board" />
+                    </styleClass>
+                    <children>
+                        <AreaChart layoutY="-48.0" prefHeight="305.0" prefWidth="381.0" title="Thu nhập" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                            </yAxis>
+                        </AreaChart>
+                    </children>
+                </AnchorPane>
+                <AnchorPane layoutX="574.0" layoutY="15.0" prefHeight="305.0" prefWidth="384.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0">
+                    <styleClass>
+                        <String fx:value="shadow" />
+                        <String fx:value="board-radius" />
+                        <String fx:value="board" />
+                    </styleClass>
+                    <children>
+                        <BarChart layoutX="-147.0" layoutY="-48.0" prefHeight="352.0000000000001" prefWidth="430.0" title="Đơn hàng" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                            </yAxis>
+                        </BarChart>
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+        <Separator layoutX="14.0" layoutY="201.0" prefHeight="4.0" prefWidth="854.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="201.0" />
+    </children>
+</AnchorPane>
