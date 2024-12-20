@@ -7,9 +7,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import project.an.CoffeeOngBau.Models.Entities.CTHD;
+import project.an.CoffeeOngBau.Models.Entities.HoaDon;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class CardProductController implements Initializable {
@@ -28,6 +36,10 @@ public class CardProductController implements Initializable {
 
     private SanPham sanPham;
     private Image image;
+    private Connection conn;
+    private PreparedStatement prepare;
+    private Statement statement;
+    private ResultSet result;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -43,6 +55,9 @@ public class CardProductController implements Initializable {
         cardProductImage.setImage(image);
     }
 
+
     public void addCTHD(MouseEvent mouseEvent) {
+        SellController.cthds.add(new CTHD(sanPham.getTenSP(), "", sanPham.getDonGia(), 1, sanPham.getDonGia()));
+
     }
 }

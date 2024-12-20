@@ -7,8 +7,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import project.an.CoffeeOngBau.Models.Entities.CTHD;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 import java.io.IOException;
@@ -17,24 +19,73 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 public class SellController implements Initializable {
-        @FXML
-        private TableView<?> orderTable;
     @FXML
-    private TextField sellTongTienSPText;
+    private TableView<CTHD> orderTable;
+
+    @FXML
+    private AnchorPane productForm;
+
+    @FXML
+    private TableColumn<CTHD, String> sellColDonGia;
+
+    @FXML
+    private TableColumn<CTHD, String> sellColGhiChu;
+
+    @FXML
+    private TableColumn<CTHD, String> sellColSoLuong;
+
+    @FXML
+    private TableColumn<CTHD, String> sellColTenSP;
+
+    @FXML
+    private TableColumn<CTHD, String> sellColThanhTien;
 
     @FXML
     private GridPane sellGridPane;
+
+    @FXML
+    private Button sellHuyBtn;
+
+    @FXML
+    private TextField sellKhachTraText;
+
+    @FXML
+    private ScrollPane sellScrollPane;
+
+    @FXML
+    private Button sellThanhToanBtn;
+
+    @FXML
+    private ComboBox<?> sellThanhToanCBB;
+
+    @FXML
+    private TextField sellTienThuaText;
+
+    @FXML
+    private TextField sellTongTienHDText;
+
+    @FXML
+    private TextField sellTongTienSPText;
+
+
     private ObservableList<SanPham> cardList = FXCollections.observableArrayList();
     private Connection conn;
     private PreparedStatement prepare;
     private Statement statement;
     private ResultSet result;
+    public static List<CTHD> cthds = new ArrayList<>();
+    private ObservableList<CTHD> cthdList = FXCollections.observableArrayList();;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         sellDisplayCard();
+        showCTHDList();
     }
+
     public ObservableList<SanPham> sellGetData(){
         String sqlSelect = "SELECT * FROM sanpham WHERE `trangThai`=1";
         ObservableList<SanPham> listData = FXCollections.observableArrayList();
@@ -54,8 +105,10 @@ public class SellController implements Initializable {
             }
         } catch (Exception e){
         }
+        DBUtils.closeConnection(conn);
         return listData;
     }
+
     public void sellDisplayCard(){
         cardList.clear();
         cardList.addAll(sellGetData());
@@ -82,4 +135,15 @@ public class SellController implements Initializable {
         }
     }
 
+    public void showCTHDList(){
+        for(CTHD ct : cthds){
+            cthdList.add(ct);
+        }
+        sellColTenSP.setCellValueFactory(new PropertyValueFactory<>("tenSP"));
+        sellColDonGia.setCellValueFactory(new PropertyValueFactory<>("donGia"));
+        sellColSoLuong.setCellValueFactory(new PropertyValueFactory<>("soLuong"));
+        sellColGhiChu.setCellValueFactory(new PropertyValueFactory<>("ghiChu"));
+        sellColThanhTien.setCellValueFactory(new PropertyValueFactory<>("thanhTien"));
+        orderTable.setItems(cthdList);
+    }
 }
