@@ -1,28 +1,17 @@
 package project.an.CoffeeOngBau.Controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import project.an.CoffeeOngBau.Models.Entities.SanPham;
 import project.an.CoffeeOngBau.Models.Entities.current_data;
-import project.an.CoffeeOngBau.Utils.DBUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
 import java.util.*;
 
 public class AdminController implements Initializable {
@@ -49,6 +38,16 @@ public class AdminController implements Initializable {
 
     @FXML
     private AnchorPane productForm;
+
+    @FXML
+    private AnchorPane employeeForm;
+
+    @FXML
+    private AnchorPane reportForm;
+
+    @FXML
+    private AnchorPane sellForm;
+
 
     private Alert alert;
 
@@ -94,38 +93,46 @@ public class AdminController implements Initializable {
         userNameText.setText(user);
     }
 
-//    private void loadProductView(){
-//        productForm.setVisible(true);
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/product.fxml"));
-//        try {
-//            Node productView = loader.load();
-//            productController = loader.getController();
-//            if (productController != null) {
-//                System.out.println("ProductController được khởi tạo thành công!");
-//            } else {
-//                System.out.println("ProductController chưa được khởi tạo!");
-//            }
-//            productForm.getChildren().setAll(productView);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
 
-    public void addChildScene(Parent childRoot) {
-        productForm.getChildren().clear(); // xóa tất cả các con hiện tại
-        productForm.getChildren().add(childRoot);
+    public void addChildScene(AnchorPane form ,Parent childRoot) {
+        form.getChildren().clear(); // xóa tất cả các con hiện tại
+        form.getChildren().add(childRoot);
+        AnchorPane.setTopAnchor(childRoot, 0.0);
+        AnchorPane.setBottomAnchor(childRoot, 0.0);
+        AnchorPane.setLeftAnchor(childRoot, 0.0);
+        AnchorPane.setRightAnchor(childRoot, 0.0);
     }
 
     @FXML
     private void handleLoadProduct() {
         try {
+            setViewInvisible();
             productForm.setVisible(true);
             FXMLLoader productLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/product.fxml"));
             Parent productRoot = productLoader.load();
-            addChildScene(productRoot);
+            addChildScene(productForm,productRoot);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void handleLoadEmployee() {
+        try {
+            setViewInvisible();
+            employeeForm.setVisible(true);
+            FXMLLoader employeeLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/employee.fxml"));
+            Parent employeeRoot = employeeLoader.load();
+            addChildScene(employeeForm,employeeRoot);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setViewInvisible(){
+        productForm.setVisible(false);
+        reportForm.setVisible(false);
+        employeeForm.setVisible(false);
+        sellForm.setVisible(false);
     }
 }

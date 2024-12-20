@@ -58,7 +58,7 @@
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="employNavBtn" mnemonicParsing="false" prefHeight="85.0" prefWidth="249.0" styleClass="nav-button" text="Nhân viên" GridPane.rowIndex="4">
+                              <Button fx:id="employNavBtn" mnemonicParsing="false" onAction="#handleLoadEmployee" prefHeight="85.0" prefWidth="249.0" styleClass="nav-button" text="Nhân viên" GridPane.rowIndex="4">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
@@ -265,7 +265,9 @@
                         <AnchorPane fx:id="sellForm" layoutX="341.0" layoutY="200.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.0">
 
                         </AnchorPane>
-                        <AnchorPane fx:id="employeeForm" prefHeight="568.0" prefWidth="882.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.0" />
+                        <AnchorPane fx:id="employeeForm" prefHeight="568.0" prefWidth="882.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.0">
+
+                        </AnchorPane>
                      </children>
                   </AnchorPane>
                </center>

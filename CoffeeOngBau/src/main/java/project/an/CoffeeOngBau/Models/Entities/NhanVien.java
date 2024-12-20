@@ -3,11 +3,11 @@ package project.an.CoffeeOngBau.Models.Entities;
 import java.sql.Timestamp;
 
 public class NhanVien {
-    String id, tenNV, chucVu, SDT, email, username, password, idCardNumber;
+    String id, tenNV, chucVu, SDT, email, username, password, anhNV, isWorking;
     Timestamp createAt, updatedAt;
-    boolean isWorking;
+    boolean gioiTinh;
 
-    public NhanVien(String id, String tenNV, String chucVu, String SDT, String email, String username, String password, String idCardNumber, Timestamp createAt, Timestamp updatedAt, boolean isWorking) {
+    public NhanVien(String id, String tenNV, String chucVu, String SDT, String email, String username, String password, String anhNV, boolean gioiTinh, Timestamp createAt, Timestamp updatedAt, String isWorking) {
         this.id = id;
         this.tenNV = tenNV;
         this.chucVu = chucVu;
@@ -15,6 +15,8 @@ public class NhanVien {
         this.email = email;
         this.username = username;
         this.password = password;
+        this.anhNV = anhNV;
+        this.gioiTinh = gioiTinh;
         this.createAt = createAt;
         this.updatedAt = updatedAt;
         this.isWorking = isWorking;
@@ -76,12 +78,20 @@ public class NhanVien {
         this.password = password;
     }
 
-    public String getIdCardNumber() {
-        return idCardNumber;
+    public String getAnhNV() {
+        return anhNV;
     }
 
-    public void setIdCardNumber(String idCardNumber) {
-        this.idCardNumber = idCardNumber;
+    public void setAnhNV(String anhNV) {
+        this.anhNV = anhNV;
+    }
+
+    public boolean getGioiTinh() {
+        return gioiTinh;
+    }
+
+    public void setGioiTinh(boolean gioiTinh) {
+        this.gioiTinh = gioiTinh;
     }
 
     public Timestamp getCreateAt() {
@@ -100,11 +110,11 @@ public class NhanVien {
         this.updatedAt = updatedAt;
     }
 
-    public boolean isWorking() {
+    public String getIsWorking() {
         return isWorking;
     }
 
-    public void setWorking(boolean working) {
+    public void setWorking(String working) {
         isWorking = working;
     }
 }
