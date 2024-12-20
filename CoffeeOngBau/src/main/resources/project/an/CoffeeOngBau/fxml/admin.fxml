@@ -53,7 +53,7 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button fx:id="sellNavBtn" mnemonicParsing="false" prefHeight="238.0" prefWidth="215.0" styleClass="nav-button" text="Bán hàng">
+                              <Button fx:id="sellNavBtn" mnemonicParsing="false" onAction="#handleLoadSell" prefHeight="238.0" prefWidth="215.0" styleClass="nav-button" text="Bán hàng">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>

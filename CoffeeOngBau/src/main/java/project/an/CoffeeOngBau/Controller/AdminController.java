@@ -129,6 +129,19 @@ public class AdminController implements Initializable {
         }
     }
 
+    @FXML
+    private void handleLoadSell() {
+        try {
+            setViewInvisible();
+            sellForm.setVisible(true);
+            FXMLLoader employeeLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/sell.fxml"));
+            Parent employeeRoot = employeeLoader.load();
+            addChildScene(sellForm,employeeRoot);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setViewInvisible(){
         productForm.setVisible(false);
         reportForm.setVisible(false);

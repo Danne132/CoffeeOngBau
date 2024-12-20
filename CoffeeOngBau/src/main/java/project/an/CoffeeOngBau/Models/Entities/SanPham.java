@@ -15,6 +15,13 @@ public class SanPham {
         this.donGia = donGia;
     }
 
+    public SanPham(String maSP, String tenSP, String anhSP, double donGia){
+        this.maSP = maSP;
+        this.tenSP = tenSP;
+        this.anhSP = anhSP;
+        this.donGia = donGia;
+    }
+
     public String getMaSP() {
         return maSP;
     }
