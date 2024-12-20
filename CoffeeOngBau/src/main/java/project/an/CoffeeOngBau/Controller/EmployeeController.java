@@ -255,6 +255,9 @@ public class EmployeeController implements Initializable {
         employeeChucVuCBB.setValue(null);
         employeeTrangThaiCBB.setValue(null);
         employeeImage.setImage(null);
+        tenNVFindText.setText("");
+        loaiNVFindCBB.setValue(null);
+        trangThaiNVFindCBB.setValue(null);
         current_data.id = "";
         showSPList("SELECT * FROM nhanvien");
     }
@@ -303,6 +306,20 @@ public class EmployeeController implements Initializable {
     }
 
     public void findNV() {
+        String sqlFind;
+        String maCV = getMaCV(loaiNVFindCBB);
+        String trangThai = trangThaiNVFindCBB.getValue()==null?"NULL":trangThaiNVFindCBB.getValue()=="Đang bán"?"1":"0";
+        String tenNV = tenNVFindText.getText();
+        maCV = maCV==null?"NULL":"'"+maCV+"'";
+        System.out.println("mã loại"+maCV);
+        System.out.println("trạng thái"+trangThai);
+        sqlFind = "SELECT * " +
+                "FROM nhanvien " +
+                "WHERE " +
+                "    (`tenNV` LIKE '%"+tenNV+"%'OR'"+tenNV+"' IS NULL OR '"+tenNV+"' = '') AND " +
+                "    (`chucvu` = "+maCV+" OR "+maCV+" IS NULL) AND" +
+                "    (`isWorking` = "+trangThai+" OR "+trangThai+" IS NULL);";
+        showSPList(sqlFind);
     }
 
     private Optional<ButtonType> setAlert(Alert.AlertType alertType, String title, String message){
