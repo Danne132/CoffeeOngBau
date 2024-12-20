@@ -11,12 +11,20 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.util.converter.LocalDateStringConverter;
 import project.an.CoffeeOngBau.Models.Entities.NhanVien;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
+import project.an.CoffeeOngBau.Models.Entities.current_data;
+import project.an.CoffeeOngBau.Utils.ComonUtils;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 
+import java.io.File;
 import java.net.URL;
 import java.sql.*;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 public class EmployeeController implements Initializable {
@@ -34,7 +42,7 @@ public class EmployeeController implements Initializable {
     private Button employeeCategoryAddBtn;
 
     @FXML
-    private ComboBox<?> employeeChucVuCBB;
+    private ComboBox<String> employeeChucVuCBB;
 
     @FXML
     private TableColumn<NhanVien, String> employeeColLoaiNV;
@@ -88,19 +96,19 @@ public class EmployeeController implements Initializable {
     private TextField employeeTenNVText;
 
     @FXML
-    private ComboBox<?> employeeTrangThaiCBB;
+    private ComboBox<String> employeeTrangThaiCBB;
 
     @FXML
     private Button employeeUpdateBtn;
 
     @FXML
-    private ComboBox<?> loaiNVFindCBB;
+    private ComboBox<String> loaiNVFindCBB;
 
     @FXML
     private TextField tenNVFindText;
 
     @FXML
-    private ComboBox<?> trangThaiNVFindCBB;
+    private ComboBox<String> trangThaiNVFindCBB;
 
     private Alert alert;
 
@@ -121,24 +129,122 @@ public class EmployeeController implements Initializable {
     }
 
     public void addNV(ActionEvent event) {
+        if(employeeTenNVText.getText().isEmpty() ||
+                (!employeeNamRd.isSelected() && !employeeNuRd.isSelected())||
+                employeeNgaySinhDP.getValue()==null|| employeeEmailText.getText().isEmpty()||
+                employeeSDTText.getText().isEmpty()||
+                current_data.path == null){
+            setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin nhân viên!");
+        } else {
+            String maNV = setAutoMaNV();
+            String maChucVu = "";
+            for(String key : chucvunvs.keySet()){
+                if(chucvunvs.get(key) == employeeChucVuCBB.getSelectionModel().getSelectedItem()){
+                    maChucVu = key;
+                    break;
+                }
+            }
+            String path = current_data.path;
+            path = path.replace("\\", "\\\\");
+            conn = DBUtils.openConnection("banhang", "root", "");
+            String sqlInsert = "INSERT INTO `nhanvien` (`maNV`, `tenNV`, `gioiTinh`, `ngaySinh`, `chucVu`, `SDT`, `email`, `anhNV`, `isWorking`, `username`, `password`) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+            try {
+                PreparedStatement lenh = conn.prepareStatement(sqlInsert);
+                lenh.setString(1, maNV);
+                lenh.setString(2, employeeTenNVText.getText());
+                lenh.setBoolean(3, setGender());
+                lenh.setDate(4, Date.valueOf(employeeNgaySinhDP.getValue()));
+                lenh.setString(5, maChucVu);
+                lenh.setString(6, employeeSDTText.getText());
+                lenh.setString(7, employeeEmailText.getText());
+                lenh.setString(8, path);
+                String tt = employeeTrangThaiCBB.getSelectionModel().getSelectedItem();
+                if(tt == "Đang làm")
+                    lenh.setBoolean(9, true);
+                else
+                    lenh.setBoolean(9, false);
+                lenh.setString(10, employeeEmailText.getText());
+                lenh.setString(11, ComonUtils.hashPassword(employeeSDTText.getText()));
+                setAlert(Alert.AlertType.INFORMATION, "Thêm", "Thêm nhân viên thành công");
+                int rowsInserted = lenh.executeUpdate();
+                if (rowsInserted > 0) {
+                    System.out.println("Thêm sản phẩm thành công");
+                } else {
+                    System.out.println("Không thể thêm sản phẩm.");
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            DBUtils.closeConnection(conn);
+            reloadNV();
+            showSPList("SELECT * FROM nhanvien");
+        }
     }
 
-    public void updateNV(ActionEvent event) {
+    public void updateNV() {
     }
     
-    public void deleteNV(ActionEvent event) {
+    public void deleteNV() {
     }
 
-    public void reloadNV(ActionEvent event) {
-    }
-    
-    public void importImage(ActionEvent event) {
+    public void reloadNV() {
+        employeeMaNVText.setText("");
+        employeeTenNVText.setText("");
+        employeeNamRd.setSelected(false);
+        employeeNuRd.setSelected(false);
+        employeeNgaySinhDP.setValue(null);
+        employeeEmailText.setText("");
+        employeeSDTText.setText("");
+        employeeChucVuCBB.setValue(null);
+        employeeTrangThaiCBB.setValue(null);
+        current_data.id = "";
+        showSPList("SELECT * FROM nhanvien");
     }
 
-    public void selecteNV(MouseEvent mouseEvent) {
+    public void importImage(){
+        FileChooser openFile = new FileChooser();
+        openFile.getExtensionFilters().add(new FileChooser.ExtensionFilter("Open Image File", "*png", "*jpg"));
+        File file = openFile.showOpenDialog(employeeForm.getScene().getWindow());
+        if(file != null){
+            current_data.path = file.getAbsolutePath();
+            image = new Image(file.toURI().toString(), 113, 125, false, true);
+            employeeImage.setImage(image);
+        }
     }
 
-    public void findNV(ActionEvent event) {
+    public void selectNV() {
+        NhanVien nhanVien = employeeTable.getSelectionModel().getSelectedItem();
+        int num = employeeTable.getSelectionModel().getSelectedIndex();
+        if((num - 1) < -1 ) return;
+        employeeMaNVText.setText(nhanVien.getId());
+        employeeTenNVText.setText(nhanVien.getTenNV());
+        if(nhanVien.isGioiTinh()){
+            employeeNamRd.setSelected(true);
+            employeeNuRd.setSelected(false);
+        }
+        else {
+            employeeNuRd.setSelected(true);
+            employeeNamRd.setSelected(false);
+        }
+        String getDate = String.valueOf(nhanVien.getNgaySinh());
+        LocalDate parse = LocalDate.parse(getDate);
+        System.out.println(parse);
+        employeeNgaySinhDP.setValue(parse);
+        employeeEmailText.setText(nhanVien.getEmail());
+        employeeSDTText.setText(nhanVien.getSDT());
+        current_data.path = nhanVien.getAnhNV();
+        current_data.id = nhanVien.getId();
+        System.out.println(current_data.path);
+        String path = "File:"+ current_data.path;
+        Image image = new Image(path, 113, 125, false, true);
+        employeeImage.setImage(image);
+        String cvNV= nhanVien.getChucVu();
+        System.out.println(cvNV);
+        employeeChucVuCBB.getSelectionModel().select(cvNV);
+        employeeTrangThaiCBB.getSelectionModel().select(nhanVien.getIsWorking()=="Đang làm"?0:1);
+    }
+
+    public void findNV() {
     }
 
     private Optional<ButtonType> setAlert(Alert.AlertType alertType, String title, String message){
@@ -212,10 +318,11 @@ public class EmployeeController implements Initializable {
                         result.getString("username"),
                         result.getString("password"),
                         result.getString("anhNV"),
-                        result.getBoolean("gioiTinh"),
+                        result.getBoolean("isWorking")?"Đang làm":"Nghỉ làm",
                         result.getTimestamp("createdAt"),
                         result.getTimestamp("updatedAt"),
-                        result.getBoolean("isWorking")?"Đang làm":"Nghỉ làm"
+                        result.getBoolean("gioiTinh"),
+                        result.getDate("ngaySinh")
                 );
                 nvList.add(nhanVien);
                 nhanVien.getChucVu();
@@ -227,4 +334,49 @@ public class EmployeeController implements Initializable {
         DBUtils.closeConnection(conn);
         return nvList;
     }
+
+    public boolean setGender(){
+        if(employeeNamRd.isSelected()){
+            employeeNuRd.setSelected(false);
+            return true;
+        }
+        else{
+            employeeNamRd.setSelected(false);
+            return false;
+        }
+    }
+
+    private String setAutoMaNV(){
+        String getChucVu = getMaCV(employeeChucVuCBB);
+        conn = DBUtils.openConnection("banhang", "root", "");
+        String sqlSelect = "SELECT * FROM `nhanvien` WHERE `chucVu` LIKE '"+getChucVu+"%'";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelect)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    String lastMaSP = resultSet.getString("maNV");
+                    int number = Integer.parseInt(lastMaSP.substring(getChucVu.length()));
+                    DBUtils.closeConnection(conn);
+                    return getChucVu + String.format("%03d", number + 1);
+                } else {
+                    DBUtils.closeConnection(conn);
+                        return getChucVu + "001";
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String getMaCV(ComboBox<?> cbb) {
+        String maLoai = null;
+        for(String key : chucvunvs.keySet()){
+            if(chucvunvs.get(key) == cbb.getSelectionModel().getSelectedItem()){
+                maLoai = key;
+                return maLoai;
+            }
+        }
+        System.out.println(maLoai);
+        return maLoai;
+    }
+
 }

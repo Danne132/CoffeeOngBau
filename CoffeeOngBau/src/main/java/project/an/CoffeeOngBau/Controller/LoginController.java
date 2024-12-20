@@ -37,11 +37,10 @@ public class LoginController {
             return;
         }
         Connection conn = DBUtils.openConnection("banhang", "root", "");
-
         String sqlSelect = "SELECT * FROM nhanvien";
         Statement lenh = conn.createStatement();
         ResultSet ketQua = lenh.executeQuery(sqlSelect);
-        // hiện kết quả
+        boolean check = false;
         while(ketQua.next()) {
 
             if(account.equals(ketQua.getString("username"))&&
@@ -49,16 +48,18 @@ public class LoginController {
             {
                 current_data.username = ketQua.getString("tenNV");
                 current_data.chucVu = ketQua.getString("chucVu");
-                DBUtils.closeConnection(conn);
+
                 showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đăng nhập thành công!");
                 switchToHomeScreen();
+                check = true;
                 break;
-            } else{
-                DBUtils.closeConnection(conn);
-                showAlert(Alert.AlertType.ERROR, "Lỗi đăng nhập", "Tên đăng nhập hoặc mật khẩu không đúng!");
-                System.out.println("Đăng nhập không thành công");
             }
         }
+        if(!check){
+            showAlert(Alert.AlertType.ERROR, "Lỗi đăng nhập", "Tên đăng nhập hoặc mật khẩu không đúng!");
+            System.out.println("Đăng nhập không thành công");
+        }
+        DBUtils.closeConnection(conn);
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message){
