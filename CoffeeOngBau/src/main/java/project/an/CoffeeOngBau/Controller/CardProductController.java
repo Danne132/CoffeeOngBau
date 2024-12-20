@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
 
@@ -40,5 +41,8 @@ public class CardProductController implements Initializable {
         String path = "File:"+ sanPham.getAnhSP();
         image = new Image(path, 124, 124, false, true);
         cardProductImage.setImage(image);
+    }
+
+    public void addCTHD(MouseEvent mouseEvent) {
     }
 }

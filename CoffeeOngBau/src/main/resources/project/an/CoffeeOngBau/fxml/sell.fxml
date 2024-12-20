@@ -51,7 +51,7 @@
                 <String fx:value="board" />
             </styleClass>
             <children>
-                <TableView fx:id="orderTable" layoutX="10.0" layoutY="7.0" prefHeight="241.0" prefWidth="442.0" AnchorPane.bottomAnchor="280.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+                <TableView fx:id="orderTable" editable="true" layoutX="10.0" layoutY="7.0" prefHeight="241.0" prefWidth="442.0" AnchorPane.bottomAnchor="280.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
                     <columns>
                         <TableColumn fx:id="sellColTenSP" prefWidth="121.59999883174896" text="Tên sản phẩm" />
                         <TableColumn fx:id="sellColDonGia" prefWidth="86.39997100830078" text="Đơn giá" />
