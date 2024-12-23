@@ -172,7 +172,14 @@ public class SellController implements Initializable {
         sellColSoLuong.setOnEditCommit(event -> {
             CTHD cthd = event.getRowValue();
             cthd.setSoLuong(event.getNewValue());
+            if (cthd.getSoLuong() == 0){
+                cthds.remove(cthd);
+                cthdList.remove(cthd);
+                System.out.println("Đã xóa sản phẩm này");
+            }
+            setHDInfor();
             orderTable.refresh();
+
         });
 
         sellColThanhTien.setCellFactory(tc -> new TableCell<CTHD, Integer>() {
@@ -286,7 +293,7 @@ public class SellController implements Initializable {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyy");
         String ngayTao = currentDate.format(formatter);
         maHD += ngayTao;
-        String sqlSelect = "SELECT `createdAt` from hoadon WHERE `createdAt` = ? ORDER BY maHD DESC LIMIT 1";
+        String sqlSelect = "SELECT * from hoadon WHERE DATE(`createdAt`) = ? ORDER BY `maHD` DESC LIMIT 1";
         conn = DBUtils.openConnection("banhang", "root", "");
         try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelect)) {
             preparedStatement.setString(1,  String.valueOf(currentDate));
@@ -305,6 +312,7 @@ public class SellController implements Initializable {
             DBUtils.closeConnection(conn);
         }
     }
+
     private Optional<ButtonType> setAlert(Alert.AlertType alertType, String title, String message){
         alert = new Alert(alertType);
         alert.setTitle(title);
@@ -326,4 +334,5 @@ public class SellController implements Initializable {
         }
     }
 
+    
 }
