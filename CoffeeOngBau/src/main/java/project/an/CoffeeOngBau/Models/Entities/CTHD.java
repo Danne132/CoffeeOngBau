@@ -3,15 +3,20 @@ package project.an.CoffeeOngBau.Models.Entities;
 import javafx.beans.property.IntegerProperty;
 
 public class CTHD {
-    String tenSP, ghiChu;
+    String tenSP, ghiChu, maSP;
     int donGia, soLuong, thanhTien;
 
-    public CTHD(String tenSP, String ghiChu, int donGia, int soLuong) {
+    public CTHD(String maSP,String tenSP, String ghiChu, int donGia, int soLuong) {
+        this.maSP = maSP;
         this.tenSP = tenSP;
         this.ghiChu = ghiChu;
         this.donGia = donGia;
         this.soLuong = soLuong;
         this.thanhTien = soLuong * donGia;
+    }
+
+    public String getMaSP() {
+        return maSP;
     }
 
     private void updateThanhTien() {

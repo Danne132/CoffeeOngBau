@@ -60,7 +60,7 @@ public class CardProductController implements Initializable {
 
 
     public void addCTHD(MouseEvent mouseEvent) {
-        SellController.cthds.add(new CTHD(sanPham.getTenSP(), "", sanPham.getDonGia(), 1));
+        SellController.cthds.add(new CTHD(sanPham.getMaSP() ,sanPham.getTenSP(), "", sanPham.getDonGia(), 1));
         sell.clearTable();
         sell.showCTHDList();
     }

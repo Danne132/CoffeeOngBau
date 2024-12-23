@@ -252,7 +252,6 @@ public class SellController implements Initializable {
             System.out.println(maHD);
             conn = DBUtils.openConnection("banhang", "root", "");
             String sqlInsertHD = "INSERT INTO `hoadon`(`maHD`, `nguoiTao`, `tongTien`, `trangThai`, `thanhToan`, `ghiChu`) VALUES (?,?,?,?,?,?)";
-            String sqlInserCTHD = ""
             try{
                 prepare = conn.prepareStatement(sqlInsertHD);
                 prepare.setString(1, maHD);
@@ -267,12 +266,14 @@ public class SellController implements Initializable {
                 } else {
                     System.out.println("Không thể thêm hóa đơn");
                 }
+                insertCTHD(maHD);
             }
             catch (Exception e){
 
             }
             finally {
                 DBUtils.closeConnection(conn);
+                clearHD();
             }
         }
 
@@ -311,4 +312,18 @@ public class SellController implements Initializable {
         alert.setContentText(message);
         return alert.showAndWait();
     }
+
+    private void insertCTHD(String maHD) throws SQLException {
+        String sqlInsertCTHD = "INSERT INTO `cthd`(`maHD`, `maSP`, `soLuong`, `thanhTien`, `ghiChu`) VALUES (?,?,?,?,?)";
+        for(CTHD cthd : cthds){
+            prepare = conn.prepareStatement(sqlInsertCTHD);
+            prepare.setString(1, maHD);
+            prepare.setString(2, cthd.getMaSP());
+            prepare.setInt(3, cthd.getSoLuong());
+            prepare.setInt(4, cthd.getThanhTien());
+            prepare.setString(5, cthd.getGhiChu());
+            prepare.executeUpdate();
+        }
+    }
+
 }
