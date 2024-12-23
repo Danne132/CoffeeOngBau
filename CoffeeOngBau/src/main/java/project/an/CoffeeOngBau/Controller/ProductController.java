@@ -10,9 +10,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import project.an.CoffeeOngBau.Models.Entities.CTHD;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
 import project.an.CoffeeOngBau.Models.Entities.current_data;
 import project.an.CoffeeOngBau.Utils.DBUtils;
+import project.an.CoffeeOngBau.Utils.PriceUtils;
 
 import java.io.File;
 import java.net.URL;
@@ -122,6 +124,17 @@ public class ProductController implements Initializable {
         productColLoaiSP.setCellValueFactory(new PropertyValueFactory<>("loaiSP"));
         productColDonGia.setCellValueFactory(new PropertyValueFactory<>("donGia"));
         productColTrangThai.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
+        productColDonGia.setCellFactory(tc -> new TableCell<CTHD, Integer>() {
+            @Override
+            protected void updateItem(Integer item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(PriceUtils.formatPrice(item));
+                }
+            }
+        });
         productTable.setItems(sanPhams);
     }
 

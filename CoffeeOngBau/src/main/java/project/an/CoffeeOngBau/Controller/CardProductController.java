@@ -40,13 +40,15 @@ public class CardProductController implements Initializable {
     private PreparedStatement prepare;
     private Statement statement;
     private ResultSet result;
+    private SellController sell;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
 
-    public void setData(SanPham sanPham){
+    public void setData(SanPham sanPham, SellController sell){
+        this.sell = sell;
         this.sanPham = sanPham;
         cardProductName.setText(sanPham.getTenSP());
         cardProductPrice.setText(String.valueOf(sanPham.getDonGia())+" đ");
@@ -56,8 +58,10 @@ public class CardProductController implements Initializable {
     }
 
 
-    public void addCTHD(MouseEvent mouseEvent) {
-        SellController.cthds.add(new CTHD(sanPham.getTenSP(), "", sanPham.getDonGia(), 1, sanPham.getDonGia()));
 
+    public void addCTHD(MouseEvent mouseEvent) {
+        SellController.cthds.add(new CTHD(sanPham.getTenSP(), "", sanPham.getDonGia(), 1));
+        sell.clearTable();
+        sell.showCTHDList();
     }
 }
