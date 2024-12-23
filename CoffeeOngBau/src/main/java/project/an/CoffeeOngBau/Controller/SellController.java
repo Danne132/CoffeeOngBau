@@ -15,18 +15,23 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.converter.IntegerStringConverter;
 import project.an.CoffeeOngBau.Models.Entities.CTHD;
+import project.an.CoffeeOngBau.Models.Entities.HoaDon;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
+import project.an.CoffeeOngBau.Models.Entities.current_data;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 import project.an.CoffeeOngBau.Utils.PriceUtils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.security.PrivateKey;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
 public class SellController implements Initializable {
     @FXML
     private TableView<CTHD> orderTable;
@@ -85,6 +90,8 @@ public class SellController implements Initializable {
     public static List<CTHD> cthds = new ArrayList<>();
     private ObservableList<CTHD> cthdList = FXCollections.observableArrayList();
     private String[] loaiTT = new String[]{"Trả tiền mặt", "Chuyển khoản"};
+    private String maHD;
+    private Alert alert;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -233,5 +240,75 @@ public class SellController implements Initializable {
         sellThanhToanCBB.getSelectionModel().select(null);
         sellKhachTraText.setText(null);
         sellTienThuaText.setText(null);
+    }
+
+    public void taoHD(){
+        if(sellKhachTraText.getText().isEmpty()||sellThanhToanCBB.getValue().isEmpty()){
+            setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin hóa đơn");
+        }
+        else {
+            maHD = taoMaHD();
+            String maNV = current_data.userid;
+            System.out.println(maHD);
+            conn = DBUtils.openConnection("banhang", "root", "");
+            String sqlInsertHD = "INSERT INTO `hoadon`(`maHD`, `nguoiTao`, `tongTien`, `trangThai`, `thanhToan`, `ghiChu`) VALUES (?,?,?,?,?,?)";
+            String sqlInserCTHD = ""
+            try{
+                prepare = conn.prepareStatement(sqlInsertHD);
+                prepare.setString(1, maHD);
+                prepare.setString(2, maNV);
+                prepare.setInt(3, Integer.parseInt(sellTongTienHDText.getText()));
+                prepare.setBoolean(4, false);
+                prepare.setString(5, sellThanhToanCBB.getValue());
+                prepare.setString(6, "");
+                int rowsInserted = prepare.executeUpdate();
+                if (rowsInserted > 0) {
+                    System.out.println("Thêm hóa đơn thành công");
+                } else {
+                    System.out.println("Không thể thêm hóa đơn");
+                }
+            }
+            catch (Exception e){
+
+            }
+            finally {
+                DBUtils.closeConnection(conn);
+            }
+        }
+
+    }
+
+    private String taoMaHD(){
+        String maHD = "HD";
+        LocalDate currentDate = LocalDate.now();
+        System.out.println(currentDate);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyy");
+        String ngayTao = currentDate.format(formatter);
+        maHD += ngayTao;
+        String sqlSelect = "SELECT `createdAt` from hoadon WHERE `createdAt` = ? ORDER BY maHD DESC LIMIT 1";
+        conn = DBUtils.openConnection("banhang", "root", "");
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelect)) {
+            preparedStatement.setString(1,  String.valueOf(currentDate));
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (!resultSet.next()) {
+                    return maHD + "0001";
+                }
+                String lastHD = resultSet.getString("maHD");
+                System.out.println("Mã lớn nhất: " + lastHD);
+                int number = Integer.parseInt(lastHD.substring(maHD.length()));
+                return maHD + String.format("%04d", number + 1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBUtils.closeConnection(conn);
+        }
+    }
+    private Optional<ButtonType> setAlert(Alert.AlertType alertType, String title, String message){
+        alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText("");
+        alert.setContentText(message);
+        return alert.showAndWait();
     }
 }

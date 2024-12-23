@@ -32,7 +32,7 @@ public class ProductController implements Initializable {
     private Button productCategoryAddBtn;
 
     @FXML
-    private TableColumn<SanPham, String> productColDonGia;
+    private TableColumn<SanPham, Integer> productColDonGia;
 
     @FXML
     private TableColumn<SanPham, String> productColLoaiSP;
@@ -124,7 +124,7 @@ public class ProductController implements Initializable {
         productColLoaiSP.setCellValueFactory(new PropertyValueFactory<>("loaiSP"));
         productColDonGia.setCellValueFactory(new PropertyValueFactory<>("donGia"));
         productColTrangThai.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
-        productColDonGia.setCellFactory(tc -> new TableCell<CTHD, Integer>() {
+        productColDonGia.setCellFactory(tc -> new TableCell<SanPham, Integer>() {
             @Override
             protected void updateItem(Integer item, boolean empty) {
                 super.updateItem(item, empty);
