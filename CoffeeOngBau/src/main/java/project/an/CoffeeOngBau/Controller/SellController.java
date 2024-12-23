@@ -3,6 +3,7 @@ package project.an.CoffeeOngBau.Controller;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -81,7 +82,13 @@ public class SellController implements Initializable {
     @FXML
     private TextField sellTongTienSPText;
 
+    @FXML
+    private TextField sellTenSPText;
 
+    @FXML
+    private ComboBox<String> sellLoaiSPCBB;
+
+    private HashMap<String, String> loaisps = new HashMap<>();
     private ObservableList<SanPham> cardList = FXCollections.observableArrayList();
     private Connection conn;
     private PreparedStatement prepare;
@@ -95,12 +102,13 @@ public class SellController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        sellDisplayCard();
+        sellDisplayCard(sellGetDataFromDB());
         showCTHDList();
         getLoaiTT();
+        getCategoryFromDB();
     }
 
-    public ObservableList<SanPham> sellGetData(){
+    public ObservableList<SanPham> sellGetDataFromDB(){
         String sqlSelect = "SELECT * FROM sanpham WHERE `trangThai`=1";
         ObservableList<SanPham> listData = FXCollections.observableArrayList();
         conn = DBUtils.openConnection("banhang", "root", "");
@@ -113,8 +121,10 @@ public class SellController implements Initializable {
                         result.getString("maSP"),
                         result.getNString("tenSP"),
                         result.getString("anhSP"),
-                        result.getInt("donGia")
+                        result.getInt("donGia"),
+                        loaisps.get(result.getString("loaiSP"))
                 );
+                System.out.println(sp.getLoaiSP());
                 listData.add(sp);
             }
         } catch (Exception e){
@@ -123,9 +133,11 @@ public class SellController implements Initializable {
         return listData;
     }
 
-    public void sellDisplayCard(){
+
+
+    public void sellDisplayCard(ObservableList<SanPham> observableList){
         cardList.clear();
-        cardList.addAll(sellGetData());
+        cardList.addAll(observableList);
         int row = 0;
         int column =0;
         sellGridPane.getRowConstraints().clear();
@@ -137,7 +149,7 @@ public class SellController implements Initializable {
                 AnchorPane pane = loader.load();
                 CardProductController cardP = loader.getController();
                 cardP.setData(cardList.get(i), this);
-                if(column == 3){
+                if(column == 4){
                     column = 0;
                     row++;
                 }
@@ -247,6 +259,9 @@ public class SellController implements Initializable {
         sellThanhToanCBB.getSelectionModel().select(null);
         sellKhachTraText.setText(null);
         sellTienThuaText.setText(null);
+        sellLoaiSPCBB.getSelectionModel().select(null);
+        sellTenSPText.setText(null);
+        sellDisplayCard(sellGetDataFromDB());
     }
 
     public void taoHD(){
@@ -334,5 +349,41 @@ public class SellController implements Initializable {
         }
     }
 
-    
+    private void getCategoryFromDB()  {
+        conn = DBUtils.openConnection("banhang", "root", "");
+        String sqlSelect = "SELECT * FROM loaisp";
+        Statement lenh = null;
+        try {
+            lenh = conn.createStatement();
+            ResultSet ketQua = lenh.executeQuery(sqlSelect);
+            while(ketQua.next()){
+                String maLoai = ketQua.getString("maLoai");
+                String tenLoai = ketQua.getString("tenLoai");
+                System.out.println(maLoai);
+                System.out.println(tenLoai);
+                loaisps.put(maLoai, tenLoai);
+            }
+            ObservableList list = FXCollections.observableArrayList(loaisps.values());
+            sellLoaiSPCBB.setItems(list);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        DBUtils.closeConnection(conn);
+    }
+
+    public void findSPSell(){
+        String searchName = sellTenSPText.getText().toLowerCase();
+        String selectedLoaiSP = sellLoaiSPCBB.getValue();
+        ObservableList<SanPham> filteredList = FXCollections.observableArrayList();
+        filteredList.clear(); // Xóa dữ liệu cũ trong danh sách tạm
+        for (SanPham sp : cardList) {
+            if (sp.getTenSP().toLowerCase().contains(searchName) &&
+                    (selectedLoaiSP == null || sp.getLoaiSP().equals(selectedLoaiSP))) {
+                filteredList.add(sp);
+            }
+        }
+        sellGridPane.getChildren().clear();
+        sellDisplayCard(filteredList);
+    }
+
 }

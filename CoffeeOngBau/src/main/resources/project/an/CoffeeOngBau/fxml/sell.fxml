@@ -37,10 +37,10 @@
                     </styleClass>
                 </ScrollPane>
                 <Label layoutX="14.0" layoutY="5.0" text="Tên sản phẩm" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="5.0" />
-                <TextField layoutX="14.0" layoutY="23.0" prefHeight="26.0" prefWidth="190.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="229.0" AnchorPane.topAnchor="23.0" />
-                <Button layoutX="208.0" layoutY="23.0" mnemonicParsing="false" text="Tìm" AnchorPane.rightAnchor="185.60000000000002" />
+                <TextField fx:id="sellTenSPText" layoutX="14.0" layoutY="23.0" onAction="#findSPSell" prefHeight="26.0" prefWidth="190.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="229.0" AnchorPane.topAnchor="23.0" />
+                <Button layoutX="208.0" layoutY="23.0" mnemonicParsing="false" onAction="#findSPSell" text="Tìm" AnchorPane.rightAnchor="185.60000000000002" />
                 <Label layoutX="256.0" layoutY="5.0" text="Loại sản phẩm" AnchorPane.rightAnchor="96.0" AnchorPane.topAnchor="5.0" />
-                <ComboBox layoutX="293.0" layoutY="23.0" prefHeight="26.0" prefWidth="163.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="23.0" />
+                <ComboBox fx:id="sellLoaiSPCBB" layoutX="293.0" layoutY="23.0" onAction="#findSPSell" prefHeight="26.0" prefWidth="163.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="23.0" />
             </children>
         </AnchorPane>
         <AnchorPane layoutX="342.0" layoutY="15.0" prefHeight="538.0" prefWidth="462.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="15.0">

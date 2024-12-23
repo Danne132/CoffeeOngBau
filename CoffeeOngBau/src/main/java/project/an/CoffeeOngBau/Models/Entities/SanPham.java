@@ -15,11 +15,12 @@ public class SanPham {
         this.donGia = donGia;
     }
 
-    public SanPham(String maSP, String tenSP, String anhSP, int donGia){
+    public SanPham(String maSP, String tenSP, String anhSP, int donGia, String loaiSP){
         this.maSP = maSP;
         this.tenSP = tenSP;
         this.anhSP = anhSP;
         this.donGia = donGia;
+        this.loaiSP = loaiSP;
     }
 
     public String getMaSP() {

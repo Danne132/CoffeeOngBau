@@ -123,7 +123,7 @@
                 </TableView>
                 <Label layoutX="14.0" layoutY="24.0" text="Tên sản phẩm" AnchorPane.leftAnchor="14.0" />
                 <Label layoutX="16.0" layoutY="75.0" text="Loại sản phẩm" AnchorPane.leftAnchor="14.0" />
-                <TextField fx:id="tenSPFindText" layoutX="16.0" layoutY="42.0" onAction="#findSP" prefHeight="26.0" prefWidth="306.0" AnchorPane.leftAnchor="16.0" />
+                <TextField fx:id="tenSPFindText" layoutX="16.0" layoutY="42.0" onKeyPressed="#findSP" prefHeight="26.0" prefWidth="306.0" AnchorPane.leftAnchor="16.0" />
                 <ComboBox fx:id="loaiSPFindCBB" layoutX="17.0" layoutY="93.0" onAction="#findSP" prefWidth="150.0" AnchorPane.leftAnchor="14.0" />
                 <Label layoutX="219.0" layoutY="75.0" text="Trạng thái" />
                 <ComboBox fx:id="trangThaiSPFindCBB" layoutX="220.0" layoutY="93.0" onAction="#findSP" prefWidth="150.0" />
