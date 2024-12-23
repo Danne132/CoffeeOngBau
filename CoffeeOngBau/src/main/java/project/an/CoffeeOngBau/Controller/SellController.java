@@ -124,7 +124,6 @@ public class SellController implements Initializable {
                         result.getInt("donGia"),
                         loaisps.get(result.getString("loaiSP"))
                 );
-                System.out.println(sp.getLoaiSP());
                 listData.add(sp);
             }
         } catch (Exception e){
@@ -359,8 +358,6 @@ public class SellController implements Initializable {
             while(ketQua.next()){
                 String maLoai = ketQua.getString("maLoai");
                 String tenLoai = ketQua.getString("tenLoai");
-                System.out.println(maLoai);
-                System.out.println(tenLoai);
                 loaisps.put(maLoai, tenLoai);
             }
             ObservableList list = FXCollections.observableArrayList(loaisps.values());
