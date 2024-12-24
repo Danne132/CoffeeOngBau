@@ -272,15 +272,14 @@ public class SellController implements Initializable {
             String maNV = current_data.userid;
             System.out.println(maHD);
             conn = DBUtils.openConnection("banhang", "root", "");
-            String sqlInsertHD = "INSERT INTO `hoadon`(`maHD`, `nguoiTao`, `tongTien`, `trangThai`, `thanhToan`, `ghiChu`) VALUES (?,?,?,?,?,?)";
+            String sqlInsertHD = "INSERT INTO `hoadon`(`maHD`, `nguoiTao`, `tongTien``thanhToan`, `ghiChu`) VALUES (?,?,?,?,?,?)";
             try{
                 prepare = conn.prepareStatement(sqlInsertHD);
                 prepare.setString(1, maHD);
                 prepare.setString(2, maNV);
                 prepare.setInt(3, Integer.parseInt(sellTongTienHDText.getText()));
-                prepare.setBoolean(4, false);
-                prepare.setString(5, sellThanhToanCBB.getValue());
-                prepare.setString(6, "");
+                prepare.setString(4, sellThanhToanCBB.getValue());
+                prepare.setString(5, "");
                 int rowsInserted = prepare.executeUpdate();
                 if (rowsInserted > 0) {
                     System.out.println("Thêm hóa đơn thành công");
