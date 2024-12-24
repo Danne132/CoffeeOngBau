@@ -12,7 +12,6 @@ import project.an.CoffeeOngBau.Utils.PriceUtils;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ReportController implements Initializable {
@@ -47,6 +46,8 @@ public class ReportController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         displayTongDon();
         displayThuNhapHomNay();
+        displayTongThuNhap();
+        displayTongDonHomNay();
     }
 
     public void displayTongDon(){
@@ -84,6 +85,45 @@ public class ReportController implements Initializable {
             throw new RuntimeException(e);
         }
         finally {
+            DBUtils.closeConnection(conn);
+        }
+    }
+
+    public void displayTongThuNhap(){
+        String sql = "SELECT SUM(`tongTien`) FROM hoadon WHERE `trangThai` = 2";
+        conn = DBUtils.openConnection("banhang", "root", "");
+        try{
+            int tongTien = 0;
+            prepare = conn.prepareStatement(sql);
+            result = prepare.executeQuery();
+            if(result.next()){
+                tongTien = result.getInt("SUM(`tongTien`)");
+                reportTongThuNhapTxt.setText(PriceUtils.formatPrice(tongTien));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            DBUtils.closeConnection(conn);
+        }
+    }
+
+    public void displayTongDonHomNay(){
+        LocalDate today = LocalDate.now();
+        String sql = "SELECT COUNT(`maHD`) FROM hoadon WHERE DATE(`createdAt`) = '"+today+"'";
+        conn = DBUtils.openConnection("banhang", "root", "");
+        try{
+            int tongDonHN = 0;
+            prepare = conn.prepareStatement(sql);
+            result = prepare.executeQuery();
+            if(result.next()){
+                tongDonHN = result.getInt("COUNT(`maHD`)");
+                reportTongDonTodayTxt.setText(String.valueOf(tongDonHN));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
             DBUtils.closeConnection(conn);
         }
     }
