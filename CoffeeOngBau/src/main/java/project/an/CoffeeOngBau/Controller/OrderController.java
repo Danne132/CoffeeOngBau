@@ -190,13 +190,37 @@ public class OrderController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        getOrderWaitingList();
         getTrangThaiFromDB();
-        showOrderWaitingList();
+        showOrderWaitingList("SELECT * FROM hoadon WHERE `trangThai` = 1");
+        showOrderList("SELECT * FROM hoadon");
     }
 
-    public void showOrderWaitingList(){
-        hoaDons = getOrderWaitingList();
+    public void showOrderList(String sql){
+        hoaDons = getOrderList(sql);
+        orderCollMaHD.setCellValueFactory(new PropertyValueFactory<>("maHD"));
+        orderColNVTao.setCellValueFactory(new PropertyValueFactory<>("nguoiTao"));
+        orderColTGTao.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
+        orderColTGXacNhan.setCellValueFactory(new PropertyValueFactory<>("confirmedAt"));
+        orderColTongTien.setCellValueFactory(new PropertyValueFactory<>("tongTien"));
+        orderColTrangThaiHD.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
+        orderColGhiChuHD.setCellValueFactory(new PropertyValueFactory<>("ghiChu"));
+        orderColTongTien.setCellFactory(tc -> new TableCell<HoaDon, Integer>() {
+            @Override
+            protected void updateItem(Integer item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(PriceUtils.formatPrice(item));
+                }
+            }
+        });
+
+        orderWaitingTable.setItems(hoaDons);
+    }
+
+    public void showOrderWaitingList(String sql){
+        hoaDons = getOrderList(sql);
         orderCollMaHDWaiting.setCellValueFactory(new PropertyValueFactory<>("maHD"));
         orderColNVTaoWaiting.setCellValueFactory(new PropertyValueFactory<>("nguoiTao"));
         orderColTGTaoWaiting.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
@@ -214,12 +238,12 @@ public class OrderController implements Initializable {
             }
         });
 
-        orderWaitingTable.setItems(hoaDons);
+        orderTable.setItems(hoaDons);
     }
 
-    private ObservableList<HoaDon> getOrderWaitingList(){
+    private ObservableList<HoaDon> getOrderList(String sql){
         ObservableList<HoaDon> orderWaitingList = FXCollections.observableArrayList();
-        String sqlSelectOrderWaiting = "SELECT * FROM hoadon WHERE `trangThai` = 1";
+        String sqlSelectOrderWaiting = sql;
         try {
             conn = DBUtils.openConnection("banhang", "root", "");
             prepare = conn.prepareStatement(sqlSelectOrderWaiting);
@@ -239,9 +263,9 @@ public class OrderController implements Initializable {
                         result.getString("thanhToan"),
                         trangThai.get(result.getInt("trangThai")),
                         result.getInt("tongTien"),
-                        result.getTimestamp("createdAt")
+                        result.getTimestamp("createdAt"),
+                        result.getTimestamp("confirmedAt")
                 );
-                System.out.println(hoaDon.getTrangThai());
                 orderWaitingList.add(hoaDon);
             }
         } catch (SQLException e) {
@@ -249,6 +273,34 @@ public class OrderController implements Initializable {
         }
         DBUtils.closeConnection(conn);
         return orderWaitingList;
+    }
+
+    private void selecteHD(){
+        HoaDon hoaDon = orderTable.getSelectionModel().getSelectedItem();
+        int num = orderTable.getSelectionModel().getSelectedIndex();
+        if((num - 1) < -1 ) return;
+        String sqlSelectCTHD = "SELECT * FROM cthd WHERE `maHD` = '" + hoaDon.getMaHD() + "'";
+        conn = DBUtils.openConnection("banhang", "root", "");
+        try {
+            prepare = conn.prepareStatement(sqlSelectCTHD);
+            result = prepare.executeQuery();
+            while(result.next()){
+                String tenSP = "";
+                String sqlSelectSP = "SELECT `tenSP` FROM sanpham WHERE `maSP` = '" + result.getString("maSP") + "'";
+                ResultSet ketqua = conn.prepareStatement(sqlSelectSP).executeQuery();
+                if(ketqua.next()) tenSP = ketqua.getNString("tenSP");
+                CTHD cthd = new CTHD(
+                        result.getNString("maSP"),
+                        tenSP,
+                        result.getNString("ghiChu"),
+                        result.getInt("donGia"),
+                        result.getInt("soLuong")
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private void getTrangThaiFromDB() {

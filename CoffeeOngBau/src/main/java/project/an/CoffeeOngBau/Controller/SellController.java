@@ -286,7 +286,7 @@ public class SellController implements Initializable {
                 } else {
                     System.out.println("Không thể thêm hóa đơn");
                 }
-                insertCTHD(maHD);
+                taoCTHD(maHD);
             }
             catch (Exception e){
 
@@ -334,15 +334,16 @@ public class SellController implements Initializable {
         return alert.showAndWait();
     }
 
-    private void insertCTHD(String maHD) throws SQLException {
-        String sqlInsertCTHD = "INSERT INTO `cthd`(`maHD`, `maSP`, `soLuong`, `thanhTien`, `ghiChu`) VALUES (?,?,?,?,?)";
+    private void taoCTHD(String maHD) throws SQLException {
+        String sqlInsertCTHD = "INSERT INTO `cthd`(`maHD`, `maSP`, `donGia` ,`soLuong`, `thanhTien`, `ghiChu`) VALUES (?,?,?,?,?,?)";
         for(CTHD cthd : cthds){
             prepare = conn.prepareStatement(sqlInsertCTHD);
             prepare.setString(1, maHD);
             prepare.setString(2, cthd.getMaSP());
-            prepare.setInt(3, cthd.getSoLuong());
-            prepare.setInt(4, cthd.getThanhTien());
-            prepare.setString(5, cthd.getGhiChu());
+            prepare.setInt(3, cthd.getDonGia());
+            prepare.setInt(4, cthd.getSoLuong());
+            prepare.setInt(5, cthd.getThanhTien());
+            prepare.setString(6, cthd.getGhiChu());
             prepare.executeUpdate();
         }
     }

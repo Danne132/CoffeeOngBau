@@ -11,7 +11,7 @@ public class HoaDon {
     Timestamp createdAt;
     Timestamp confirmedAt;
 
-    public HoaDon(String maHD, String nguoiTao, String ghiChu, String thanhToan, String trangThai, int tongTien, Timestamp createdAt) {
+    public HoaDon(String maHD, String nguoiTao, String ghiChu, String thanhToan, String trangThai, int tongTien, Timestamp createdAt, Timestamp confirmedAt) {
         this.maHD = maHD;
         this.nguoiTao = nguoiTao;
         this.ghiChu = ghiChu;
@@ -19,6 +19,7 @@ public class HoaDon {
         this.trangThai = trangThai;
         this.tongTien = tongTien;
         this.createdAt = createdAt;
+        this.confirmedAt = confirmedAt;
     }
 
     public List<CTHD> getCthds() {
