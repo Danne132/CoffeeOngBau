@@ -272,7 +272,7 @@ public class SellController implements Initializable {
             String maNV = current_data.userid;
             System.out.println(maHD);
             conn = DBUtils.openConnection("banhang", "root", "");
-            String sqlInsertHD = "INSERT INTO `hoadon`(`maHD`, `nguoiTao`, `tongTien``thanhToan`, `ghiChu`) VALUES (?,?,?,?,?,?)";
+            String sqlInsertHD = "INSERT INTO `hoadon`(`maHD`, `nguoiTao`, `tongTien`,`thanhToan`, `ghiChu`) VALUES (?,?,?,?,?)";
             try{
                 prepare = conn.prepareStatement(sqlInsertHD);
                 prepare.setString(1, maHD);
@@ -287,11 +287,9 @@ public class SellController implements Initializable {
                     System.out.println("Không thể thêm hóa đơn");
                 }
                 taoCTHD(maHD);
-            }
-            catch (Exception e){
-
-            }
-            finally {
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
                 DBUtils.closeConnection(conn);
                 clearHD();
             }

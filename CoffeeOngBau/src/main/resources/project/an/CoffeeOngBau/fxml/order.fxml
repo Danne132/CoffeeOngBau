@@ -79,7 +79,7 @@
                                                 <AnchorPane layoutX="318.0" layoutY="7.0" prefHeight="270.0" prefWidth="253.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="264.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <children>
                                                         <Label layoutX="19.0" text="Trạng thái" AnchorPane.leftAnchor="19.0" AnchorPane.topAnchor="0.0" />
-                                                        <Label fx:id="orderTrangThaiWaitingTxt" layoutX="19.0" layoutY="24.0" text="Chờ xác nhận" textFill="#ffe500" AnchorPane.leftAnchor="19.0">
+                                                        <Label fx:id="orderTrangThaiWaitingTxt" layoutX="19.0" layoutY="24.0" textFill="#ffe500" AnchorPane.leftAnchor="19.0">
                                                             <font>
                                                                 <Font name="System Bold" size="28.0" />
                                                             </font>
@@ -98,7 +98,7 @@
                                                         <Label layoutX="-3.0" layoutY="74.0" text="Thời gian tạo" AnchorPane.leftAnchor="0.0" />
                                                         <Label layoutY="112.0" text="Loại thanh toán" AnchorPane.leftAnchor="0.0" />
                                                         <Label layoutY="147.0" text="Ghi chú" AnchorPane.leftAnchor="0.0" />
-                                                        <TextArea fx:id="orderGhiChuWaitingTxt" editable="false" layoutX="4.0" layoutY="170.0" prefHeight="52.0" prefWidth="254.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                                        <TextArea fx:id="orderGhiChuWaitingTxt" layoutX="4.0" layoutY="170.0" prefHeight="52.0" prefWidth="254.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                                                         <Label fx:id="orderMaHDWaitingTxt" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="197.0" AnchorPane.rightAnchor="0.0" />
                                                         <Label fx:id="orderNVTaoWaitingTxt" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="197.0" layoutY="36.0" AnchorPane.rightAnchor="0.0" />
                                                         <Label fx:id="orderTGTaoWaitingTxt" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="197.0" layoutY="74.0" AnchorPane.rightAnchor="0.0" />
@@ -107,7 +107,7 @@
                                                 </AnchorPane>
                                             </children>
                                         </AnchorPane>
-                                        <Button fx:id="orderXacNhanBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="91.0" layoutY="476.0" mnemonicParsing="false" text="Xác nhận" AnchorPane.bottomAnchor="16.000000000000057" AnchorPane.leftAnchor="10.0">
+                                        <Button fx:id="orderXacNhanBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="91.0" layoutY="476.0" mnemonicParsing="false" onAction="#confirmOrder" text="Xác nhận" AnchorPane.bottomAnchor="16.000000000000057" AnchorPane.leftAnchor="10.0">
                                             <styleClass>
                                                 <String fx:value="btn" />
                                                 <String fx:value="shadow" />
@@ -116,7 +116,7 @@
                                                 <Font name="System Bold" size="12.0" />
                                             </font>
                                         </Button>
-                                        <Button fx:id="orderHuyDonBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="94.0" layoutY="476.0" mnemonicParsing="false" text="Hủy đơn" AnchorPane.bottomAnchor="16.000000000000057" AnchorPane.leftAnchor="94.0">
+                                        <Button fx:id="orderHuyDonBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="94.0" layoutY="476.0" mnemonicParsing="false" onAction="#declineOrder" text="Hủy đơn" AnchorPane.bottomAnchor="16.000000000000057" AnchorPane.leftAnchor="94.0">
                                             <styleClass>
                                                 <String fx:value="btn" />
                                                 <String fx:value="shadow" />
@@ -138,7 +138,7 @@
                                 <Separator layoutX="14.0" layoutY="351.0" prefWidth="200.0" AnchorPane.bottomAnchor="310.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
                                 <AnchorPane layoutX="15.0" layoutY="14.0" prefHeight="437.0" prefWidth="1214.0" AnchorPane.bottomAnchor="320.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                                     <children>
-                                        <TableView fx:id="orderTable" prefHeight="259.0" prefWidth="1216.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0">
+                                        <TableView fx:id="orderTable" onMouseClicked="#showSelectOrder" prefHeight="259.0" prefWidth="1216.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0">
                                             <columns>
                                                 <TableColumn fx:id="orderCollMaHD" prefWidth="86.39996182918549" text="Mã HD" />
                                                 <TableColumn fx:id="orderColNVTao" prefWidth="127.9999771118164" text="Người tạo" />
@@ -202,7 +202,7 @@
                                                 <Font name="System Bold" size="19.0" />
                                             </font>
                                         </Label>
-                                        <TableView fx:id="orderCTHDTable" layoutX="622.0" layoutY="41.0" prefHeight="200.0" prefWidth="566.0" AnchorPane.rightAnchor="11.0">
+                                        <TableView fx:id="orderCTHDTable" layoutX="524.8" layoutY="41.0" prefHeight="200.0" prefWidth="662.0" AnchorPane.leftAnchor="525.0" AnchorPane.rightAnchor="11.0">
                                             <columns>
                                                 <TableColumn fx:id="orderColTenSP" prefWidth="75.0" text="Tên sản phẩm" />
                                                 <TableColumn fx:id="orderColDonGia" prefWidth="75.0" text="Đơn giá" />
@@ -214,7 +214,7 @@
                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                             </columnResizePolicy>
                                         </TableView>
-                                        <Button fx:id="orderKhoiPhucBtn" layoutX="896.0" layoutY="251.0" mnemonicParsing="false" text="Khôi phục" AnchorPane.rightAnchor="245.59999999999977">
+                                        <Button fx:id="orderKhoiPhucBtn" layoutX="896.0" layoutY="251.0" mnemonicParsing="false" onAction="#redoOrder" text="Khôi phục" AnchorPane.rightAnchor="245.59999999999977">
                                             <styleClass>
                                                 <String fx:value="btn" />
                                                 <String fx:value="shadow" />
@@ -283,7 +283,7 @@
                                                 </Label>
                                             </children>
                                         </AnchorPane>
-                                        <AnchorPane layoutX="336.0" layoutY="45.0" prefHeight="238.0" prefWidth="291.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="336.0" AnchorPane.rightAnchor="588.0" AnchorPane.topAnchor="42.0">
+                                        <AnchorPane layoutX="336.0" layoutY="45.0" prefHeight="238.0" prefWidth="190.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="336.0" AnchorPane.topAnchor="42.0">
                                             <children>
                                                 <Label layoutX="7.0" layoutY="1.0" text="Trạng thái" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="0.0">
                                                     <font>
@@ -300,7 +300,7 @@
                                                         <Font size="13.0" />
                                                     </font>
                                                 </Label>
-                                                <Label fx:id="orderTongTienSPTxt" layoutX="5.0" layoutY="99.0" text="ccc" textFill="#ef8855" AnchorPane.leftAnchor="5.0">
+                                                <Label fx:id="orderTongTienSPTxt" layoutX="5.0" layoutY="99.0" textFill="#ef8855" AnchorPane.leftAnchor="5.0">
                                                     <font>
                                                         <Font name="System Bold" size="28.0" />
                                                     </font>

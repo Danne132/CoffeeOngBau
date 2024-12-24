@@ -191,6 +191,7 @@ public class AdminController implements Initializable {
         reportForm.setVisible(false);
         employeeForm.setVisible(false);
         sellForm.setVisible(false);
+        orderForm.setVisible(false);
     }
 
     private void resetColorButton(){

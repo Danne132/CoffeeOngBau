@@ -9,7 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import project.an.CoffeeOngBau.Models.Entities.CTHD;
 import project.an.CoffeeOngBau.Models.Entities.HoaDon;
-import project.an.CoffeeOngBau.Models.Entities.SanPham;
+import project.an.CoffeeOngBau.Models.Entities.current_data;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 import project.an.CoffeeOngBau.Utils.PriceUtils;
 
@@ -180,12 +180,15 @@ public class OrderController implements Initializable {
     private ObservableList<HoaDon> hoaDons;
     private ObservableList<CTHD> cthds;
     private HashMap<Integer, String> trangThai = new HashMap<>();
+    private Alert alert;
+    private String sqlSelectWaiting = "SELECT * FROM hoadon WHERE `trangThai` = 1";
+    private String sqlSelectOrder = "SELECT * FROM hoadon";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         getTrangThaiFromDB();
-        showOrderWaitingList("SELECT * FROM hoadon WHERE `trangThai` = 1");
-        showOrderList("SELECT * FROM hoadon");
+        showOrderWaitingList(sqlSelectWaiting);
+        showOrderList(sqlSelectOrder);
     }
 
     public void showOrderList(String sql){
@@ -209,7 +212,7 @@ public class OrderController implements Initializable {
             }
         });
 
-        orderWaitingTable.setItems(hoaDons);
+        orderTable.setItems(hoaDons);
     }
 
     public void showOrderWaitingList(String sql){
@@ -230,7 +233,7 @@ public class OrderController implements Initializable {
                 }
             }
         });
-        orderTable.setItems(hoaDons);
+        orderWaitingTable.setItems(hoaDons);
     }
 
     public void showSelectOrderWaiting(){
@@ -265,6 +268,8 @@ public class OrderController implements Initializable {
                 }
             }
         });
+        current_data.id = hoaDon.getMaHD();
+        System.out.println(current_data.id);
         orderMaHDWaitingTxt.setText(hoaDon.getMaHD());
         orderNVTaoWaitingTxt.setText(hoaDon.getNguoiTao());
         orderTGTaoWaitingTxt.setText(String.valueOf(hoaDon.getCreatedAt()));
@@ -273,6 +278,53 @@ public class OrderController implements Initializable {
         orderTrangThaiWaitingTxt.setText(hoaDon.getTrangThai());
         orderTongTienSPWaitingTxt.setText(PriceUtils.formatPrice(hoaDon.getTongTien()));
         orderCTHDWaitingTable.setItems(cthds);
+    }
+
+    public void showSelectOrder(){
+        HoaDon hoaDon = orderTable.getSelectionModel().getSelectedItem();
+        int num = orderTable.getSelectionModel().getSelectedIndex();
+        if((num - 1) < -1 ) return;
+        cthds = getSelecteHD(hoaDon.getMaHD());
+        orderColTenSP.setCellValueFactory(new PropertyValueFactory<>("tenSP"));
+        orderColDonGia.setCellValueFactory(new PropertyValueFactory<>("donGia"));
+        orderColSoLuong.setCellValueFactory(new PropertyValueFactory<>("soLuong"));
+        orderColThanhTien.setCellValueFactory(new PropertyValueFactory<>("thanhTien"));
+        orderColGhiChuSP.setCellValueFactory(new PropertyValueFactory<>("ghiChu"));
+        orderColThanhTien.setCellFactory(tc -> new TableCell<CTHD, Integer>() {
+            @Override
+            protected void updateItem(Integer item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(PriceUtils.formatPrice(item));
+                }
+            }
+        });
+        orderColDonGia.setCellFactory(tc -> new TableCell<CTHD, Integer>() {
+            @Override
+            protected void updateItem(Integer item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(PriceUtils.formatPrice(item));
+                }
+            }
+        });
+        current_data.id = hoaDon.getMaHD();
+        orderMaHDTxt.setText(hoaDon.getMaHD());
+        orderNVTaoTxt.setText(hoaDon.getNguoiTao());
+        orderTGTaoTxt.setText(String.valueOf(hoaDon.getCreatedAt()));
+        orderTGXacNhanTxt.setText(String.valueOf(hoaDon.getConfirmedAt()));
+        orderLoaiTTTxt.setText(hoaDon.getThanhToan());
+        orderGhiChuTxt.setText(hoaDon.getGhiChu());
+        orderTrangThaiTxt.setText(hoaDon.getTrangThai());
+        if(hoaDon.getTrangThai().equals("Hủy")) orderTrangThaiTxt.setStyle("-fx-text-fill: #ff0000");
+        else if(hoaDon.getTrangThai().equals("Chờ xác nhận")) orderTrangThaiTxt.setStyle("-fx-text-fill: #ffe500");
+        else if(hoaDon.getTrangThai().equals("Đã xác nhận")) orderTrangThaiTxt.setStyle("-fx-text-fill: #00ff2b");
+        orderTongTienSPTxt.setText(PriceUtils.formatPrice(hoaDon.getTongTien()));
+        orderCTHDTable.setItems(cthds);
     }
 
     private ObservableList<HoaDon> getOrderList(String sql){
@@ -357,8 +409,100 @@ public class OrderController implements Initializable {
         DBUtils.closeConnection(conn);
     }
 
-    public void confirmOrder(HoaDon selectedOrder){
+    public void confirmOrder(){
+        if(current_data.id == null){
+            setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy chọn hóa đơn cần xác nhận!");
+        } else {
+            Optional<ButtonType> optional = setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn muốn xác nhận hóa đơn này?");
+            if(optional.get().equals(ButtonType.OK)){
+                try{
+                    conn = DBUtils.openConnection("banhang", "root", "");
+                    String sqlUpdate = "UPDATE `hoadon` SET `trangThai`= 2 WHERE `maHD` = '" + current_data.id+"'";
+                    prepare = conn.prepareStatement(sqlUpdate);
+                    prepare.executeUpdate();
+                    DBUtils.closeConnection(conn);
+                    setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Xác nhận đơn thành công");
+                    showOrderWaitingList(sqlSelectWaiting);
+                    showOrderList(sqlSelectOrder);
+                }
+                catch (Exception E){
 
+                }
+            }
+            else setAlert(Alert.AlertType.CONFIRMATION, "Thông tin", "Hủy xác nhận");
+            clearWaitingContent();
+        }
+    }
+
+    public void declineOrder(){
+        if(current_data.id == null){
+            setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy chọn hóa đơn cần xác nhận!");
+        } else {
+            Optional<ButtonType> optional = setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn muốn hủy hóa đơn này?");
+            if(optional.get().equals(ButtonType.OK)){
+                try{
+                    conn = DBUtils.openConnection("banhang", "root", "");
+                    String sqlDelete = "UPDATE `hoadon` SET `trangThai`= 3, `ghiChu` = '"+orderGhiChuWaitingTxt.getText()+"' WHERE `maHD` = '" + current_data.id+"'";
+                    prepare = conn.prepareStatement(sqlDelete);
+                    prepare.executeUpdate();
+                    DBUtils.closeConnection(conn);
+                    setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Hủy đơn thành công");
+                    showOrderWaitingList(sqlSelectWaiting);
+                    showOrderList(sqlSelectOrder);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else setAlert(Alert.AlertType.CONFIRMATION, "Thông tin", "Hủy xác nhận");
+            clearWaitingContent();
+        }
+    }
+
+    public void redoOrder(){
+        if(current_data.id == null){
+            setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy chọn hóa đơn cần xác nhận!");
+        } else {
+            Optional<ButtonType> optional = setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn muốn khôi phục hóa đơn này?");
+            if(optional.get().equals(ButtonType.OK)){
+                try{
+                    conn = DBUtils.openConnection("banhang", "root", "");
+                    String sqlDelete = "UPDATE `hoadon` SET `trangThai`= 1 WHERE `maHD` = '" + current_data.id+"'";
+                    prepare = conn.prepareStatement(sqlDelete);
+                    prepare.executeUpdate();
+                    DBUtils.closeConnection(conn);
+                    setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Khôi phục đơn thành công");
+                    showOrderWaitingList(sqlSelectWaiting);
+                    showOrderList(sqlSelectOrder);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else setAlert(Alert.AlertType.CONFIRMATION, "Thông tin", "Hủy xác nhậ   n");
+            clearContent();
+        }
+    }
+
+    public void clearWaitingContent(){
+        cthds.clear();
+        orderWaitingTable.refresh();
+        orderMaHDWaitingTxt.setText(null);
+        orderNVTaoWaitingTxt.setText(null);
+        orderTGTaoWaitingTxt.setText(null);
+        orderColThanhTienWaiting.setText(null);
+        orderGhiChuWaitingTxt.setText(null);
+        orderTrangThaiWaitingTxt.setText(null);
+        orderTongTienSPWaitingTxt.setText(null);
+    }
+
+    public void clearContent(){
+        cthds.clear();
+        orderTable.refresh();
+        orderMaHDTxt.setText(null);
+        orderNVTaoTxt.setText(null);
+        orderTGTaoTxt.setText(null);
+        orderGhiChuTxt.setText(null);
+        orderTrangThaiTxt.setText(null);
+        orderTongTienSPTxt.setText(null);
     }
 
     private Optional<ButtonType> setAlert(Alert.AlertType alertType, String title, String message){
