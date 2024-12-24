@@ -15,9 +15,12 @@ import project.an.CoffeeOngBau.Utils.PriceUtils;
 
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class OrderController implements Initializable {
     @FXML
@@ -188,11 +191,14 @@ public class OrderController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         getTrangThaiFromDB();
         showOrderWaitingList(sqlSelectWaiting);
-        showOrderList(sqlSelectOrder);
+        showOrderList(sqlSelectOrder, null);
     }
 
-    public void showOrderList(String sql){
-        hoaDons = getOrderList(sql);
+    public void showOrderList(String sql, ObservableList<HoaDon> hoaDonsL){
+        if(hoaDonsL == null){
+            hoaDons = getOrderList(sql);
+        }
+        else hoaDons = hoaDonsL;
         orderCollMaHD.setCellValueFactory(new PropertyValueFactory<>("maHD"));
         orderColNVTao.setCellValueFactory(new PropertyValueFactory<>("nguoiTao"));
         orderColTGTao.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
@@ -423,7 +429,7 @@ public class OrderController implements Initializable {
                     DBUtils.closeConnection(conn);
                     setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Xác nhận đơn thành công");
                     showOrderWaitingList(sqlSelectWaiting);
-                    showOrderList(sqlSelectOrder);
+                    showOrderList(sqlSelectOrder, null);
                 }
                 catch (Exception E){
 
@@ -448,7 +454,7 @@ public class OrderController implements Initializable {
                     DBUtils.closeConnection(conn);
                     setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Hủy đơn thành công");
                     showOrderWaitingList(sqlSelectWaiting);
-                    showOrderList(sqlSelectOrder);
+                    showOrderList(sqlSelectOrder, null);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -472,7 +478,7 @@ public class OrderController implements Initializable {
                     DBUtils.closeConnection(conn);
                     setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Khôi phục đơn thành công");
                     showOrderWaitingList(sqlSelectWaiting);
-                    showOrderList(sqlSelectOrder);
+                    showOrderList(sqlSelectOrder, null);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -503,6 +509,24 @@ public class OrderController implements Initializable {
         orderGhiChuTxt.setText(null);
         orderTrangThaiTxt.setText(null);
         orderTongTienSPTxt.setText(null);
+    }
+
+    public void findOrder(){
+        String maHD = orderMaHDFindTxt.getText().trim();
+        LocalDate dateStartFind = orderNgayBDFindDP.getValue();
+        LocalDate dateEndFind = orderNgayKTFindDP.getValue();
+        ObservableList<HoaDon> hoaDonsFind = FXCollections.observableArrayList();
+        if(dateStartFind!=null && dateEndFind!=null && !dateStartFind.isAfter(dateEndFind)){
+            List<HoaDon> hoaDonList = hoaDons.stream().filter(hd ->{
+                LocalDate date = hd.getCreatedAt().toLocalDateTime().toLocalDate();
+                return (date.isEqual(dateStartFind) || date.isAfter(dateStartFind)) &&
+                        (date.isEqual(dateEndFind) || date.isBefore(dateEndFind));
+            }).collect(Collectors.toList());
+            for(HoaDon hd : hoaDonList){
+                hoaDonsFind.add(hd);
+            }
+        }
+        showOrderList(null, hoaDonsFind);
     }
 
     private Optional<ButtonType> setAlert(Alert.AlertType alertType, String title, String message){

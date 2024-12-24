@@ -163,7 +163,7 @@
                                                 <Font name="System Bold" size="14.0" />
                                             </font>
                                         </Label>
-                                        <Button fx:id="orderFindBtn" layoutX="1162.0" layoutY="33.0" mnemonicParsing="false" text="Tìm" AnchorPane.rightAnchor="10.0">
+                                        <Button fx:id="orderFindBtn" layoutX="1162.0" layoutY="33.0" mnemonicParsing="false" onAction="#findOrder" text="Tìm" AnchorPane.rightAnchor="10.0">
                                             <styleClass>
                                                 <String fx:value="btn" />
                                                 <String fx:value="shadow" />

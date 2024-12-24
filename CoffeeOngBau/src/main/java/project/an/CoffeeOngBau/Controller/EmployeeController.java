@@ -135,7 +135,7 @@ public class EmployeeController implements Initializable {
             String maNV = setAutoMaNV();
             String maChucVu = "";
             for(String key : chucvunvs.keySet()){
-                if(chucvunvs.get(key) == employeeChucVuCBB.getSelectionModel().getSelectedItem()){
+                if(chucvunvs.get(key).equals(employeeChucVuCBB.getSelectionModel().getSelectedItem())){
                     maChucVu = key;
                     break;
                 }
@@ -155,10 +155,7 @@ public class EmployeeController implements Initializable {
                 lenh.setString(6, employeeSDTText.getText());
                 lenh.setString(7, employeeEmailText.getText());
                 lenh.setString(8, path);
-                if(tt == "Đang làm")
-                    lenh.setBoolean(9, true);
-                else
-                    lenh.setBoolean(9, false);
+                lenh.setBoolean(9, tt.equals("Đang làm"));
                 lenh.setString(10, employeeEmailText.getText());
                 lenh.setString(11, ComonUtils.hashPassword(employeeSDTText.getText()));
                 setAlert(Alert.AlertType.INFORMATION, "Thêm", "Thêm nhân viên thành công");
