@@ -15,9 +15,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="orderForm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.an.CoffeeOngBau.Controller.ProductController">
+<AnchorPane fx:id="orderForm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="597.0" prefWidth="1227.0" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.an.CoffeeOngBau.Controller.OrderController">
     <children>
-        <TabPane layoutX="43.0" layoutY="48.0" prefHeight="568.0" prefWidth="882.4" style="-fx-background-color: white;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
+        <TabPane layoutX="43.0" layoutY="15.2" prefHeight="568.0" prefWidth="1235.0" style="-fx-background-color: white;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
             <tabs>
                 <Tab text="Đơn chờ">
                     <content>
@@ -66,7 +66,7 @@
                                                 <TableColumn fx:id="orderColTenSPWaiting" prefWidth="75.0" text="Tên sản phẩm" />
                                                 <TableColumn fx:id="orderColDonGiaWaiting" prefWidth="75.0" text="Đơn giá" />
                                                 <TableColumn fx:id="orderColSoLuongWaiting" prefWidth="75.0" text="Số lượng" />
-                                                <TableColumn fx:id="orderColThanhTIenWaiting" prefWidth="75.0" text="Thành tiền" />
+                                                <TableColumn fx:id="orderColThanhTienWaiting" prefWidth="75.0" text="Thành tiền" />
                                                 <TableColumn fx:id="orderColGhiChuSPWaiting" prefWidth="75.0" text="Ghi chú" />
                                             </columns>
                                             <columnResizePolicy>
@@ -108,7 +108,7 @@
                                                 </AnchorPane>
                                             </children>
                                         </AnchorPane>
-                                        <Button fx:id="orderXacNhanBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="319.0" layoutY="584.0" mnemonicParsing="false" text="Xác nhận" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="319.0" AnchorPane.rightAnchor="162.0">
+                                        <Button fx:id="orderXacNhanBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="91.0" layoutY="476.0" mnemonicParsing="false" text="Xác nhận" AnchorPane.bottomAnchor="16.000000000000057" AnchorPane.leftAnchor="10.0">
                                             <styleClass>
                                                 <String fx:value="btn" />
                                                 <String fx:value="shadow" />
@@ -117,7 +117,7 @@
                                                 <Font name="System Bold" size="12.0" />
                                             </font>
                                         </Button>
-                                        <Button fx:id="orderHuyDonBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="191.0" layoutY="584.0" mnemonicParsing="false" text="Hủy đơn" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="162.0" AnchorPane.rightAnchor="319.0">
+                                        <Button fx:id="orderHuyDonBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="94.0" layoutY="476.0" mnemonicParsing="false" text="Hủy đơn" AnchorPane.bottomAnchor="16.000000000000057" AnchorPane.leftAnchor="94.0">
                                             <styleClass>
                                                 <String fx:value="btn" />
                                                 <String fx:value="shadow" />

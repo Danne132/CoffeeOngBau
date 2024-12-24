@@ -9,12 +9,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import javafx.util.converter.LocalDateStringConverter;
 import project.an.CoffeeOngBau.Models.Entities.NhanVien;
-import project.an.CoffeeOngBau.Models.Entities.SanPham;
 import project.an.CoffeeOngBau.Models.Entities.current_data;
 import project.an.CoffeeOngBau.Utils.ComonUtils;
 import project.an.CoffeeOngBau.Utils.DBUtils;
@@ -24,7 +21,6 @@ import java.net.URL;
 import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 
 public class EmployeeController implements Initializable {
@@ -125,7 +121,7 @@ public class EmployeeController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         getCategoryFromDB();
         getEmployeeStatus();
-        showSPList("SELECT * FROM nhanvien");
+        showNVList("SELECT * FROM nhanvien");
     }
 
     public void addNV(ActionEvent event) {
@@ -177,7 +173,7 @@ public class EmployeeController implements Initializable {
             }
             DBUtils.closeConnection(conn);
             reloadNV();
-            showSPList("SELECT * FROM nhanvien");
+            showNVList("SELECT * FROM nhanvien");
         }
     }
 
@@ -212,7 +208,7 @@ public class EmployeeController implements Initializable {
                     prepare = conn.prepareStatement(sqlUpdate);
                     prepare.executeUpdate();
                     setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Cập nhật thông tin thành công!");
-                    showSPList("SELECT * FROM nhanvien");
+                    showNVList("SELECT * FROM nhanvien");
                     reloadNV();
                 } else {
                     setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Đã hủy cập nhật!");
@@ -259,7 +255,7 @@ public class EmployeeController implements Initializable {
         loaiNVFindCBB.setValue(null);
         trangThaiNVFindCBB.setValue(null);
         current_data.id = "";
-        showSPList("SELECT * FROM nhanvien");
+        showNVList("SELECT * FROM nhanvien");
     }
 
     public void importImage(){
@@ -319,7 +315,7 @@ public class EmployeeController implements Initializable {
                 "    (`tenNV` LIKE '%"+tenNV+"%'OR'"+tenNV+"' IS NULL OR '"+tenNV+"' = '') AND " +
                 "    (`chucvu` = "+maCV+" OR "+maCV+" IS NULL) AND" +
                 "    (`isWorking` = "+trangThai+" OR "+trangThai+" IS NULL);";
-        showSPList(sqlFind);
+        showNVList(sqlFind);
     }
 
     private Optional<ButtonType> setAlert(Alert.AlertType alertType, String title, String message){
@@ -365,8 +361,8 @@ public class EmployeeController implements Initializable {
         trangThaiNVFindCBB.setItems(list);
     }
 
-    public void showSPList(String sql){
-        nhanViens = getSPList(sql);
+    public void showNVList(String sql){
+        nhanViens = getNVList(sql);
         employeeColMaNV.setCellValueFactory(new PropertyValueFactory<>("id"));
         employeeColTenNV.setCellValueFactory(new PropertyValueFactory<>("tenNV"));
         employeeColLoaiNV.setCellValueFactory(new PropertyValueFactory<>("chucVu"));
@@ -375,7 +371,7 @@ public class EmployeeController implements Initializable {
         employeeTable.setItems(nhanViens);
     }
 
-    public ObservableList<NhanVien> getSPList(String sql){
+    public ObservableList<NhanVien> getNVList(String sql){
         ObservableList<NhanVien> nvList = FXCollections.observableArrayList();
         conn = DBUtils.openConnection("banhang", "root", "");
         String sqlSelect = sql;

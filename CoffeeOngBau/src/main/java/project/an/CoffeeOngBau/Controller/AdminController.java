@@ -51,6 +51,9 @@ public class AdminController implements Initializable {
     @FXML
     private AnchorPane sellForm;
 
+    @FXML
+    private AnchorPane orderForm;
+
 
     private Alert alert;
 
@@ -163,6 +166,21 @@ public class AdminController implements Initializable {
             FXMLLoader employeeLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/report.fxml"));
             Parent employeeRoot = employeeLoader.load();
             addChildScene(reportForm,employeeRoot);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleLoadOrder() {
+        try {
+            resetColorButton();
+            orderNavBtn.getStyleClass().add("nav-button-choose");
+            setViewInvisible();
+            orderForm.setVisible(true);
+            FXMLLoader employeeLoader = new FXMLLoader(getClass().getResource("/project/an/CoffeeOngBau/fxml/order.fxml"));
+            Parent employeeRoot = employeeLoader.load();
+            addChildScene(orderForm,employeeRoot);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -9,9 +9,9 @@ public class HoaDon {
     String maHD, nguoiTao, ghiChu, thanhToan, trangThai;
     int tongTien;
     Timestamp createdAt;
+    Timestamp confirmedAt;
 
-    public HoaDon(List<CTHD> cthds, String maHD, String nguoiTao, String ghiChu, String thanhToan, String trangThai, int tongTien, Timestamp createdAt) {
-        this.cthds = cthds;
+    public HoaDon(String maHD, String nguoiTao, String ghiChu, String thanhToan, String trangThai, int tongTien, Timestamp createdAt) {
         this.maHD = maHD;
         this.nguoiTao = nguoiTao;
         this.ghiChu = ghiChu;
@@ -83,5 +83,9 @@ public class HoaDon {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Timestamp getConfirmedAt() {
+        return confirmedAt;
     }
 }
