@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="productForm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="569.0" prefWidth="1196.0" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.an.CoffeeOngBau.Controller.ReportController">
+<AnchorPane fx:id="reportForm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="569.0" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.an.CoffeeOngBau.Controller.ReportController">
     <children>
         <AnchorPane layoutX="11.0" layoutY="14.0" prefHeight="178.0" prefWidth="859.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
             <styleClass>
@@ -25,7 +25,7 @@
                     <content>
                         <AnchorPane prefHeight="163.0" prefWidth="1006.0">
                             <children>
-                                <AnchorPane layoutX="21.0" layoutY="9.0" prefHeight="142.0" prefWidth="280.0" AnchorPane.topAnchor="9.0">
+                                <AnchorPane layoutX="21.0" layoutY="9.0" prefHeight="142.0" prefWidth="263.0" AnchorPane.topAnchor="9.0">
                                     <styleClass>
                                         <String fx:value="background-main" />
                                         <String fx:value="board-radius" />
@@ -42,14 +42,14 @@
                                                 <Font name="System Bold" size="15.0" />
                                             </font>
                                         </Label>
-                                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0">
+                                        <Label fx:id="reportTongDonTodayTxt" alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0">
                                             <font>
-                                                <Font name="System Bold" size="25.0" />
+                                                <Font name="System Bold" size="20.0" />
                                             </font>
                                         </Label>
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane layoutX="331.0" layoutY="10.0" prefHeight="142.0" prefWidth="280.0" AnchorPane.topAnchor="9.0">
+                                <AnchorPane layoutX="312.0" layoutY="9.0" prefHeight="142.0" prefWidth="263.0">
                                     <styleClass>
                                         <String fx:value="background-main" />
                                         <String fx:value="board-radius" />
@@ -66,14 +66,14 @@
                                                 <Font name="System Bold" size="15.0" />
                                             </font>
                                         </Label>
-                                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0đ">
+                                        <Label fx:id="reportThuNhapTodayTxt" alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0đ">
                                             <font>
-                                                <Font name="System Bold" size="25.0" />
+                                                <Font name="System Bold" size="20.0" />
                                             </font>
                                         </Label>
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane layoutX="647.0" layoutY="9.0" prefHeight="142.0" prefWidth="280.0" AnchorPane.topAnchor="9.0">
+                                <AnchorPane layoutX="600.0" layoutY="9.0" prefHeight="142.0" prefWidth="263.0">
                                     <styleClass>
                                         <String fx:value="background-main" />
                                         <String fx:value="board-radius" />
@@ -90,14 +90,14 @@
                                                 <Font name="System Bold" size="15.0" />
                                             </font>
                                         </Label>
-                                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0đ">
+                                        <Label fx:id="reportTongThuNhapTxt" alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0đ">
                                             <font>
-                                                <Font name="System Bold" size="25.0" />
+                                                <Font name="System Bold" size="20.0" />
                                             </font>
                                         </Label>
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane layoutX="967.0" layoutY="9.0" prefHeight="142.0" prefWidth="280.0" AnchorPane.topAnchor="9.0">
+                                <AnchorPane layoutX="891.0" layoutY="9.0" prefHeight="142.0" prefWidth="263.0">
                                     <styleClass>
                                         <String fx:value="background-main" />
                                         <String fx:value="board-radius" />
@@ -114,9 +114,9 @@
                                                 <Font name="System Bold" size="15.0" />
                                             </font>
                                         </Label>
-                                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0">
+                                        <Label fx:id="reportTongDonTxt" alignment="CENTER" contentDisplay="CENTER" layoutX="78.0" layoutY="52.0" prefHeight="39.0" prefWidth="165.0" text="0">
                                             <font>
-                                                <Font name="System Bold" size="25.0" />
+                                                <Font name="System Bold" size="20.0" />
                                             </font>
                                         </Label>
                                     </children>
@@ -140,7 +140,7 @@
                         <String fx:value="board" />
                     </styleClass>
                     <children>
-                        <AreaChart layoutY="-48.0" prefHeight="311.0" prefWidth="604.0" title="Thu nhập" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AreaChart fx:id="reportThuNhapChart" layoutY="-48.0" prefHeight="311.0" prefWidth="604.0" title="Thu nhập" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <xAxis>
                                 <CategoryAxis side="BOTTOM" />
                             </xAxis>
@@ -150,14 +150,14 @@
                         </AreaChart>
                     </children>
                 </AnchorPane>
-                <AnchorPane layoutX="574.0" layoutY="15.0" prefHeight="311.0" prefWidth="558.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0">
+                <AnchorPane layoutX="574.0" layoutY="15.0" prefHeight="311.0" prefWidth="567.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0">
                     <styleClass>
                         <String fx:value="shadow" />
                         <String fx:value="board-radius" />
                         <String fx:value="board" />
                     </styleClass>
                     <children>
-                        <BarChart layoutX="-17.6" layoutY="-48.0" prefHeight="352.0000000000001" prefWidth="509.0" title="Đơn hàng" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <BarChart fx:id="reportDonHangChart" layoutX="-17.6" layoutY="-48.0" prefHeight="352.0000000000001" prefWidth="509.0" title="Đơn hàng" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <xAxis>
                                 <CategoryAxis side="BOTTOM" />
                             </xAxis>
