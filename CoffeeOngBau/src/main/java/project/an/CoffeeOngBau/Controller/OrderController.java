@@ -189,16 +189,21 @@ public class OrderController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        trangThai.put(0, "");
         getTrangThaiFromDB();
         showOrderWaitingList(sqlSelectWaiting);
         showOrderList(sqlSelectOrder, null);
     }
 
     public void showOrderList(String sql, ObservableList<HoaDon> hoaDonsL){
+        ObservableList<HoaDon> hoaDonList = FXCollections.observableArrayList();
         if(hoaDonsL == null){
             hoaDons = getOrderList(sql);
+            hoaDonList.addAll(hoaDons);
         }
-        else hoaDons = hoaDonsL;
+        else {
+            hoaDonList.addAll(hoaDonsL);
+        }
         orderCollMaHD.setCellValueFactory(new PropertyValueFactory<>("maHD"));
         orderColNVTao.setCellValueFactory(new PropertyValueFactory<>("nguoiTao"));
         orderColTGTao.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
@@ -218,7 +223,7 @@ public class OrderController implements Initializable {
             }
         });
 
-        orderTable.setItems(hoaDons);
+        orderTable.setItems(hoaDonList);
     }
 
     public void showOrderWaitingList(String sql){
@@ -409,6 +414,7 @@ public class OrderController implements Initializable {
                 trangThai.put(maLoai, tenLoai);
             }
             ObservableList list = FXCollections.observableArrayList(trangThai.values());
+            orderTrangThaiFindCBB.setItems(list);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -512,20 +518,44 @@ public class OrderController implements Initializable {
     }
 
     public void findOrder(){
-        String maHD = orderMaHDFindTxt.getText().trim();
+        String maHDFind = orderMaHDFindTxt.getText().trim();
+        String trangThai = orderTrangThaiFindCBB.getValue();
         LocalDate dateStartFind = orderNgayBDFindDP.getValue();
         LocalDate dateEndFind = orderNgayKTFindDP.getValue();
+        ObservableList<HoaDon> hoaDonsTemp = FXCollections.observableArrayList();
+        hoaDonsTemp.addAll(hoaDons);
         ObservableList<HoaDon> hoaDonsFind = FXCollections.observableArrayList();
-        if(dateStartFind!=null && dateEndFind!=null && !dateStartFind.isAfter(dateEndFind)){
-            List<HoaDon> hoaDonList = hoaDons.stream().filter(hd ->{
-                LocalDate date = hd.getCreatedAt().toLocalDateTime().toLocalDate();
-                return (date.isEqual(dateStartFind) || date.isAfter(dateStartFind)) &&
-                        (date.isEqual(dateEndFind) || date.isBefore(dateEndFind));
-            }).collect(Collectors.toList());
-            for(HoaDon hd : hoaDonList){
-                hoaDonsFind.add(hd);
-            }
+        if (maHDFind.isEmpty() && (trangThai == null || trangThai.isEmpty())
+                && dateStartFind == null && dateEndFind == null) {
+            showOrderList(sqlSelectOrder, null);
+            return;
         }
+
+        hoaDonsTemp.stream()
+                .filter(hd -> {
+                    boolean match = true;
+
+                    // Kiểm tra mã hóa đơn
+                    if (!maHDFind.isEmpty()) {
+                        match &= hd.getMaHD().contains(maHDFind);
+                    }
+
+                    // Kiểm tra trạng thái
+                    if (trangThai != null && !trangThai.isEmpty()) {
+                        match &= hd.getTrangThai().equalsIgnoreCase(trangThai);
+                    }
+
+                    // Kiểm tra ngày tạo
+                    if (dateStartFind != null && dateEndFind != null && !dateStartFind.isAfter(dateEndFind)) {
+                        LocalDate createdAt = hd.getCreatedAt().toLocalDateTime().toLocalDate();
+                        match &= (createdAt.isEqual(dateStartFind) || createdAt.isAfter(dateStartFind)) &&
+                                (createdAt.isEqual(dateEndFind) || createdAt.isBefore(dateEndFind));
+                    }
+
+                    return match;
+                })
+                .forEach(hoaDonsFind::add);
+
         showOrderList(null, hoaDonsFind);
     }
 
