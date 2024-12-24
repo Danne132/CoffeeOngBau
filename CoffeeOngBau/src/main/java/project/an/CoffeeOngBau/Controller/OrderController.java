@@ -16,6 +16,7 @@ import project.an.CoffeeOngBau.Utils.PriceUtils;
 import java.net.URL;
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class OrderController implements Initializable {
@@ -24,12 +25,6 @@ public class OrderController implements Initializable {
 
     @FXML
     private TableView<CTHD> orderCTHDWaitingTable;
-
-    @FXML
-    private Label orderChiPhiKhacTxt;
-
-    @FXML
-    private Label orderChiPhiKhacWaitingTxt;
 
     @FXML
     private TableColumn<CTHD, Integer> orderColDonGia;
@@ -158,9 +153,6 @@ public class OrderController implements Initializable {
     private Label orderTongHoaDonTxt;
 
     @FXML
-    private Label orderTongTienHDTxt;
-
-    @FXML
     private Label orderTongTienSPTxt;
 
     @FXML
@@ -186,6 +178,7 @@ public class OrderController implements Initializable {
     private Statement statement;
     private ResultSet result;
     private ObservableList<HoaDon> hoaDons;
+    private ObservableList<CTHD> cthds;
     private HashMap<Integer, String> trangThai = new HashMap<>();
 
     @Override
@@ -237,8 +230,49 @@ public class OrderController implements Initializable {
                 }
             }
         });
-
         orderTable.setItems(hoaDons);
+    }
+
+    public void showSelectOrderWaiting(){
+        HoaDon hoaDon = orderWaitingTable.getSelectionModel().getSelectedItem();
+        int num = orderWaitingTable.getSelectionModel().getSelectedIndex();
+        if((num - 1) < -1 ) return;
+        cthds = getSelecteHD(hoaDon.getMaHD());
+        orderColTenSPWaiting.setCellValueFactory(new PropertyValueFactory<>("tenSP"));
+        orderColDonGiaWaiting.setCellValueFactory(new PropertyValueFactory<>("donGia"));
+        orderColSoLuongWaiting.setCellValueFactory(new PropertyValueFactory<>("soLuong"));
+        orderColThanhTienWaiting.setCellValueFactory(new PropertyValueFactory<>("thanhTien"));
+        orderColGhiChuSPWaiting.setCellValueFactory(new PropertyValueFactory<>("ghiChu"));
+        orderColThanhTienWaiting.setCellFactory(tc -> new TableCell<CTHD, Integer>() {
+            @Override
+            protected void updateItem(Integer item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(PriceUtils.formatPrice(item));
+                }
+            }
+        });
+        orderColDonGiaWaiting.setCellFactory(tc -> new TableCell<CTHD, Integer>() {
+            @Override
+            protected void updateItem(Integer item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(PriceUtils.formatPrice(item));
+                }
+            }
+        });
+        orderMaHDWaitingTxt.setText(hoaDon.getMaHD());
+        orderNVTaoWaitingTxt.setText(hoaDon.getNguoiTao());
+        orderTGTaoWaitingTxt.setText(String.valueOf(hoaDon.getCreatedAt()));
+        orderLoaiTTWaitingTxt.setText(hoaDon.getThanhToan());
+        orderGhiChuWaitingTxt.setText(hoaDon.getGhiChu());
+        orderTrangThaiWaitingTxt.setText(hoaDon.getTrangThai());
+        orderTongTienSPWaitingTxt.setText(PriceUtils.formatPrice(hoaDon.getTongTien()));
+        orderCTHDWaitingTable.setItems(cthds);
     }
 
     private ObservableList<HoaDon> getOrderList(String sql){
@@ -275,11 +309,10 @@ public class OrderController implements Initializable {
         return orderWaitingList;
     }
 
-    private void selecteHD(){
-        HoaDon hoaDon = orderTable.getSelectionModel().getSelectedItem();
-        int num = orderTable.getSelectionModel().getSelectedIndex();
-        if((num - 1) < -1 ) return;
-        String sqlSelectCTHD = "SELECT * FROM cthd WHERE `maHD` = '" + hoaDon.getMaHD() + "'";
+    private ObservableList<CTHD> getSelecteHD(String maHD){
+        ObservableList<CTHD> cthds = FXCollections.observableArrayList();
+
+        String sqlSelectCTHD = "SELECT * FROM cthd WHERE `maHD` = '" + maHD + "'";
         conn = DBUtils.openConnection("banhang", "root", "");
         try {
             prepare = conn.prepareStatement(sqlSelectCTHD);
@@ -296,11 +329,13 @@ public class OrderController implements Initializable {
                         result.getInt("donGia"),
                         result.getInt("soLuong")
                 );
+                cthds.add(cthd);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
+        DBUtils.closeConnection(conn);
+        return cthds;
     }
 
     private void getTrangThaiFromDB() {
@@ -320,5 +355,17 @@ public class OrderController implements Initializable {
             throw new RuntimeException(e);
         }
         DBUtils.closeConnection(conn);
+    }
+
+    public void confirmOrder(HoaDon selectedOrder){
+
+    }
+
+    private Optional<ButtonType> setAlert(Alert.AlertType alertType, String title, String message){
+        alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText("");
+        alert.setContentText(message);
+        return alert.showAndWait();
     }
 }
