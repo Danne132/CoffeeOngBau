@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import project.an.CoffeeOngBau.Utils.DBUtils;
@@ -48,6 +49,8 @@ public class ReportController implements Initializable {
         displayThuNhapHomNay();
         displayTongThuNhap();
         displayTongDonHomNay();
+        displayReportThuNhapChart();
+        displayReportOrderChart();
     }
 
     public void displayTongDon(){
@@ -121,6 +124,44 @@ public class ReportController implements Initializable {
                 reportTongDonTodayTxt.setText(String.valueOf(tongDonHN));
             }
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBUtils.closeConnection(conn);
+        }
+    }
+
+    public void  displayReportThuNhapChart(){
+        reportThuNhapChart.getData().clear();
+        String sql = "SELECT DATE(`createdAt`), SUM(`tongTien`) FROM hoadon WHERE `trangThai` = 2 GROUP BY DATE(`createdAt`) ORDER BY DATE(`createdAt`)";
+        conn = DBUtils.openConnection("banhang", "root", "");
+        XYChart.Series chart = new XYChart.Series<>();
+        try{
+            prepare = conn.prepareStatement(sql);
+            result = prepare.executeQuery();
+            while (result.next()){
+                chart.getData().add(new XYChart.Data<>(result.getString(1), result.getInt(2)));
+            }
+            reportThuNhapChart.getData().add(chart);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBUtils.closeConnection(conn);
+        }
+    }
+
+    public void displayReportOrderChart(){
+        reportDonHangChart.getData().clear();
+        String sql = "SELECT DATE(`createdAt`), COUNT(`maHD`) FROM hoadon WHERE `trangThai` = 2 GROUP BY DATE(`createdAt`) ORDER BY DATE(`createdAt`)";
+        conn = DBUtils.openConnection("banhang", "root", "");
+        XYChart.Series chart = new XYChart.Series<>();
+        try{
+            prepare = conn.prepareStatement(sql);
+            result = prepare.executeQuery();
+            while (result.next()){
+                chart.getData().add(new XYChart.Data<>(result.getString(1), result.getInt(2)));
+            }
+            reportDonHangChart.getData().add(chart);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

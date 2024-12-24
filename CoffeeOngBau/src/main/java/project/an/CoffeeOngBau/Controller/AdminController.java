@@ -66,6 +66,7 @@ public class AdminController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         displayName();
         btns = new ArrayList<>(Arrays.asList(employNavBtn, orderNavBtn, productNavBtn, reportNavBtn, sellNavBtn));
+        handleLoadReport();
     }
 
     @FXML
