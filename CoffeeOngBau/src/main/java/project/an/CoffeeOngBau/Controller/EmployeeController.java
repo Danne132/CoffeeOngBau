@@ -23,6 +23,8 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 
+import static project.an.CoffeeOngBau.Utils.AlertUtils.setAlert;
+
 public class EmployeeController implements Initializable {
 
     @FXML
@@ -315,13 +317,6 @@ public class EmployeeController implements Initializable {
         showNVList(sqlFind);
     }
 
-    private Optional<ButtonType> setAlert(Alert.AlertType alertType, String title, String message){
-        alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText("");
-        alert.setContentText(message);
-        return alert.showAndWait();
-    }
 
     private void getCategoryFromDB()  {
         conn = DBUtils.openConnection("banhang", "root", "");

@@ -22,6 +22,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import static project.an.CoffeeOngBau.Utils.AlertUtils.setAlert;
+
 public class OrderController implements Initializable {
     @FXML
     private TableView<CTHD> orderCTHDTable;
@@ -559,11 +561,4 @@ public class OrderController implements Initializable {
         showOrderList(null, hoaDonsFind);
     }
 
-    private Optional<ButtonType> setAlert(Alert.AlertType alertType, String title, String message){
-        alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText("");
-        alert.setContentText(message);
-        return alert.showAndWait();
-    }
 }

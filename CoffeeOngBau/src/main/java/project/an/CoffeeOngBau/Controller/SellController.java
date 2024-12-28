@@ -19,6 +19,7 @@ import project.an.CoffeeOngBau.Models.Entities.CTHD;
 import project.an.CoffeeOngBau.Models.Entities.HoaDon;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
 import project.an.CoffeeOngBau.Models.Entities.current_data;
+import project.an.CoffeeOngBau.Utils.AlertUtils;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 import project.an.CoffeeOngBau.Utils.PriceUtils;
 
@@ -265,7 +266,7 @@ public class SellController implements Initializable {
 
     public void taoHD(){
         if(sellKhachTraText.getText().isEmpty()||sellThanhToanCBB.getValue().isEmpty()){
-            setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin hóa đơn");
+            AlertUtils.setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin hóa đơn");
         }
         else {
             maHD = taoMaHD();
@@ -324,13 +325,6 @@ public class SellController implements Initializable {
         }
     }
 
-    private Optional<ButtonType> setAlert(Alert.AlertType alertType, String title, String message){
-        alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText("");
-        alert.setContentText(message);
-        return alert.showAndWait();
-    }
 
     private void taoCTHD(String maHD) throws SQLException {
         String sqlInsertCTHD = "INSERT INTO `cthd`(`maHD`, `maSP`, `donGia` ,`soLuong`, `thanhTien`, `ghiChu`) VALUES (?,?,?,?,?,?)";

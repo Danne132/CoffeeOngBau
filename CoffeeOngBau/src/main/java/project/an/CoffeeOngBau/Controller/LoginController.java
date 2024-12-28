@@ -16,6 +16,8 @@ import project.an.CoffeeOngBau.Utils.DBUtils;
 import java.io.IOException;
 import java.sql.*;
 
+import static project.an.CoffeeOngBau.Utils.AlertUtils.setAlert;
+
 public class LoginController {
     @FXML
     TextField accInput;
@@ -50,26 +52,19 @@ public class LoginController {
                 current_data.chucVu = ketQua.getString("chucVu");
                 current_data.userid = ketQua.getString("maNV");
 
-                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đăng nhập thành công!");
+                setAlert(Alert.AlertType.INFORMATION, "Thành công", "Đăng nhập thành công!");
                 switchToHomeScreen();
                 check = true;
                 break;
             }
         }
         if(!check){
-            showAlert(Alert.AlertType.ERROR, "Lỗi đăng nhập", "Tên đăng nhập hoặc mật khẩu không đúng!");
+            setAlert(Alert.AlertType.ERROR, "Lỗi đăng nhập", "Tên đăng nhập hoặc mật khẩu không đúng!");
             System.out.println("Đăng nhập không thành công");
         }
         DBUtils.closeConnection(conn);
     }
 
-    private void showAlert(Alert.AlertType alertType, String title, String message){
-        alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 
     private void switchToHomeScreen() {
         try {

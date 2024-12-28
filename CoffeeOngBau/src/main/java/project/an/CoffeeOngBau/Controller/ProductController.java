@@ -13,6 +13,7 @@ import javafx.stage.FileChooser;
 import project.an.CoffeeOngBau.Models.Entities.CTHD;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
 import project.an.CoffeeOngBau.Models.Entities.current_data;
+import project.an.CoffeeOngBau.Utils.AlertUtils;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 import project.an.CoffeeOngBau.Utils.PriceUtils;
 
@@ -20,6 +21,8 @@ import java.io.File;
 import java.net.URL;
 import java.sql.*;
 import java.util.*;
+
+import static project.an.CoffeeOngBau.Utils.AlertUtils.setAlert;
 
 public class ProductController implements Initializable {
     @FXML
@@ -400,13 +403,6 @@ public class ProductController implements Initializable {
         }
     }
 
-    private Optional<ButtonType> setAlert(Alert.AlertType alertType, String title, String message){
-        alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText("");
-        alert.setContentText(message);
-        return alert.showAndWait();
-    }
 
     private String getMaLoai(ComboBox<String> cbb){
         String maLoai = null;
