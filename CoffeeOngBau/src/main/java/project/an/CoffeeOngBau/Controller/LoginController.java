@@ -35,7 +35,7 @@ public class LoginController {
     public void Login() throws SQLException {
         initial();
         if (account.isEmpty() || password.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi đăng nhập", "Tên tài khoản và mật khẩu không để trống!");
+            setAlert(Alert.AlertType.ERROR, "Lỗi đăng nhập", "Tên tài khoản và mật khẩu không để trống!");
             return;
         }
         Connection conn = DBUtils.openConnection("banhang", "root", "");

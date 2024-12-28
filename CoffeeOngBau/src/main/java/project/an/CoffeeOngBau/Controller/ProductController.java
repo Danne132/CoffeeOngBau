@@ -13,6 +13,7 @@ import javafx.stage.FileChooser;
 import project.an.CoffeeOngBau.Models.Entities.CTHD;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
 import project.an.CoffeeOngBau.Models.Entities.current_data;
+import project.an.CoffeeOngBau.Repositories.SanPhamRespository;
 import project.an.CoffeeOngBau.Utils.AlertUtils;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 import project.an.CoffeeOngBau.Utils.PriceUtils;
@@ -103,6 +104,8 @@ public class ProductController implements Initializable {
 
     private Alert alert;
 
+
+    private SanPhamRespository sanPhamRespository = new SanPhamRespository();
     private HashMap<String, String> loaisps = new HashMap<>();
     private String[] trangthaisps = new String[]{"Đang bán", "Ngưng bán"};
     private Connection conn;
@@ -117,11 +120,12 @@ public class ProductController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         getCategoryFromDB();
         getProductStatus();
-        showSPList("SELECT * FROM sanpham");
+        showSPList();
     }
 
-    public void showSPList(String sql){
-        sanPhams = getSPList(sql);
+    public void showSPList(){
+//        sanPhams = getSPList(sql);
+        sanPhams = sanPhamRespository.getAllSP(loaisps);
         productColMaSP.setCellValueFactory(new PropertyValueFactory<>("maSP"));
         productColTenSP.setCellValueFactory(new PropertyValueFactory<>("tenSP"));
         productColLoaiSP.setCellValueFactory(new PropertyValueFactory<>("loaiSP"));
@@ -139,35 +143,6 @@ public class ProductController implements Initializable {
             }
         });
         productTable.setItems(sanPhams);
-    }
-
-    public ObservableList<SanPham> getSPList(String sql){
-        ObservableList<SanPham> spList = FXCollections.observableArrayList();
-        conn = DBUtils.openConnection("banhang", "root", "");
-        String sqlSelect = sql;
-        try {
-            prepare = conn.prepareStatement(sqlSelect);
-            result = prepare.executeQuery(sqlSelect);
-            SanPham sp;
-            while(result.next()){
-                sp = new SanPham(
-                        result.getString("maSP"),
-                        result.getNString("tenSP"),
-                        loaisps.get(result.getString("loaiSP")),
-                        result.getNString("moTa"),
-                        result.getNString("ghiChu"),
-                        result.getBoolean("trangThai")?"Đang bán":"Ngừng bán",
-                        result.getString("anhSP"),
-                        result.getInt("donGia")
-                );
-                spList.add(sp);
-            }
-            productTable.setItems(spList);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        DBUtils.closeConnection(conn);
-        return spList;
     }
 
     private void getCategoryFromDB()  {
@@ -214,7 +189,7 @@ public class ProductController implements Initializable {
         loaiSPFindCBB.setValue(null);
         trangThaiSPFindCBB.setValue(null);
         current_data.id = "";
-        showSPList("SELECT * FROM sanpham");
+        showSPList();
     }
 
     public void addSP(){
@@ -267,7 +242,7 @@ public class ProductController implements Initializable {
             }
             DBUtils.closeConnection(conn);
             reloadSP();
-            showSPList("SELECT * FROM sanpham");
+            showSPList();
         }
     }
 
@@ -320,7 +295,7 @@ public class ProductController implements Initializable {
                     prepare = conn.prepareStatement(sqlUpdate);
                     prepare.executeUpdate();
                     setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Cập nhật thông tin thành công!");
-                    showSPList("SELECT * FROM sanpham");
+                    showSPList();
                     reloadSP();
                 } else {
                     setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Đã hủy cập nhật!");
@@ -344,7 +319,7 @@ public class ProductController implements Initializable {
                     prepare.executeUpdate();
                     setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Đã xóa sản phẩm này!");
                     DBUtils.closeConnection(conn);
-                    showSPList("SELECT * FROM sanpham");
+                    showSPList();
                     reloadSP();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
@@ -378,7 +353,7 @@ public class ProductController implements Initializable {
                 "    (`tenSP` LIKE '%"+tenSP+"%'OR'"+tenSP+"' IS NULL OR '"+tenSP+"' = '') AND " +
                 "    (`loaiSP` = "+maLoai+" OR "+maLoai+" IS NULL) AND" +
                 "    (`trangThai` = "+trangThai+" OR "+trangThai+" IS NULL);";
-        showSPList(sqlFind);
+        showSPList();
     }
 
     private String setAutoMaSP(){

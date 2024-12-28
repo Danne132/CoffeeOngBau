@@ -20,7 +20,7 @@ public class Main {
 //				nv1.dangKiTaiKhoan(tk, mk);
 
 
-				System.out.println(ComonUtils.encodePas(mk));
+				System.out.println(ComonUtils.hashPassword(mk));
 				
 				if(nv1.checkLogin(tk, mk) == true) {
 					System.out.println("Đăng nhập thành công");
