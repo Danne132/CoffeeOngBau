@@ -198,52 +198,31 @@ public class ProductController implements Initializable {
                 current_data.path == null){
             setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin sản phẩm!");
         } else {
-            String maSP = setAutoMaSP();
-            System.out.println(maSP);
-            conn = DBUtils.openConnection("banhang", "root", "");
-            String sqlInsert = "INSERT INTO `sanpham` (`maSP`, `tenSP`, `loaiSP`, `donGia`, `anhSP`, `moTa`, `ghiChu`, `trangThai`) VALUES(?,?,?,?,?,?,?,?)";
-            try {
-                PreparedStatement lenh = conn.prepareStatement(sqlInsert);
-                lenh.setString(1, maSP);
-                lenh.setString(2, productTenSPText.getText());
-                String getMaLoai = "";
-                for(String key : loaisps.keySet()){
-                    if(loaisps.get(key) == productLoaiSPCBB.getSelectionModel().getSelectedItem()){
-                        getMaLoai = key;
-                        break;
-                    }
-                }
-                lenh.setString(3, getMaLoai);
-                lenh.setDouble(4, Double.parseDouble(productDonGiaText.getText()));
-                String path = current_data.path;
-                path = path.replace("\\", "\\\\");
-                lenh.setString(5, path);
-                lenh.setString(6, productMoTaText.getText());
-                lenh.setString(7, productGhiChuText.getText());
-                String tt = productTrangThaiCBB.getSelectionModel().getSelectedItem();
-                if(tt == "Đang bán")
-                    lenh.setBoolean(8, true);
-                else
-                    lenh.setBoolean(8, false);
 
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Thêm sản phẩm");
-                alert.setHeaderText(null);
-                alert.setContentText("Thêm sản phẩm thành công");
-                alert.showAndWait();
-                int rowsInserted = lenh.executeUpdate();
-                if (rowsInserted > 0) {
-                    System.out.println("Thêm sản phẩm thành công");
-                } else {
-                    System.out.println("Không thể thêm sản phẩm.");
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            DBUtils.closeConnection(conn);
+            SanPham sp = getDataFromUI();
+            sanPhamRespository.addSP(sp);
             reloadSP();
             showSPList();
         }
+    }
+
+    private SanPham getDataFromUI(){
+        String maSP = setAutoMaSP();
+        String tenSP = productTenSPText.getText();
+        String getMaLoai = "";
+        for(String key : loaisps.keySet()){
+            if(loaisps.get(key) == productLoaiSPCBB.getSelectionModel().getSelectedItem()){
+                getMaLoai = key;
+                break;
+            }
+        }
+        int donGia = Integer.parseInt(productDonGiaText.getText());
+        String path = current_data.path;
+        path = path.replace("\\", "\\\\");
+        String moTa = productMoTaText.getText();
+        String ghiChu = productGhiChuText.getText();
+        String trangThai = productTrangThaiCBB.getSelectionModel().getSelectedItem();
+        return new SanPham(maSP, tenSP, getMaLoai, moTa, ghiChu, trangThai, path, donGia);
     }
 
     public void selecteSP(){

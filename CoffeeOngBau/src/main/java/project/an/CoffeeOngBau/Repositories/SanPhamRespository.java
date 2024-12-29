@@ -2,6 +2,8 @@ package project.an.CoffeeOngBau.Repositories;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 
@@ -12,6 +14,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
+
+import static project.an.CoffeeOngBau.Utils.AlertUtils.setAlert;
 
 public class SanPhamRespository {
     private Connection conn;
@@ -41,5 +46,31 @@ public class SanPhamRespository {
         }
         DBUtils.closeConnection(conn);
         return spList;
+    }
+    public void addSP(SanPham sanPham){
+        conn = DBUtils.openConnection("banhang", "root", "");
+        String sqlInsert = "INSERT INTO `sanpham` (`maSP`, `tenSP`, `loaiSP`, `donGia`, `anhSP`, `moTa`, `ghiChu`, `trangThai`) VALUES(?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement lenh = conn.prepareStatement(sqlInsert);
+            lenh.setString(1, sanPham.getMaSP());
+            lenh.setString(2, sanPham.getTenSP());
+            lenh.setString(3, sanPham.getTenSP());
+            lenh.setDouble(4, sanPham.getDonGia());
+            lenh.setString(5, sanPham.getAnhSP());
+            lenh.setString(6, sanPham.getMoTa());
+            lenh.setString(7, sanPham.getGhiChu());
+            boolean tt = sanPham.getTrangThai()=="Đang bán";
+            lenh.setBoolean(8, tt);
+            int rowsInserted = lenh.executeUpdate();
+            Optional<ButtonType> confirmAction = setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn muốn thêm sản phẩm này?");
+            if (rowsInserted > 0) {
+                setAlert(Alert.AlertType.INFORMATION, "Thêm sản phẩm", "Thêm sản phẩm thành công");
+            } else {
+                setAlert(Alert.AlertType.INFORMATION, "Thêm sản phẩm", "Thêm sản phẩm không thành công");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        DBUtils.closeConnection(conn);
     }
 }
