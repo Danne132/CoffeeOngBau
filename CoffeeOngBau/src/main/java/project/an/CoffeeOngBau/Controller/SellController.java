@@ -19,6 +19,7 @@ import project.an.CoffeeOngBau.Models.Entities.CTHD;
 import project.an.CoffeeOngBau.Models.Entities.HoaDon;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
 import project.an.CoffeeOngBau.Models.Entities.current_data;
+import project.an.CoffeeOngBau.Repositories.SanPhamRespository;
 import project.an.CoffeeOngBau.Utils.AlertUtils;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 import project.an.CoffeeOngBau.Utils.PriceUtils;
@@ -91,6 +92,7 @@ public class SellController implements Initializable {
 
     private HashMap<String, String> loaisps = new HashMap<>();
     private ObservableList<SanPham> cardList = FXCollections.observableArrayList();
+    private ObservableList<SanPham> cardListFilter = FXCollections.observableArrayList();
     private Connection conn;
     private PreparedStatement prepare;
     private Statement statement;
@@ -99,14 +101,18 @@ public class SellController implements Initializable {
     private ObservableList<CTHD> cthdList = FXCollections.observableArrayList();
     private String[] loaiTT = new String[]{"Trả tiền mặt", "Chuyển khoản"};
     private String maHD;
-    private Alert alert;
+    private SanPhamRespository sanPhamRespository = new SanPhamRespository();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        sellDisplayCard(sellGetDataFromDB());
+        loaisps = sanPhamRespository.getLoaiSPS();
+        ObservableList list = FXCollections.observableArrayList(loaisps.values());
+        sellLoaiSPCBB.setItems(list);
+        cardList = sellGetDataFromDB();
+        sellDisplayCard(cardList);
         showCTHDList();
         getLoaiTT();
-        getCategoryFromDB();
+//        getCategoryFromDB();
     }
 
     public ObservableList<SanPham> sellGetDataFromDB(){
@@ -118,16 +124,18 @@ public class SellController implements Initializable {
             result = prepare.executeQuery();
             SanPham sp;
             while(result.next()){
+                String maLoaiSP = loaisps.get(result.getString("loaiSP"));
                 sp = new SanPham(
                         result.getString("maSP"),
                         result.getNString("tenSP"),
                         result.getString("anhSP"),
                         result.getInt("donGia"),
-                        loaisps.get(result.getString("loaiSP"))
+                        maLoaiSP
                 );
                 listData.add(sp);
             }
         } catch (Exception e){
+            e.printStackTrace();
         }
         DBUtils.closeConnection(conn);
         return listData;
@@ -136,19 +144,19 @@ public class SellController implements Initializable {
 
 
     public void sellDisplayCard(ObservableList<SanPham> observableList){
-        cardList.clear();
-        cardList.addAll(observableList);
+        cardListFilter.clear();
+        cardListFilter.addAll(observableList);
         int row = 0;
         int column =0;
         sellGridPane.getRowConstraints().clear();
         sellGridPane.getColumnConstraints().clear();
-        for(int i = 0; i < cardList.size(); i++){
+        for(int i = 0; i < cardListFilter.size(); i++){
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("/project/an/CoffeeOngBau/fxml/card_product.fxml"));
                 AnchorPane pane = loader.load();
                 CardProductController cardP = loader.getController();
-                cardP.setData(cardList.get(i), this);
+                cardP.setData(cardListFilter.get(i), this);
                 if(column == 4){
                     column = 0;
                     row++;
@@ -361,10 +369,10 @@ public class SellController implements Initializable {
     }
 
     public void findSPSell(){
+        ObservableList<SanPham> filteredList = FXCollections.observableArrayList();
+        filteredList.clear();
         String searchName = sellTenSPText.getText().toLowerCase();
         String selectedLoaiSP = sellLoaiSPCBB.getValue();
-        ObservableList<SanPham> filteredList = FXCollections.observableArrayList();
-        filteredList.clear(); // Xóa dữ liệu cũ trong danh sách tạm
         for (SanPham sp : cardList) {
             if (sp.getTenSP().toLowerCase().contains(searchName) &&
                     (selectedLoaiSP == null || sp.getLoaiSP().equals(selectedLoaiSP))) {
@@ -374,5 +382,4 @@ public class SellController implements Initializable {
         sellGridPane.getChildren().clear();
         sellDisplayCard(filteredList);
     }
-
 }
