@@ -115,8 +115,8 @@ public class ProductController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        getCategoryFromDB();
-        getProductStatus();
+        loaisps = sanPhamRespository.getLoaiSPS();
+        setupCBB();
         showSPList(sanPhamRespository.getAllSP(loaisps));
     }
 
@@ -141,37 +141,17 @@ public class ProductController implements Initializable {
         productTable.setItems(sanPhams);
     }
 
-    private void getCategoryFromDB()  {
-        conn = DBUtils.openConnection("banhang", "root", "");
-        String sqlSelect = "SELECT * FROM loaisp";
-        Statement lenh = null;
-        try {
-            lenh = conn.createStatement();
-            ResultSet ketQua = lenh.executeQuery(sqlSelect);
-            while(ketQua.next()){
-                String maLoai = ketQua.getString("maLoai");
-                String tenLoai = ketQua.getString("tenLoai");
-                loaisps.put(maLoai, tenLoai);
-            }
-            ObservableList list = FXCollections.observableArrayList(loaisps.values());
-            productLoaiSPCBB.setItems(list);
-            productLoaiSPCBB.getSelectionModel().select(0);
-            loaiSPFindCBB.setItems(list);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        DBUtils.closeConnection(conn);
-    }
-
-    private void getProductStatus(){
+    private void setupCBB(){
+        ObservableList list = FXCollections.observableArrayList(loaisps.values());
+        productLoaiSPCBB.setItems(list);
+        productLoaiSPCBB.getSelectionModel().select(0);
+        loaiSPFindCBB.setItems(list);
         List<String> listTT = new ArrayList<>();
-        for(String trangthai : trangthaisps){
-            listTT.add(trangthai);
-        }
-        ObservableList list = FXCollections.observableArrayList(listTT);
-        productTrangThaiCBB.setItems(list);
+        listTT.addAll(List.of(trangthaisps));
+        ObservableList listTrangThai = FXCollections.observableArrayList(listTT);
+        productTrangThaiCBB.setItems(listTrangThai);
         productTrangThaiCBB.getSelectionModel().select(0);
-        trangThaiSPFindCBB.setItems(list);
+        trangThaiSPFindCBB.setItems(listTrangThai);
     }
 
     public void reloadSP(){

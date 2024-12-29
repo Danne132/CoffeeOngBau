@@ -19,6 +19,15 @@ import static project.an.CoffeeOngBau.Utils.AlertUtils.setAlert;
 public class SanPhamRespository {
     private Connection conn;
     private HashMap<String, String> loaisps = new HashMap<>();
+
+    public SanPhamRespository() {
+        getCategoryFromDB();
+    }
+
+    public HashMap<String, String> getLoaiSPS(){
+        return loaisps;
+    }
+
     public ObservableList<SanPham> getAllSP(HashMap<String, String> loaisps){
         ObservableList<SanPham> spList = FXCollections.observableArrayList();
         conn = DBUtils.openConnection("banhang", "root", "");
@@ -152,10 +161,10 @@ public class SanPhamRespository {
         System.out.println(maLoai);
         return maLoai;
     }
-    public HashMap<String, String> getCategoryFromDB()  {
+
+    private HashMap<String, String> getCategoryFromDB()  {
         conn = DBUtils.openConnection("banhang", "root", "");
         String sqlSelect = "SELECT * FROM loaisp";
-        ObservableList list = FXCollections.observableArrayList();
         Statement lenh = null;
         try {
             lenh = conn.createStatement();
@@ -165,13 +174,10 @@ public class SanPhamRespository {
                 String tenLoai = ketQua.getString("tenLoai");
                 loaisps.put(maLoai, tenLoai);
             }
-            list = FXCollections.observableArrayList(loaisps.values());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        finally {
-            DBUtils.closeConnection(conn);
-        }
+        DBUtils.closeConnection(conn);
         return loaisps;
     }
 }
