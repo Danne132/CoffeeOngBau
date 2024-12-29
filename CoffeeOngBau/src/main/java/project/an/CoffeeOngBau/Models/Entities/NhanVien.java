@@ -26,6 +26,20 @@ public class NhanVien {
         this.ngaySinh = ngaySinh;
     }
 
+    public NhanVien(String id, String tenNV, String chucVu, String SDT, String email, String username, String password, String isWorking, String anhNV, boolean gioiTinh, Date ngaySinh) {
+        this.id = id;
+        this.tenNV = tenNV;
+        this.chucVu = chucVu;
+        this.SDT = SDT;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.isWorking = isWorking;
+        this.anhNV = anhNV;
+        this.gioiTinh = gioiTinh;
+        this.ngaySinh = ngaySinh;
+    }
+
     public Date getNgaySinh() {
         return ngaySinh;
     }

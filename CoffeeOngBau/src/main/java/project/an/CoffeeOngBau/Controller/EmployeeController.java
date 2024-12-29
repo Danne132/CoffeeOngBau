@@ -13,8 +13,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import project.an.CoffeeOngBau.Models.Entities.NhanVien;
 import project.an.CoffeeOngBau.Models.Entities.current_data;
-import project.an.CoffeeOngBau.Utils.ComonUtils;
+import project.an.CoffeeOngBau.Repositories.NhanVienRepository;
 import project.an.CoffeeOngBau.Utils.DBUtils;
+import project.an.CoffeeOngBau.Utils.ImportImageUtils;
 
 import java.io.File;
 import java.net.URL;
@@ -108,8 +109,7 @@ public class EmployeeController implements Initializable {
     @FXML
     private ComboBox<String> trangThaiNVFindCBB;
 
-    private Alert alert;
-
+    private NhanVienRepository nhanVienRepository = new NhanVienRepository();
     private HashMap<String, String> chucvunvs = new HashMap<>();
     private String[] trangthainvs = new String[]{"Đang làm", "Nghỉ làm"};
     private Connection conn;
@@ -121,9 +121,19 @@ public class EmployeeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        getCategoryFromDB();
-        getEmployeeStatus();
-        showNVList("SELECT * FROM nhanvien");
+        chucvunvs = nhanVienRepository.getLoainvs();
+        setupCBB();
+        showNVList(nhanVienRepository.getAllNVList());
+    }
+
+    public void showNVList(ObservableList<NhanVien> nvs){
+        nhanViens = nvs;
+        employeeColMaNV.setCellValueFactory(new PropertyValueFactory<>("id"));
+        employeeColTenNV.setCellValueFactory(new PropertyValueFactory<>("tenNV"));
+        employeeColLoaiNV.setCellValueFactory(new PropertyValueFactory<>("chucVu"));
+        employeeColTrangThai.setCellValueFactory(new PropertyValueFactory<>("isWorking"));
+        employeeColNgay.setCellValueFactory(new PropertyValueFactory<>("createAt"));
+        employeeTable.setItems(nhanViens);
     }
 
     public void addNV(ActionEvent event) {
@@ -134,45 +144,20 @@ public class EmployeeController implements Initializable {
                 current_data.path == null){
             setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin nhân viên!");
         } else {
-            String maNV = setAutoMaNV();
-            String maChucVu = "";
-            for(String key : chucvunvs.keySet()){
-                if(chucvunvs.get(key).equals(employeeChucVuCBB.getSelectionModel().getSelectedItem())){
-                    maChucVu = key;
-                    break;
-                }
-            }
-            String tt = employeeTrangThaiCBB.getSelectionModel().getSelectedItem();
+            String maNV = nhanVienRepository.setAutoMaNV(employeeChucVuCBB);
+            String tenNV = employeeTenNVText.getText();
+            boolean gioiTinh = setGender();
+            Date ngaySinh = Date.valueOf(employeeNgaySinhDP.getValue());
+            String maChucVu = nhanVienRepository.getMaCV(employeeChucVuCBB);
+            String sdt = employeeSDTText.getText();
+            String email = employeeEmailText.getText();
             String path = current_data.path;
             path = path.replace("\\", "\\\\");
-            conn = DBUtils.openConnection("banhang", "root", "");
-            String sqlInsert = "INSERT INTO `nhanvien` (`maNV`, `tenNV`, `gioiTinh`, `ngaySinh`, `chucVu`, `SDT`, `email`, `anhNV`, `isWorking`, `username`, `password`) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-            try {
-                PreparedStatement lenh = conn.prepareStatement(sqlInsert);
-                lenh.setString(1, maNV);
-                lenh.setString(2, employeeTenNVText.getText());
-                lenh.setBoolean(3, setGender());
-                lenh.setDate(4, Date.valueOf(employeeNgaySinhDP.getValue()));
-                lenh.setString(5, maChucVu);
-                lenh.setString(6, employeeSDTText.getText());
-                lenh.setString(7, employeeEmailText.getText());
-                lenh.setString(8, path);
-                lenh.setBoolean(9, tt.equals("Đang làm"));
-                lenh.setString(10, employeeEmailText.getText());
-                lenh.setString(11, ComonUtils.hashPassword(employeeSDTText.getText()));
-                setAlert(Alert.AlertType.INFORMATION, "Thêm", "Thêm nhân viên thành công");
-                int rowsInserted = lenh.executeUpdate();
-                if (rowsInserted > 0) {
-                    System.out.println("Thêm sản phẩm thành công");
-                } else {
-                    System.out.println("Không thể thêm sản phẩm.");
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            DBUtils.closeConnection(conn);
+            String isWorking = employeeTrangThaiCBB.getSelectionModel().getSelectedItem();
+            NhanVien nv = new NhanVien(maNV, tenNV, maChucVu, sdt, email, email, sdt, isWorking, path, gioiTinh, ngaySinh);
+            nhanVienRepository.addNV(nv);
             reloadNV();
-            showNVList("SELECT * FROM nhanvien");
+            showNVList(nhanVienRepository.getAllNVList());
         }
     }
 
@@ -184,8 +169,7 @@ public class EmployeeController implements Initializable {
                 current_data.path == null||current_data.id == null){
             setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin!");
         } else {
-            String cv = getMaCV(employeeChucVuCBB);
-            System.out.println(cv);
+            String cv = nhanVienRepository.getMaCV(employeeChucVuCBB);
             int isWork;
             if(employeeTrangThaiCBB.getSelectionModel().getSelectedItem().equals("Đang làm")) isWork = 1;
             else isWork = 0;
@@ -207,7 +191,7 @@ public class EmployeeController implements Initializable {
                     prepare = conn.prepareStatement(sqlUpdate);
                     prepare.executeUpdate();
                     setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Cập nhật thông tin thành công!");
-                    showNVList("SELECT * FROM nhanvien");
+                    showNVList(nhanVienRepository.getAllNVList());
                     reloadNV();
                 } else {
                     setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Đã hủy cập nhật!");
@@ -222,20 +206,8 @@ public class EmployeeController implements Initializable {
         if(current_data.id == null){
             setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy chọn nhân viên cần xóa!");
         } else {
-            Optional<ButtonType> optional = setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn muốn xóa thông tin nhân viên này?");
-            if(optional.get().equals(ButtonType.OK)){
-                try {
-                    String sqlDelete = "DELETE FROM `nhanvien` WHERE `maNV`='"+current_data.id+"'";
-                    conn = DBUtils.openConnection("banhang", "root", "");
-                    prepare = conn.prepareStatement(sqlDelete);
-                    prepare.executeUpdate();
-                    setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Đã xóa thông tin nhân viên này!");
-                    DBUtils.closeConnection(conn);
-                    reloadNV();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            } else setAlert(Alert.AlertType.CONFIRMATION, "Thông tin", "Hủy xóa");
+            nhanVienRepository.deleteNV();
+            reloadNV();
         }
     }
 
@@ -254,18 +226,12 @@ public class EmployeeController implements Initializable {
         loaiNVFindCBB.setValue(null);
         trangThaiNVFindCBB.setValue(null);
         current_data.id = "";
-        showNVList("SELECT * FROM nhanvien");
+        showNVList(nhanVienRepository.getAllNVList());
     }
 
     public void importImage(){
-        FileChooser openFile = new FileChooser();
-        openFile.getExtensionFilters().add(new FileChooser.ExtensionFilter("Open Image File", "*png", "*jpg"));
-        File file = openFile.showOpenDialog(employeeForm.getScene().getWindow());
-        if(file != null){
-            current_data.path = file.getAbsolutePath();
-            image = new Image(file.toURI().toString(), 113, 125, false, true);
-            employeeImage.setImage(image);
-        }
+        image = ImportImageUtils.getImageFromUser(employeeForm);
+        employeeImage.setImage(image);
     }
 
     public void selectNV() {
@@ -290,112 +256,62 @@ public class EmployeeController implements Initializable {
         employeeSDTText.setText(nhanVien.getSDT());
         current_data.path = nhanVien.getAnhNV();
         current_data.id = nhanVien.getId();
-        System.out.println(current_data.path);
         String path = "File:"+ current_data.path;
         Image image = new Image(path, 113, 125, false, true);
         employeeImage.setImage(image);
         String cvNV= nhanVien.getChucVu();
-        System.out.println(cvNV);
         employeeChucVuCBB.getSelectionModel().select(cvNV);
         employeeTrangThaiCBB.getSelectionModel().select(nhanVien.getIsWorking()=="Đang làm"?0:1);
     }
 
     public void findNV() {
-        String sqlFind;
-        String maCV = getMaCV(loaiNVFindCBB);
-        String trangThai = trangThaiNVFindCBB.getValue()==null?"NULL":trangThaiNVFindCBB.getValue()=="Đang bán"?"1":"0";
-        String tenNV = tenNVFindText.getText();
-        maCV = maCV==null?"NULL":"'"+maCV+"'";
-        System.out.println("mã loại"+maCV);
-        System.out.println("trạng thái"+trangThai);
-        sqlFind = "SELECT * " +
-                "FROM nhanvien " +
-                "WHERE " +
-                "    (`tenNV` LIKE '%"+tenNV+"%'OR'"+tenNV+"' IS NULL OR '"+tenNV+"' = '') AND " +
-                "    (`chucvu` = "+maCV+" OR "+maCV+" IS NULL) AND" +
-                "    (`isWorking` = "+trangThai+" OR "+trangThai+" IS NULL);";
-        showNVList(sqlFind);
-    }
-
-
-    private void getCategoryFromDB()  {
-        conn = DBUtils.openConnection("banhang", "root", "");
-        String sqlSelect = "SELECT * FROM chucvunv";
-        statement = null;
-        try {
-            statement = conn.createStatement();
-            ResultSet ketQua = statement.executeQuery(sqlSelect);
-            System.out.println(ketQua==null?"Chưa lấy được":"Đã lấy được");
-            while(ketQua.next()){
-                String maCV = ketQua.getString("maCV");
-                String tenCV = ketQua.getString("tenCV");
-                System.out.println(maCV +"   "+tenCV);
-                chucvunvs.put(maCV, tenCV);
-            }
-            ObservableList list = FXCollections.observableArrayList(chucvunvs.values());
-            employeeChucVuCBB.setItems(list);
-            employeeChucVuCBB.getSelectionModel().select(0);
-            loaiNVFindCBB.setItems(list);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        showNVList(nhanVienRepository.getAllNVList());
+        String maLoai = loaiNVFindCBB.getSelectionModel().getSelectedItem();
+        String trangThai = trangThaiNVFindCBB.getValue();
+        String tenSP = tenNVFindText.getText();
+        ObservableList<NhanVien> nhanViensTemp = FXCollections.observableArrayList();
+        nhanViensTemp.addAll(nhanViens);
+        ObservableList<NhanVien> nhanViensFind = FXCollections.observableArrayList();
+        if (tenSP.isEmpty() && (trangThai == null || trangThai.isEmpty() && (maLoai == null || maLoai.isEmpty()))) {
+            showNVList(nhanVienRepository.getAllNVList());
+            return;
         }
-        DBUtils.closeConnection(conn);
+        nhanViensTemp.stream()
+                .filter(nv -> {
+                    boolean match = true;
+
+                    // Kiểm tra mã hóa đơn
+                    if (!tenSP.isEmpty()) {
+                        match &= nv.getTenNV().toLowerCase().contains(tenSP.toLowerCase());
+                    }
+
+                    // Kiểm tra trạng thái
+                    if (trangThai != null && !trangThai.isEmpty()) {
+                        match &= nv.getIsWorking().equalsIgnoreCase(trangThai);
+                    }
+
+//                     Kiểm tra mã loại
+                    if (maLoai != null && !maLoai.isEmpty()) {
+                        match &= nv.getChucVu().equalsIgnoreCase(maLoai);
+                    }
+                    return match;
+                })
+                .forEach(nhanViensFind::add);
+        showNVList(nhanViensFind);
     }
 
-    private void getEmployeeStatus(){
+    private void setupCBB(){
+        ObservableList list = FXCollections.observableArrayList(chucvunvs.values());
+        loaiNVFindCBB.setItems(list);
+        employeeChucVuCBB.setItems(list);
         List<String> listTT = new ArrayList<>();
         for(String trangthai : trangthainvs){
             listTT.add(trangthai);
         }
-        ObservableList list = FXCollections.observableArrayList(listTT);
-        employeeTrangThaiCBB.setItems(list);
+        ObservableList listTrangThai = FXCollections.observableArrayList(listTT);
+        employeeTrangThaiCBB.setItems(listTrangThai);
         employeeTrangThaiCBB.getSelectionModel().select(0);
-        trangThaiNVFindCBB.setItems(list);
-    }
-
-    public void showNVList(String sql){
-        nhanViens = getNVList(sql);
-        employeeColMaNV.setCellValueFactory(new PropertyValueFactory<>("id"));
-        employeeColTenNV.setCellValueFactory(new PropertyValueFactory<>("tenNV"));
-        employeeColLoaiNV.setCellValueFactory(new PropertyValueFactory<>("chucVu"));
-        employeeColTrangThai.setCellValueFactory(new PropertyValueFactory<>("isWorking"));
-        employeeColNgay.setCellValueFactory(new PropertyValueFactory<>("createAt"));
-        employeeTable.setItems(nhanViens);
-    }
-
-    public ObservableList<NhanVien> getNVList(String sql){
-        ObservableList<NhanVien> nvList = FXCollections.observableArrayList();
-        conn = DBUtils.openConnection("banhang", "root", "");
-        String sqlSelect = sql;
-        try {
-            prepare = conn.prepareStatement(sqlSelect);
-            result = prepare.executeQuery(sqlSelect);
-            NhanVien nhanVien;
-            while(result.next()){
-                nhanVien = new NhanVien(
-                        result.getString("maNV"),
-                        result.getNString("tenNV"),
-                        chucvunvs.get(result.getString("chucVu")),
-                        result.getNString("SDT"),
-                        result.getNString("email"),
-                        result.getString("username"),
-                        result.getString("password"),
-                        result.getString("anhNV"),
-                        result.getBoolean("isWorking")?"Đang làm":"Nghỉ làm",
-                        result.getTimestamp("createdAt"),
-                        result.getTimestamp("updatedAt"),
-                        result.getBoolean("gioiTinh"),
-                        result.getDate("ngaySinh")
-                );
-                nvList.add(nhanVien);
-                nhanVien.getChucVu();
-            }
-            employeeTable.setItems(nvList);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        DBUtils.closeConnection(conn);
-        return nvList;
+        trangThaiNVFindCBB.setItems(listTrangThai);
     }
 
     public boolean setGender(){
@@ -408,39 +324,4 @@ public class EmployeeController implements Initializable {
             return false;
         }
     }
-
-    private String setAutoMaNV(){
-        String getChucVu = getMaCV(employeeChucVuCBB);
-        conn = DBUtils.openConnection("banhang", "root", "");
-        String sqlSelect = "SELECT maNV FROM nhanvien WHERE chucVu LIKE ? ORDER BY maNV DESC LIMIT 1";
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelect)) {
-            preparedStatement.setString(1, getChucVu + "%");
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (!resultSet.next()) {
-                    return getChucVu + "001";
-                }
-                String lastMaNV = resultSet.getString("maNV");
-                System.out.println("Mã lớn nhất: " + lastMaNV);
-                int number = Integer.parseInt(lastMaNV.substring(getChucVu.length()));
-                return getChucVu + String.format("%03d", number + 1);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            DBUtils.closeConnection(conn);
-        }
-    }
-
-    private String getMaCV(ComboBox<?> cbb) {
-        String maLoai = null;
-        for(String key : chucvunvs.keySet()){
-            if(chucvunvs.get(key) == cbb.getSelectionModel().getSelectedItem()){
-                maLoai = key;
-                return maLoai;
-            }
-        }
-        System.out.println(maLoai);
-        return maLoai;
-    }
-
 }

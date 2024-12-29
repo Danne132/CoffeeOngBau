@@ -1,8 +1,7 @@
 package project.an.CoffeeOngBau.Utils;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.HashMap;
 
 public class DBUtils {
 	public static Connection openConnection(String dbName, String user, String pass) {
@@ -34,5 +33,24 @@ public class DBUtils {
 	        e.printStackTrace();
 	      }
 	    }
-	  }
+	}
+	public static HashMap<String, String> getCategoryFromDB(String sql, String maLoaiOb, String tenLoaiOb)  {
+		HashMap<String, String> loai = new HashMap<>();
+		Connection conn = DBUtils.openConnection("banhang", "root", "");
+		String sqlSelect = sql;
+		Statement lenh = null;
+		try {
+			lenh = conn.createStatement();
+			ResultSet ketQua = lenh.executeQuery(sqlSelect);
+			while(ketQua.next()){
+				String maLoai = ketQua.getString(maLoaiOb);
+				String tenLoai = ketQua.getString(tenLoaiOb);
+				loai.put(maLoai, tenLoai);
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		DBUtils.closeConnection(conn);
+		return loai;
+	}
 }

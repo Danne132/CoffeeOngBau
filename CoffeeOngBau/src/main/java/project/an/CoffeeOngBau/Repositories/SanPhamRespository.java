@@ -15,19 +15,18 @@ import java.util.List;
 import java.util.Optional;
 
 import static project.an.CoffeeOngBau.Utils.AlertUtils.setAlert;
+import static project.an.CoffeeOngBau.Utils.DBUtils.getCategoryFromDB;
 
 public class SanPhamRespository {
     private Connection conn;
-    private HashMap<String, String> loaisps = new HashMap<>();
+    private HashMap<String, String> loaisps;
 
     public SanPhamRespository() {
-        getCategoryFromDB();
+        loaisps = getCategoryFromDB("SELECT * FROM loaisp", "maLoai", "tenLoai");
     }
-
     public HashMap<String, String> getLoaiSPS(){
         return loaisps;
     }
-
     public ObservableList<SanPham> getAllSP(HashMap<String, String> loaisps){
         ObservableList<SanPham> spList = FXCollections.observableArrayList();
         conn = DBUtils.openConnection("banhang", "root", "");
@@ -160,24 +159,5 @@ public class SanPhamRespository {
         }
         System.out.println(maLoai);
         return maLoai;
-    }
-
-    private HashMap<String, String> getCategoryFromDB()  {
-        conn = DBUtils.openConnection("banhang", "root", "");
-        String sqlSelect = "SELECT * FROM loaisp";
-        Statement lenh = null;
-        try {
-            lenh = conn.createStatement();
-            ResultSet ketQua = lenh.executeQuery(sqlSelect);
-            while(ketQua.next()){
-                String maLoai = ketQua.getString("maLoai");
-                String tenLoai = ketQua.getString("tenLoai");
-                loaisps.put(maLoai, tenLoai);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        DBUtils.closeConnection(conn);
-        return loaisps;
     }
 }
