@@ -7,6 +7,10 @@
     -fx-border-color: #FFE890;
 }
 
+.linear-background{
+    -fx-background-color: linear-gradient(to bottom right, #ffc536, #b46406);
+}
+
 .nav-button{
     -fx-background-color: #FFCC07;
     -fx-border-color: #FFE890;
@@ -52,7 +56,7 @@
 }
 
 .trasparent{
-    -fx-background-color: trasparent;
+    -fx-background-color: transparent;
 }
 
 .background-main{
@@ -79,5 +83,30 @@
 .btn:hover{
     -fx-background-color: #FFE890;
     -fx-border-color: #FFCC07;
+}
+
+.table-view{
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-border-color: linear-gradient(to bottom right, #ffc536, #b46406);
+    -fx-border-radius: 5px;
+    -fx-border-width: 1.5px;
+}
+
+.table-view .column-header{
+    -fx-border-color: #f7f7f7;
+    -fx-border-width: 0 0.5px 0 0.5px;
+    -fx-border-style: solid;
+}
+
+.table-view .column-header-background{
+    -fx-background-color: #FFCC07;
+    -fx-background-radius: 5px 5px 0 0;
+    -fx-background-insets: 0 0 0 0;
+}
+
+.table-view .column-header, .filter{
+    -fx-background-color: transparent;
+    -fx-size: 40px;
 }
 

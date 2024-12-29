@@ -4,3 +4,8 @@
 .shadow{
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5,0,0,0);
 }
+.card-background{
+    -fx-background-color: linear-gradient(to bottom right, #ffc536, #b46406);;
+    -fx-border-color: #FFCC07;
+    -fx-border-width: 1px;
+}

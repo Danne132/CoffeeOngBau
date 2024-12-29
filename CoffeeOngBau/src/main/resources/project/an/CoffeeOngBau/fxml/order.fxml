@@ -138,7 +138,7 @@
                                 <Separator layoutX="14.0" layoutY="351.0" prefWidth="200.0" AnchorPane.bottomAnchor="310.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
                                 <AnchorPane layoutX="15.0" layoutY="14.0" prefHeight="437.0" prefWidth="1214.0" AnchorPane.bottomAnchor="320.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                                     <children>
-                                        <TableView fx:id="orderTable" onMouseClicked="#showSelectOrder" prefHeight="259.0" prefWidth="1216.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0">
+                                        <TableView fx:id="orderTable" onMouseClicked="#showSelectOrder" prefHeight="259.0" prefWidth="1216.0" stylesheets="@../css/home.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0">
                                             <columns>
                                                 <TableColumn fx:id="orderCollMaHD" prefWidth="86.39996182918549" text="Mã HD" />
                                                 <TableColumn fx:id="orderColNVTao" prefWidth="127.9999771118164" text="Người tạo" />
@@ -224,7 +224,7 @@
                                                 <Font name="System Bold" size="12.0" />
                                             </font>
                                         </Button>
-                                        <AnchorPane layoutX="11.2" layoutY="41.0" prefHeight="238.0" prefWidth="310.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="11.0" AnchorPane.topAnchor="42.0">
+                                        <AnchorPane layoutX="11.2" layoutY="41.0" prefHeight="238.0" prefWidth="254.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="11.0" AnchorPane.topAnchor="42.0">
                                             <children>
                                                 <Label text="Mã hóa đơn" AnchorPane.leftAnchor="0.0">
                                                     <font>
@@ -288,7 +288,7 @@
                                     </Label>
                                             </children>
                                         </AnchorPane>
-                                        <AnchorPane layoutX="336.0" layoutY="45.0" prefHeight="238.0" prefWidth="190.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="336.0" AnchorPane.topAnchor="42.0">
+                                        <AnchorPane layoutX="280.0" layoutY="45.0" prefHeight="238.0" prefWidth="246.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="280.0" AnchorPane.topAnchor="42.0">
                                             <children>
                                                 <Label layoutX="7.0" layoutY="1.0" text="Trạng thái" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="0.0">
                                                     <font>
@@ -318,7 +318,7 @@
                                                 </Label>
                                             </children>
                                         </AnchorPane>
-                                        <Separator layoutX="333.0" layoutY="41.0" orientation="VERTICAL" prefHeight="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="333.0" AnchorPane.topAnchor="0.0" />
+                                        <Separator layoutX="273.0" layoutY="5.0" orientation="VERTICAL" prefHeight="200.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="273.0" AnchorPane.topAnchor="5.0" />
                                     </children>
                                 </AnchorPane>
                             </children></AnchorPane>
