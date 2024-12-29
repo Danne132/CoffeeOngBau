@@ -5,15 +5,14 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
+import project.an.CoffeeOngBau.Models.Entities.current_data;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 
-import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 import static project.an.CoffeeOngBau.Utils.AlertUtils.setAlert;
@@ -54,7 +53,7 @@ public class SanPhamRespository {
             PreparedStatement lenh = conn.prepareStatement(sqlInsert);
             lenh.setString(1, sanPham.getMaSP());
             lenh.setString(2, sanPham.getTenSP());
-            lenh.setString(3, sanPham.getTenSP());
+            lenh.setString(3, sanPham.getLoaiSP());
             lenh.setDouble(4, sanPham.getDonGia());
             lenh.setString(5, sanPham.getAnhSP());
             lenh.setString(6, sanPham.getMoTa());
@@ -71,6 +70,54 @@ public class SanPhamRespository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        DBUtils.closeConnection(conn);
+        finally {
+            DBUtils.closeConnection(conn);
+        }
+
+    }
+    public void updateSP(SanPham sanPham){
+        conn = DBUtils.openConnection("banhang", "root", "");
+        String sqlUpdate = "UPDATE `sanpham` SET `tenSP`=?,`loaiSP`=?,`donGia`=?,`anhSP`=?,`moTa`=?,`ghiChu`=?,`trangThai`=? WHERE `maSP`=?";
+        try {
+            Optional<ButtonType> optional = setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn có chắc muốn cập nhật thông tin của mặt hàng " + sanPham.getTenSP() + "?");
+            if(optional.get().equals(ButtonType.OK)){
+                PreparedStatement lenh = conn.prepareStatement(sqlUpdate);
+                lenh.setString(1, sanPham.getTenSP());
+                lenh.setString(2, sanPham.getLoaiSP());
+                lenh.setDouble(3, sanPham.getDonGia());
+                lenh.setString(4, sanPham.getAnhSP());
+                lenh.setString(5, sanPham.getMoTa());
+                lenh.setString(6, sanPham.getGhiChu());
+                boolean tt = sanPham.getTrangThai()=="Đang bán";
+                lenh.setBoolean(7, tt);
+                lenh.setString(8, current_data.id);
+                lenh.executeUpdate();
+                setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Cập nhật thông tin thành công");
+            } else {
+                setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Đã hủy cập nhật!");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            DBUtils.closeConnection(conn);
+        }
+    }
+    public void deleteSP(){
+        conn = DBUtils.openConnection("banhang", "root", "");
+        String sqlDelete = "DELETE FROM `sanpham` WHERE `maSP`='"+current_data.id+"'";
+        Optional<ButtonType> optional = setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn muốn xóa sản phẩm này?");
+        if(optional.get().equals(ButtonType.OK)){
+            try {
+                PreparedStatement prepare = conn.prepareStatement(sqlDelete);
+                prepare.executeUpdate();
+                setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Đã xóa sản phẩm này!");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            finally {
+                DBUtils.closeConnection(conn);
+            }
+        } else setAlert(Alert.AlertType.CONFIRMATION, "Thông tin", "Hủy xóa sản phẩm");
     }
 }

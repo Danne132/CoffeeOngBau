@@ -16,6 +16,7 @@ import project.an.CoffeeOngBau.Models.Entities.current_data;
 import project.an.CoffeeOngBau.Repositories.SanPhamRespository;
 import project.an.CoffeeOngBau.Utils.AlertUtils;
 import project.an.CoffeeOngBau.Utils.DBUtils;
+import project.an.CoffeeOngBau.Utils.ImportImageUtils;
 import project.an.CoffeeOngBau.Utils.PriceUtils;
 
 import java.io.File;
@@ -198,7 +199,6 @@ public class ProductController implements Initializable {
                 current_data.path == null){
             setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin sản phẩm!");
         } else {
-
             SanPham sp = getDataFromUI();
             sanPhamRespository.addSP(sp);
             reloadSP();
@@ -252,36 +252,10 @@ public class ProductController implements Initializable {
                 current_data.path == null||current_data.id == null){
             setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin sản phẩm!");
         } else {
-            String maLoai = getMaLoai(productLoaiSPCBB);
-            System.out.println(maLoai);
-            int isSell;
-            if(productTrangThaiCBB.getSelectionModel().getSelectedItem().equals("Đang bán")) isSell = 1;
-            else isSell = 0;
-            String path = current_data.path;
-            path = path.replace("\\", "\\\\");
-            String sqlUpdate = "UPDATE `sanpham` SET" +
-                    "`tenSP`='"
-                    +productTenSPText.getText()+"',`loaiSP`='"
-                    +maLoai+
-                    "',`donGia`='"+productDonGiaText.getText()+"',`anhSP`='"
-                    +path+"',`moTa`='"+productMoTaText.getText()+"',`ghiChu`='"
-                    +productGhiChuText.getText()+"',`trangThai`='"
-                    +isSell+"' WHERE `maSP`='"+current_data.id+"'";
-            conn = DBUtils.openConnection("banhang", "root", "");
-            try {
-                Optional<ButtonType> optional = setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn có chắc muốn cập nhật thông tin của mặt hàng " + productMaSPText.getText() + "?");
-                if(optional.get().equals(ButtonType.OK)){
-                    prepare = conn.prepareStatement(sqlUpdate);
-                    prepare.executeUpdate();
-                    setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Cập nhật thông tin thành công!");
-                    showSPList();
-                    reloadSP();
-                } else {
-                    setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Đã hủy cập nhật!");
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            SanPham sp = getDataFromUI();
+            sanPhamRespository.updateSP(sp);
+            showSPList();
+            reloadSP();
         }
     }
 
@@ -289,33 +263,16 @@ public class ProductController implements Initializable {
         if(current_data.id == null){
             setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy chọn sản phẩm cần xóa!");
         } else {
-            Optional<ButtonType> optional = setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn muốn xóa sản phẩm này?");
-            if(optional.get().equals(ButtonType.OK)){
-                try {
-                    String sqlDelete = "DELETE FROM `sanpham` WHERE `maSP`='"+current_data.id+"'";
-                    conn = DBUtils.openConnection("banhang", "root", "");
-                    prepare = conn.prepareStatement(sqlDelete);
-                    prepare.executeUpdate();
-                    setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Đã xóa sản phẩm này!");
-                    DBUtils.closeConnection(conn);
-                    showSPList();
-                    reloadSP();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            } else setAlert(Alert.AlertType.CONFIRMATION, "Thông tin", "Hủy xóa sản phẩm");
+            sanPhamRespository.deleteSP();
+            showSPList();
+            reloadSP();
         }
+
     }
 
     public void importImage(){
-        FileChooser openFile = new FileChooser();
-        openFile.getExtensionFilters().add(new FileChooser.ExtensionFilter("Open Image File", "*png", "*jpg"));
-        File file = openFile.showOpenDialog(productForm.getScene().getWindow());
-        if(file != null){
-            current_data.path = file.getAbsolutePath();
-            image = new Image(file.toURI().toString(), 113, 125, false, true);
-            productImage.setImage(image);
-        }
+        image = ImportImageUtils.getImageFromUser(productForm);
+        productImage.setImage(image);
     }
 
     public void findSP(){
