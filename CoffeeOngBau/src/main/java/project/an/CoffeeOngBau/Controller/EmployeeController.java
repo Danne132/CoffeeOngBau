@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import project.an.CoffeeOngBau.Models.Entities.NhanVien;
+import project.an.CoffeeOngBau.Models.Entities.SanPham;
 import project.an.CoffeeOngBau.Models.Entities.current_data;
 import project.an.CoffeeOngBau.Repositories.NhanVienRepository;
 import project.an.CoffeeOngBau.Utils.DBUtils;
@@ -121,19 +122,21 @@ public class EmployeeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        chucvunvs = nhanVienRepository.getLoainvs();
+        nhanViens = nhanVienRepository.getAllNVList();
+        chucvunvs.put("", null);
+        chucvunvs.putAll(nhanVienRepository.getLoainvs());
         setupCBB();
-        showNVList(nhanVienRepository.getAllNVList());
+        showNVList(nhanViens);
     }
 
     public void showNVList(ObservableList<NhanVien> nvs){
-        nhanViens = nvs;
+        ObservableList<NhanVien> nhanViensTemp = nvs;
         employeeColMaNV.setCellValueFactory(new PropertyValueFactory<>("id"));
         employeeColTenNV.setCellValueFactory(new PropertyValueFactory<>("tenNV"));
         employeeColLoaiNV.setCellValueFactory(new PropertyValueFactory<>("chucVu"));
         employeeColTrangThai.setCellValueFactory(new PropertyValueFactory<>("isWorking"));
         employeeColNgay.setCellValueFactory(new PropertyValueFactory<>("createAt"));
-        employeeTable.setItems(nhanViens);
+        employeeTable.setItems(nhanViensTemp);
     }
 
     public void addNV(ActionEvent event) {
@@ -266,37 +269,21 @@ public class EmployeeController implements Initializable {
 
     public void findNV() {
         showNVList(nhanVienRepository.getAllNVList());
-        String maLoai = loaiNVFindCBB.getSelectionModel().getSelectedItem();
+        String maLoai = loaiNVFindCBB.getValue();
         String trangThai = trangThaiNVFindCBB.getValue();
-        String tenSP = tenNVFindText.getText();
-        ObservableList<NhanVien> nhanViensTemp = FXCollections.observableArrayList();
-        nhanViensTemp.addAll(nhanViens);
+        String tenNV = tenNVFindText.getText();
         ObservableList<NhanVien> nhanViensFind = FXCollections.observableArrayList();
-        if (tenSP.isEmpty() && (trangThai == null || trangThai.isEmpty() && (maLoai == null || maLoai.isEmpty()))) {
+        if (tenNV.isEmpty() && (trangThai == null || trangThai.isEmpty() && (maLoai == null || maLoai.isEmpty()))) {
             showNVList(nhanVienRepository.getAllNVList());
             return;
         }
-        nhanViensTemp.stream()
-                .filter(nv -> {
-                    boolean match = true;
 
-                    // Kiểm tra mã hóa đơn
-                    if (!tenSP.isEmpty()) {
-                        match &= nv.getTenNV().toLowerCase().contains(tenSP.toLowerCase());
-                    }
-
-                    // Kiểm tra trạng thái
-                    if (trangThai != null && !trangThai.isEmpty()) {
-                        match &= nv.getIsWorking().equalsIgnoreCase(trangThai);
-                    }
-
-//                     Kiểm tra mã loại
-                    if (maLoai != null && !maLoai.isEmpty()) {
-                        match &= nv.getChucVu().equalsIgnoreCase(maLoai);
-                    }
-                    return match;
-                })
-                .forEach(nhanViensFind::add);
+        for (NhanVien nv : nhanViens) {
+            if (nv.getTenNV().toLowerCase().contains(tenNV.toLowerCase()) &&
+                    (maLoai == null || nv.getChucVu().equals(maLoai)) && (trangThai == null || nv.getIsWorking().equals(trangThai))) {
+                nhanViensFind.add(nv);
+            }
+        }
         showNVList(nhanViensFind);
     }
 

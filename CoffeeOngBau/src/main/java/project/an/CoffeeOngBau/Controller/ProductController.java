@@ -116,12 +116,13 @@ public class ProductController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loaisps = sanPhamRespository.getLoaiSPS();
+        sanPhams = sanPhamRespository.getAllSP(loaisps);
         setupCBB();
-        showSPList(sanPhamRespository.getAllSP(loaisps));
+        showSPList(sanPhams);
     }
 
     public void showSPList(ObservableList<SanPham> sps){
-        sanPhams = sps;
+        ObservableList<SanPham> sanPhamsTemp = sps;
         productColMaSP.setCellValueFactory(new PropertyValueFactory<>("maSP"));
         productColTenSP.setCellValueFactory(new PropertyValueFactory<>("tenSP"));
         productColLoaiSP.setCellValueFactory(new PropertyValueFactory<>("loaiSP"));
@@ -138,7 +139,7 @@ public class ProductController implements Initializable {
                 }
             }
         });
-        productTable.setItems(sanPhams);
+        productTable.setItems(sanPhamsTemp);
     }
 
     private void setupCBB(){
@@ -250,37 +251,20 @@ public class ProductController implements Initializable {
 
     public void findSP(){
         showSPList(sanPhamRespository.getAllSP(loaisps));
-        String maLoai = loaiSPFindCBB.getSelectionModel().getSelectedItem();
+        String maLoai = loaiSPFindCBB.getValue();
         String trangThai = trangThaiSPFindCBB.getValue();
         String tenSP = tenSPFindText.getText();
-        ObservableList<SanPham> sanPhamsTemp = FXCollections.observableArrayList();
-        sanPhamsTemp.addAll(sanPhams);
         ObservableList<SanPham> sanPhamsFind = FXCollections.observableArrayList();
         if (tenSP.isEmpty() && (trangThai == null || trangThai.isEmpty() && (maLoai == null || maLoai.isEmpty()))) {
             showSPList(sanPhamRespository.getAllSP(loaisps));
             return;
         }
-        sanPhamsTemp.stream()
-                .filter(sp -> {
-                    boolean match = true;
-
-                    // Kiểm tra mã hóa đơn
-                    if (!tenSP.isEmpty()) {
-                        match &= sp.getTenSP().toLowerCase().contains(tenSP.toLowerCase());
-                    }
-
-                    // Kiểm tra trạng thái
-                    if (trangThai != null && !trangThai.isEmpty()) {
-                        match &= sp.getTrangThai().equalsIgnoreCase(trangThai);
-                    }
-
-//                     Kiểm tra mã loại
-                    if (maLoai != null && !maLoai.isEmpty()) {
-                        match &= sp.getLoaiSP().equalsIgnoreCase(maLoai);
-                    }
-                    return match;
-                })
-                .forEach(sanPhamsFind::add);
+        for (SanPham sp : sanPhams) {
+            if (sp.getTenSP().toLowerCase().contains(tenSP.toLowerCase()) &&
+                    (maLoai == null || sp.getLoaiSP().equals(maLoai)) && (trangThai == null || sp.getTrangThai().equals(trangThai))) {
+                sanPhamsFind.add(sp);
+            }
+        }
         showSPList(sanPhamsFind);
     }
 }
