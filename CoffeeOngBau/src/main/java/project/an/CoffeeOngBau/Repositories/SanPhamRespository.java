@@ -4,21 +4,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
 import project.an.CoffeeOngBau.Models.Entities.current_data;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import static project.an.CoffeeOngBau.Utils.AlertUtils.setAlert;
 
 public class SanPhamRespository {
     private Connection conn;
+    private HashMap<String, String> loaisps = new HashMap<>();
     public ObservableList<SanPham> getAllSP(HashMap<String, String> loaisps){
         ObservableList<SanPham> spList = FXCollections.observableArrayList();
         conn = DBUtils.openConnection("banhang", "root", "");
@@ -119,5 +119,59 @@ public class SanPhamRespository {
                 DBUtils.closeConnection(conn);
             }
         } else setAlert(Alert.AlertType.CONFIRMATION, "Thông tin", "Hủy xóa sản phẩm");
+    }
+    public String setAutoMaSP(ComboBox<String> cbb){
+        String getMaLoai = getMaLoai(cbb);
+        conn = DBUtils.openConnection("banhang", "root", "");
+        String sqlSelect = "SELECT maSP FROM sanpham WHERE loaiSP LIKE ? ORDER BY maSP DESC LIMIT 1";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelect)) {
+            preparedStatement.setString(1, getMaLoai + "%");
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (!resultSet.next()) {
+                    return getMaLoai + "001";
+                }
+                String lastMaNV = resultSet.getString("maSP");
+                System.out.println("Mã lớn nhất: " + lastMaNV);
+                int number = Integer.parseInt(lastMaNV.substring(getMaLoai.length()));
+                return getMaLoai + String.format("%03d", number + 1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBUtils.closeConnection(conn);
+        }
+    }
+    public String getMaLoai(ComboBox<String> cbb){
+        String maLoai = null;
+        for(String key : loaisps.keySet()){
+            if(loaisps.get(key) == cbb.getSelectionModel().getSelectedItem()){
+                maLoai = key;
+                return maLoai;
+            }
+        }
+        System.out.println(maLoai);
+        return maLoai;
+    }
+    public HashMap<String, String> getCategoryFromDB()  {
+        conn = DBUtils.openConnection("banhang", "root", "");
+        String sqlSelect = "SELECT * FROM loaisp";
+        ObservableList list = FXCollections.observableArrayList();
+        Statement lenh = null;
+        try {
+            lenh = conn.createStatement();
+            ResultSet ketQua = lenh.executeQuery(sqlSelect);
+            while(ketQua.next()){
+                String maLoai = ketQua.getString("maLoai");
+                String tenLoai = ketQua.getString("tenLoai");
+                loaisps.put(maLoai, tenLoai);
+            }
+            list = FXCollections.observableArrayList(loaisps.values());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            DBUtils.closeConnection(conn);
+        }
+        return loaisps;
     }
 }

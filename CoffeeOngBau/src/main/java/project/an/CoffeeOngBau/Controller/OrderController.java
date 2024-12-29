@@ -532,7 +532,6 @@ public class OrderController implements Initializable {
             showOrderList(sqlSelectOrder, null);
             return;
         }
-
         hoaDonsTemp.stream()
                 .filter(hd -> {
                     boolean match = true;

@@ -9,17 +9,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
-import project.an.CoffeeOngBau.Models.Entities.CTHD;
 import project.an.CoffeeOngBau.Models.Entities.SanPham;
 import project.an.CoffeeOngBau.Models.Entities.current_data;
 import project.an.CoffeeOngBau.Repositories.SanPhamRespository;
-import project.an.CoffeeOngBau.Utils.AlertUtils;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 import project.an.CoffeeOngBau.Utils.ImportImageUtils;
 import project.an.CoffeeOngBau.Utils.PriceUtils;
 
-import java.io.File;
 import java.net.URL;
 import java.sql.*;
 import java.util.*;
@@ -108,7 +104,7 @@ public class ProductController implements Initializable {
 
     private SanPhamRespository sanPhamRespository = new SanPhamRespository();
     private HashMap<String, String> loaisps = new HashMap<>();
-    private String[] trangthaisps = new String[]{"Đang bán", "Ngưng bán"};
+    private String[] trangthaisps = new String[]{"Đang bán", "Ngừng bán"};
     private Connection conn;
     private PreparedStatement prepare;
     private Statement statement;
@@ -121,12 +117,11 @@ public class ProductController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         getCategoryFromDB();
         getProductStatus();
-        showSPList();
+        showSPList(sanPhamRespository.getAllSP(loaisps));
     }
 
-    public void showSPList(){
-//        sanPhams = getSPList(sql);
-        sanPhams = sanPhamRespository.getAllSP(loaisps);
+    public void showSPList(ObservableList<SanPham> sps){
+        sanPhams = sps;
         productColMaSP.setCellValueFactory(new PropertyValueFactory<>("maSP"));
         productColTenSP.setCellValueFactory(new PropertyValueFactory<>("tenSP"));
         productColLoaiSP.setCellValueFactory(new PropertyValueFactory<>("loaiSP"));
@@ -190,7 +185,7 @@ public class ProductController implements Initializable {
         loaiSPFindCBB.setValue(null);
         trangThaiSPFindCBB.setValue(null);
         current_data.id = "";
-        showSPList();
+        showSPList(sanPhamRespository.getAllSP(loaisps));
     }
 
     public void addSP(){
@@ -202,14 +197,14 @@ public class ProductController implements Initializable {
             SanPham sp = getDataFromUI();
             sanPhamRespository.addSP(sp);
             reloadSP();
-            showSPList();
+            showSPList(sanPhamRespository.getAllSP(loaisps));
         }
     }
 
     private SanPham getDataFromUI(){
-        String maSP = setAutoMaSP();
+        String maSP = sanPhamRespository.setAutoMaSP(productLoaiSPCBB);
         String tenSP = productTenSPText.getText();
-        String getMaLoai = "";
+        String getMaLoai = sanPhamRespository.getMaLoai(productLoaiSPCBB);
         for(String key : loaisps.keySet()){
             if(loaisps.get(key) == productLoaiSPCBB.getSelectionModel().getSelectedItem()){
                 getMaLoai = key;
@@ -236,12 +231,10 @@ public class ProductController implements Initializable {
         productGhiChuText.setText(sanPham.getGhiChu());
         current_data.path = sanPham.getAnhSP();
         current_data.id = sanPham.getMaSP();
-        System.out.println(current_data.path);
         String path = "File:"+ current_data.path;
         Image image = new Image(path, 113, 125, false, true);
         productImage.setImage(image);
         String loaiSP = sanPham.getLoaiSP();
-        System.out.println(loaiSP);
         productLoaiSPCBB.getSelectionModel().select(loaiSP);
         productTrangThaiCBB.getSelectionModel().select(sanPham.getTrangThai()=="Đang bán"?0:1);
     }
@@ -254,7 +247,7 @@ public class ProductController implements Initializable {
         } else {
             SanPham sp = getDataFromUI();
             sanPhamRespository.updateSP(sp);
-            showSPList();
+            showSPList(sanPhamRespository.getAllSP(loaisps));
             reloadSP();
         }
     }
@@ -264,7 +257,7 @@ public class ProductController implements Initializable {
             setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy chọn sản phẩm cần xóa!");
         } else {
             sanPhamRespository.deleteSP();
-            showSPList();
+            showSPList(sanPhamRespository.getAllSP(loaisps));
             reloadSP();
         }
 
@@ -276,54 +269,38 @@ public class ProductController implements Initializable {
     }
 
     public void findSP(){
-        String sqlFind;
-        String maLoai = getMaLoai(loaiSPFindCBB);
-        String trangThai = trangThaiSPFindCBB.getValue()==null?"NULL":trangThaiSPFindCBB.getValue()=="Đang bán"?"1":"0";
+        showSPList(sanPhamRespository.getAllSP(loaisps));
+        String maLoai = loaiSPFindCBB.getSelectionModel().getSelectedItem();
+        String trangThai = trangThaiSPFindCBB.getValue();
         String tenSP = tenSPFindText.getText();
-        maLoai = maLoai==null?"NULL":"'"+maLoai+"'";
-        System.out.println("mã loại"+maLoai);
-        System.out.println("trạng thái"+trangThai);
-        sqlFind = "SELECT * " +
-                "FROM sanpham " +
-                "WHERE " +
-                "    (`tenSP` LIKE '%"+tenSP+"%'OR'"+tenSP+"' IS NULL OR '"+tenSP+"' = '') AND " +
-                "    (`loaiSP` = "+maLoai+" OR "+maLoai+" IS NULL) AND" +
-                "    (`trangThai` = "+trangThai+" OR "+trangThai+" IS NULL);";
-        showSPList();
-    }
-
-    private String setAutoMaSP(){
-        String getMaLoai = getMaLoai(productLoaiSPCBB);
-        conn = DBUtils.openConnection("banhang", "root", "");
-        String sqlSelect = "SELECT maSP FROM sanpham WHERE loaiSP LIKE ? ORDER BY maSP DESC LIMIT 1";
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelect)) {
-            preparedStatement.setString(1, getMaLoai + "%");
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (!resultSet.next()) {
-                    return getMaLoai + "001";
-                }
-                String lastMaNV = resultSet.getString("maSP");
-                System.out.println("Mã lớn nhất: " + lastMaNV);
-                int number = Integer.parseInt(lastMaNV.substring(getMaLoai.length()));
-                return getMaLoai + String.format("%03d", number + 1);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            DBUtils.closeConnection(conn);
+        ObservableList<SanPham> sanPhamsTemp = FXCollections.observableArrayList();
+        sanPhamsTemp.addAll(sanPhams);
+        ObservableList<SanPham> sanPhamsFind = FXCollections.observableArrayList();
+        if (tenSP.isEmpty() && (trangThai == null || trangThai.isEmpty() && (maLoai == null || maLoai.isEmpty()))) {
+            showSPList(sanPhamRespository.getAllSP(loaisps));
+            return;
         }
-    }
+        sanPhamsTemp.stream()
+                .filter(sp -> {
+                    boolean match = true;
 
+                    // Kiểm tra mã hóa đơn
+                    if (!tenSP.isEmpty()) {
+                        match &= sp.getTenSP().toLowerCase().contains(tenSP.toLowerCase());
+                    }
 
-    private String getMaLoai(ComboBox<String> cbb){
-        String maLoai = null;
-        for(String key : loaisps.keySet()){
-            if(loaisps.get(key) == cbb.getSelectionModel().getSelectedItem()){
-                maLoai = key;
-                return maLoai;
-            }
-        }
-        System.out.println(maLoai);
-        return maLoai;
+                    // Kiểm tra trạng thái
+                    if (trangThai != null && !trangThai.isEmpty()) {
+                        match &= sp.getTrangThai().equalsIgnoreCase(trangThai);
+                    }
+
+//                     Kiểm tra mã loại
+                    if (maLoai != null && !maLoai.isEmpty()) {
+                        match &= sp.getLoaiSP().equalsIgnoreCase(maLoai);
+                    }
+                    return match;
+                })
+                .forEach(sanPhamsFind::add);
+        showSPList(sanPhamsFind);
     }
 }
