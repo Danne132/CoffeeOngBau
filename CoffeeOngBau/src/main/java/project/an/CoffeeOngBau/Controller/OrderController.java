@@ -17,10 +17,8 @@ import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import static project.an.CoffeeOngBau.Utils.AlertUtils.setAlert;
 
@@ -51,6 +49,9 @@ public class OrderController implements Initializable {
 
     @FXML
     private TableColumn<HoaDon, String> orderColNVTao;
+
+    @FXML
+    private TableColumn<HoaDon, String> orderColNVXN;
 
     @FXML
     private TableColumn<HoaDon, String> orderColNVTaoWaiting;
@@ -134,6 +135,9 @@ public class OrderController implements Initializable {
     private Label orderNVTaoTxt;
 
     @FXML
+    private Label orderNguoiXNTTxt;
+
+    @FXML
     private Label orderNVTaoWaitingTxt;
 
     @FXML
@@ -213,6 +217,7 @@ public class OrderController implements Initializable {
         orderColTongTien.setCellValueFactory(new PropertyValueFactory<>("tongTien"));
         orderColTrangThaiHD.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
         orderColGhiChuHD.setCellValueFactory(new PropertyValueFactory<>("ghiChu"));
+        orderColNVXN.setCellValueFactory(new PropertyValueFactory<>("nguoiXacNhan"));
         orderColTongTien.setCellFactory(tc -> new TableCell<HoaDon, Integer>() {
             @Override
             protected void updateItem(Integer item, boolean empty) {
@@ -333,6 +338,7 @@ public class OrderController implements Initializable {
         orderLoaiTTTxt.setText(hoaDon.getThanhToan());
         orderGhiChuTxt.setText(hoaDon.getGhiChu());
         orderTrangThaiTxt.setText(hoaDon.getTrangThai());
+        orderNguoiXNTTxt.setText(hoaDon.getNguoiXacNhan());
         if(hoaDon.getTrangThai().equals("Hủy")) orderTrangThaiTxt.setStyle("-fx-text-fill: #ff0000");
         else if(hoaDon.getTrangThai().equals("Chờ xác nhận")) orderTrangThaiTxt.setStyle("-fx-text-fill: #ffe500");
         else if(hoaDon.getTrangThai().equals("Đã xác nhận")) orderTrangThaiTxt.setStyle("-fx-text-fill: #00ff2b");
@@ -349,21 +355,29 @@ public class OrderController implements Initializable {
             result = prepare.executeQuery(sqlSelectOrderWaiting);
             HoaDon hoaDon;
             while(result.next()){
-                String tenNV = "";
-                String sqlSelectNhanVien = "SELECT `tenNV` FROM nhanvien WHERE `maNV` = '" + result.getString("nguoiTao") + "'";
-                ResultSet ketqua = conn.prepareStatement(sqlSelectNhanVien).executeQuery();
+                String tenNVDuyet = "";
+                String tenNVXacNhan = "";
+                String sqlSelectNhanVienDuyet = "SELECT `tenNV` FROM nhanvien WHERE `maNV` = '" + result.getString("nguoiTao") + "'";
+                ResultSet ketqua = conn.prepareStatement(sqlSelectNhanVienDuyet).executeQuery();
                 if(ketqua.next()){
-                    tenNV = ketqua.getNString("tenNV");
+                    tenNVDuyet = ketqua.getNString("tenNV");
+                }
+                String sqlSelectNhanVienXN = "SELECT `tenNV` FROM nhanvien WHERE `maNV` = '" + result.getString("nguoiXacNhan") + "'";
+                ResultSet ketqua1 = conn.prepareStatement(sqlSelectNhanVienXN).executeQuery();
+                if(ketqua1.next()){
+                    tenNVXacNhan = ketqua1.getNString("tenNV");
+                    System.out.println(tenNVXacNhan);
                 }
                 hoaDon = new HoaDon(
                       result.getString("maHD"),
-                        tenNV,
+                        tenNVDuyet,
                         result.getString("ghiChu"),
                         result.getString("thanhToan"),
                         trangThai.get(result.getInt("trangThai")),
                         result.getInt("tongTien"),
                         result.getTimestamp("createdAt"),
-                        result.getTimestamp("confirmedAt")
+                        result.getTimestamp("confirmedAt"),
+                        tenNVXacNhan
                 );
                 orderWaitingList.add(hoaDon);
             }
@@ -431,7 +445,8 @@ public class OrderController implements Initializable {
             if(optional.get().equals(ButtonType.OK)){
                 try{
                     conn = DBUtils.openConnection("banhang", "root", "");
-                    String sqlUpdate = "UPDATE `hoadon` SET `trangThai`= 2 WHERE `maHD` = '" + current_data.id+"'";
+                    System.out.println(current_data.chucVu);
+                    String sqlUpdate = "UPDATE `hoadon` SET `trangThai`= 2, `nguoiXacNhan`='"+current_data.userid+"' WHERE `maHD` = '" + current_data.id+"'";
                     prepare = conn.prepareStatement(sqlUpdate);
                     prepare.executeUpdate();
                     DBUtils.closeConnection(conn);
@@ -456,7 +471,7 @@ public class OrderController implements Initializable {
             if(optional.get().equals(ButtonType.OK)){
                 try{
                     conn = DBUtils.openConnection("banhang", "root", "");
-                    String sqlDelete = "UPDATE `hoadon` SET `trangThai`= 3, `ghiChu` = '"+orderGhiChuWaitingTxt.getText()+"' WHERE `maHD` = '" + current_data.id+"'";
+                    String sqlDelete = "UPDATE `hoadon` SET `trangThai`= 3, `ghiChu` = '"+orderGhiChuWaitingTxt.getText()+"', `nguoiXacNhan`='"+current_data.chucVu+"' WHERE `maHD` = '" + current_data.id+"'";
                     prepare = conn.prepareStatement(sqlDelete);
                     prepare.executeUpdate();
                     DBUtils.closeConnection(conn);

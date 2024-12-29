@@ -1,14 +1,18 @@
 package project.an.CoffeeOngBau.Controller;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import project.an.CoffeeOngBau.Models.Entities.current_data;
+import project.an.CoffeeOngBau.Utils.AlertUtils;
+import project.an.CoffeeOngBau.Utils.DBUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -61,11 +65,14 @@ public class AdminController implements Initializable {
 
     ProductController productController;
     List<Button> btns;
+    HashMap<String, String> chucvus = new HashMap<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        chucvus = DBUtils.getCategoryFromDB("SELECT * FROM chucvunv", "maCV", "tenCV");
         displayName();
         btns = new ArrayList<>(Arrays.asList(employNavBtn, orderNavBtn, productNavBtn, reportNavBtn, sellNavBtn));
+        checkQuyen();
         handleLoadReport();
     }
 
@@ -95,10 +102,22 @@ public class AdminController implements Initializable {
         }
     }
 
+    private void checkQuyen(){
+        if(current_data.chucVu.equals("TN")){
+            employNavBtn.setDisable(true);
+            productNavBtn.setDisable(true);
+            orderNavBtn.setDisable(true);
+        } else if (current_data.chucVu.equals("PC")) {
+            sellNavBtn.setDisable(true);
+            employNavBtn.setDisable(true);
+            productNavBtn.setDisable(true);
+        }
+    }
+
     private void displayName(){
         username = current_data.username;
         chucVu = current_data.chucVu;
-        String user = username + " - " + chucVu;
+        String user = username + " - " + chucvus.get(chucVu);
         userNameText.setText(user);
     }
 

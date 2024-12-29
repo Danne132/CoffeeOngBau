@@ -46,27 +46,27 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button fx:id="sellNavBtn" mnemonicParsing="false" onAction="#handleLoadSell" prefHeight="238.0" prefWidth="215.0" styleClass="nav-button" text="Bán hàng">
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                              </Button>
                               <Button fx:id="employNavBtn" mnemonicParsing="false" onAction="#handleLoadEmployee" prefHeight="85.0" prefWidth="249.0" styleClass="nav-button" text="Nhân viên" GridPane.rowIndex="4">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="reportNavBtn" mnemonicParsing="false" onAction="#handleLoadReport" prefHeight="85.0" prefWidth="245.0" styleClass="nav-button" text="Thống kê" GridPane.rowIndex="3">
+                              <Button fx:id="reportNavBtn" mnemonicParsing="false" onAction="#handleLoadReport" prefHeight="85.0" prefWidth="245.0" styleClass="nav-button" text="Thống kê">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="productNavBtn" mnemonicParsing="false" onAction="#handleLoadProduct" prefHeight="85.0" prefWidth="230.0" styleClass="nav-button" text="Sản phẩm" GridPane.rowIndex="2">
+                              <Button fx:id="productNavBtn" mnemonicParsing="false" onAction="#handleLoadProduct" prefHeight="85.0" prefWidth="230.0" styleClass="nav-button" text="Sản phẩm" GridPane.rowIndex="3">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="orderNavBtn" mnemonicParsing="false" onAction="#handleLoadOrder" prefHeight="85.0" prefWidth="233.0" styleClass="nav-button" text="Hóa đơn" GridPane.rowIndex="1">
+                              <Button fx:id="orderNavBtn" mnemonicParsing="false" onAction="#handleLoadOrder" prefHeight="85.0" prefWidth="233.0" styleClass="nav-button" text="Hóa đơn" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="sellNavBtn" mnemonicParsing="false" onAction="#handleLoadSell" prefHeight="238.0" prefWidth="215.0" styleClass="nav-button" text="Bán hàng" GridPane.rowIndex="1">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
@@ -84,12 +84,12 @@
                         </AnchorPane>
                         <AnchorPane fx:id="header" layoutX="-0.8" layoutY="8.0" prefHeight="30.0" prefWidth="883.0" styleClass="head" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Button fx:id="logOutBtn" layoutX="27.0" layoutY="9.0" mnemonicParsing="false" onAction="#logout" prefHeight="22.0" prefWidth="72.0" styleClass="sign-out-button" text="Đăng xuất">
+                              <Button fx:id="logOutBtn" layoutX="27.0" layoutY="9.0" mnemonicParsing="false" onAction="#logout" prefHeight="22.0" prefWidth="72.0" styleClass="sign-out-button" text="Đăng xuất" AnchorPane.bottomAnchor="4.0" AnchorPane.topAnchor="4.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                               </Button>
-                              <Label fx:id="userNameText" layoutX="108.0" layoutY="10.0" text="Hoàng Duy An">
+                              <Label fx:id="userNameText" layoutX="108.0" layoutY="10.0" text="Hoàng Duy An" AnchorPane.bottomAnchor="4.0" AnchorPane.topAnchor="4.0">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>

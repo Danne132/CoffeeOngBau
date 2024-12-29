@@ -6,12 +6,12 @@ import java.util.List;
 
 public class HoaDon {
     List<CTHD> cthds;
-    String maHD, nguoiTao, ghiChu, thanhToan, trangThai;
+    String maHD, nguoiTao, ghiChu, thanhToan, trangThai, nguoiXacNhan;
     int tongTien;
     Timestamp createdAt;
     Timestamp confirmedAt;
 
-    public HoaDon(String maHD, String nguoiTao, String ghiChu, String thanhToan, String trangThai, int tongTien, Timestamp createdAt, Timestamp confirmedAt) {
+    public HoaDon(String maHD, String nguoiTao, String ghiChu, String thanhToan, String trangThai, int tongTien, Timestamp createdAt, Timestamp confirmedAt, String nguoiXacNhan) {
         this.maHD = maHD;
         this.nguoiTao = nguoiTao;
         this.ghiChu = ghiChu;
@@ -20,6 +20,7 @@ public class HoaDon {
         this.tongTien = tongTien;
         this.createdAt = createdAt;
         this.confirmedAt = confirmedAt;
+        this.nguoiXacNhan = nguoiXacNhan;
     }
 
     public List<CTHD> getCthds() {
@@ -88,5 +89,13 @@ public class HoaDon {
 
     public Timestamp getConfirmedAt() {
         return confirmedAt;
+    }
+
+    public String getNguoiXacNhan() {
+        return nguoiXacNhan;
+    }
+
+    public void setNguoiXacNhan(String nguoiXacNhan) {
+        this.nguoiXacNhan = nguoiXacNhan;
     }
 }

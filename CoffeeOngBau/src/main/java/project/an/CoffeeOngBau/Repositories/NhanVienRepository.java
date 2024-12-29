@@ -143,4 +143,28 @@ public class NhanVienRepository implements INhanVienRepository{
         System.out.println(maLoai);
         return maLoai;
     }
+
+    public boolean Login(String account, String password) throws SQLException {
+        if (account.isEmpty() || password.isEmpty()) {
+            setAlert(Alert.AlertType.ERROR, "Lỗi đăng nhập", "Tên tài khoản và mật khẩu không để trống!");
+            return false;
+        }
+        Connection conn = DBUtils.openConnection("banhang", "root", "");
+        String sqlSelect = "SELECT * FROM nhanvien";
+        Statement lenh = conn.createStatement();
+        ResultSet ketQua = lenh.executeQuery(sqlSelect);
+        while(ketQua.next()) {
+
+            if(account.equals(ketQua.getString("username"))&&
+                    ComonUtils.hashPassword(password).equals(ketQua.getString("password")))
+            {
+                current_data.username = ketQua.getString("tenNV");
+                current_data.chucVu = ketQua.getString("chucVu");
+                current_data.userid = ketQua.getString("maNV");
+                return true;
+            }
+        }
+        DBUtils.closeConnection(conn);
+        return false;
+    }
 }

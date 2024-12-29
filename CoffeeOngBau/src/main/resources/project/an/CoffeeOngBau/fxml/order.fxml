@@ -147,6 +147,7 @@
                                                 <TableColumn fx:id="orderColTongTien" prefWidth="122.39993286132812" text="Tổng tiền" />
                                                 <TableColumn fx:id="orderColTrangThaiHD" prefWidth="103.99996948242188" text="Trạng thái" />
                                                 <TableColumn fx:id="orderColGhiChuHD" prefWidth="103.99996948242188" text="Ghi chú" />
+                                    <TableColumn fx:id="orderColNVXN" prefWidth="127.9999771118164" text="Người xác nhận" />
                                             </columns>
                                             <columnResizePolicy>
                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -250,12 +251,11 @@
                                                         <Font size="13.0" />
                                                     </font>
                                                 </Label>
-                                                <Label layoutY="177.0" text="Ghi chú">
-                                                    <font>
-                                                        <Font size="13.0" />
-                                                    </font>
-                                                </Label>
-                                                <TextArea fx:id="orderGhiChuTxt" layoutY="196.0" prefHeight="38.0" prefWidth="281.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                    <Label layoutY="180.0" text="Người xác nhận" AnchorPane.leftAnchor="0.0">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
                                                 <Label fx:id="orderMaHDTxt" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="211.0" AnchorPane.rightAnchor="0.0">
                                                     <font>
                                                         <Font size="13.0" />
@@ -281,6 +281,11 @@
                                                         <Font size="13.0" />
                                                     </font>
                                                 </Label>
+                                    <Label fx:id="orderNguoiXNTTxt" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="296.0" layoutY="180.0" text="sss" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
                                             </children>
                                         </AnchorPane>
                                         <AnchorPane layoutX="336.0" layoutY="45.0" prefHeight="238.0" prefWidth="190.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="336.0" AnchorPane.topAnchor="42.0">
@@ -303,6 +308,12 @@
                                                 <Label fx:id="orderTongTienSPTxt" layoutX="5.0" layoutY="99.0" textFill="#ef8855" AnchorPane.leftAnchor="5.0">
                                                     <font>
                                                         <Font name="System Bold" size="28.0" />
+                                                    </font>
+                                                </Label>
+                                                <TextArea fx:id="orderGhiChuTxt" layoutY="199.0" prefHeight="38.0" prefWidth="281.0" AnchorPane.bottomAnchor="0.1999999999999602" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.8000000000000114" />
+                                                <Label layoutY="172.0" text="Ghi chú">
+                                                    <font>
+                                                        <Font size="13.0" />
                                                     </font>
                                                 </Label>
                                             </children>

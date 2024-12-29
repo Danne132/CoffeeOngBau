@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import project.an.CoffeeOngBau.Models.Entities.current_data;
+import project.an.CoffeeOngBau.Repositories.NhanVienRepository;
 import project.an.CoffeeOngBau.Utils.ComonUtils;
 import project.an.CoffeeOngBau.Utils.DBUtils;
 
@@ -26,45 +27,22 @@ public class LoginController {
     @FXML
     Button loginBtn;
     String account, password;
-    Alert alert;
+    NhanVienRepository nhanVienRepository = new NhanVienRepository();
     void initial(){
         account = accInput.getText().toString();
         password = passInput.getText().toString();
     }
-
     public void Login() throws SQLException {
         initial();
-        if (account.isEmpty() || password.isEmpty()) {
-            setAlert(Alert.AlertType.ERROR, "Lỗi đăng nhập", "Tên tài khoản và mật khẩu không để trống!");
-            return;
+        if(nhanVienRepository.Login(account, password)){
+            setAlert(Alert.AlertType.INFORMATION, "Thành công", "Đăng nhập thành công!");
+            switchToHomeScreen();
         }
-        Connection conn = DBUtils.openConnection("banhang", "root", "");
-        String sqlSelect = "SELECT * FROM nhanvien";
-        Statement lenh = conn.createStatement();
-        ResultSet ketQua = lenh.executeQuery(sqlSelect);
-        boolean check = false;
-        while(ketQua.next()) {
-
-            if(account.equals(ketQua.getString("username"))&&
-                    ComonUtils.hashPassword(password).equals(ketQua.getString("password")))
-            {
-                current_data.username = ketQua.getString("tenNV");
-                current_data.chucVu = ketQua.getString("chucVu");
-                current_data.userid = ketQua.getString("maNV");
-
-                setAlert(Alert.AlertType.INFORMATION, "Thành công", "Đăng nhập thành công!");
-                switchToHomeScreen();
-                check = true;
-                break;
-            }
-        }
-        if(!check){
+        else {
             setAlert(Alert.AlertType.ERROR, "Lỗi đăng nhập", "Tên đăng nhập hoặc mật khẩu không đúng!");
             System.out.println("Đăng nhập không thành công");
         }
-        DBUtils.closeConnection(conn);
     }
-
 
     private void switchToHomeScreen() {
         try {
