@@ -194,6 +194,14 @@ public class EmployeeController implements Initializable {
                     prepare = conn.prepareStatement(sqlUpdate);
                     prepare.executeUpdate();
                     setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Cập nhật thông tin thành công!");
+                    for(NhanVien nv : nhanViens){
+                        if(nv.getId().equals(current_data.id)) {
+                            nv.setIsWorking(isWork == 1 ? "Đang làm" : "Nghỉ làm");
+                            nv.setChucVu(chucvunvs.get(cv));
+                            nv.setTenNV(employeeTenNVText.getText());
+                            break;
+                        }
+                    }
                     showNVList(nhanVienRepository.getAllNVList());
                     reloadNV();
                 } else {
