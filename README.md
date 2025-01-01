@@ -152,7 +152,7 @@ _Sau khi đơn hàng được thanh toán bên giao diện bán hàng, hóa đơ
 |:--------------|
 |![image](https://github.com/user-attachments/assets/d567773a-a527-4fd8-8897-3ccace1e5d22)|
 
-## **2. Thống kê thu nhập**
+## **5. Thống kê thu nhập**
 |Hình ảnh thống kê|Thống kê khi hôm nay có thu nhập|
 |:----------------|:-------------------------------|
 |![image](https://github.com/user-attachments/assets/d899c3ef-65e6-4f92-9b5f-49c613355bce)|![image](https://github.com/user-attachments/assets/16d08a0b-9276-4c24-b083-d7de0335bdcf)|
