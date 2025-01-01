@@ -63,7 +63,7 @@ _✍Khi thêm sản phẩm, mã sản phẩm sẽ tự động tạo theo loại
 |![image](https://github.com/user-attachments/assets/87d29b74-9910-46ea-a362-be525f461cb9)|
 
 ### **_- Chức năng thêm nhân viên_**
-_✍Khi thêm nhân viên, mã nhân viên sẽ tự động tạo theo chức vụ_
+_✍Khi thêm nhân viên, mã nhân viên sẽ tự động tạo theo chức vụ_ <br/>
 _🔐Nhân viên khi được tạo sẽ auto tạo tài khoản là email và mật khẩu là số điện thoại_
 |Điền thông tin nhân viên|Chọn chức vụ|
 |:----------------------|:-----------------|
@@ -100,6 +100,33 @@ _🔐Nhân viên khi được tạo sẽ auto tạo tài khoản là email và m
 |Tìm kiếm theo tên|Tìm kiếm theo chức vụ và trạng thái|
 |:----------------|:-------------------------------|
 |![image](https://github.com/user-attachments/assets/20eae0d2-b343-4f39-8b46-1eafd0249838)|![image](https://github.com/user-attachments/assets/71a9404c-f232-4891-8a6e-a72b02791ee7)|
+
+## **3. Bán hàng** <br/>
+|Hình ảnh ban đầu của giao diện bán hàng|
+|:------------------------------------|
+|![image](https://github.com/user-attachments/assets/84608f1d-dc93-4cc1-b2a7-b94b72adb5ef)|
+
+|Chọn một sản phẩm|Chọn thêm các sản phẩm khác (Không thể chọn lại sản phẩm đã thêm vào)|
+|:----------------|:--------------------------|
+|![image](https://github.com/user-attachments/assets/818820a9-2844-477d-ac54-8891807e1191)|![image](https://github.com/user-attachments/assets/bfc546dc-2bf6-414a-82f9-39e59e8e93a9)|
+
+|Chỉnh số lượng|Sau khi chỉnh số lượng|
+|:-------------|:---------------------|
+|![image](https://github.com/user-attachments/assets/e326dc9c-6c7d-4f48-89ce-6d78095e9fd2)|![image](https://github.com/user-attachments/assets/93c51d9c-83a3-4c50-9f91-5c34a42d39a9)|
+
+|Xóa sản phẩm trong đơn hàng(Chỉnh số lượng về 0)|Sau khi xóa|
+|:-----------------------------------------------|:----------|
+|![image](https://github.com/user-attachments/assets/7cf97ebe-b92a-4fd3-b3a2-e36a8081135e)|![image](https://github.com/user-attachments/assets/9aab4f65-d265-4352-9a4a-16f522d2818f)|
+
+|Điền số tiền khách trả|Xác nhận tạo hóa đơn|
+|:---------------------|:-------------------|
+|![image](https://github.com/user-attachments/assets/e24c6b8a-fdfd-4e51-af19-fcd6647bbc3d)|![image](https://github.com/user-attachments/assets/eceddb64-ee00-46e9-8c80-64686a4df0d4)|
+
+|Tìm kiếm sản phẩm theo tên|Tìm kiếm sản phẩm theo loại|
+|:-------------------------|:--------------------------|
+|![image](https://github.com/user-attachments/assets/ca627a19-0f41-4ef9-87ce-42aec5b3dd7e)|![image](https://github.com/user-attachments/assets/a22d79b7-1660-458e-b4cc-99877a787536)|
+
+
 
 ## **2. Thống kê thu nhập**
 |Hình ảnh thống kê|Thống kê khi hôm nay có thu nhập|
