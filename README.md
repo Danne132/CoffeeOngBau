@@ -1,4 +1,4 @@
-### CoffeeOngBau
+![image](https://github.com/user-attachments/assets/0b880661-12b6-4685-b8a8-ab2f6532055e)### CoffeeOngBau
 # Dự án cuối kỳ môn Java: Xây dựng phần mềm hệ thống quản lý bán cafe ở quán Cafe Ông Bầu
 -------------------------------------
 ### Phần mềm thực hiện được một số chức năng cơ bản của một phần mềm quản lý như:
@@ -132,9 +132,25 @@ _Sau khi đơn hàng được thanh toán bên giao diện bán hàng, hóa đơ
 |:-----------------------------|:------------------------|
 |![image](https://github.com/user-attachments/assets/26a71a7f-0901-418d-b1d8-3f479d5896f1)|![image](https://github.com/user-attachments/assets/f2b64fb5-f883-474a-8135-c64eadc30920)|
 
-|Hóa đơn đang chờ xác nhận|
-|:------------------------|
-![image](https://github.com/user-attachments/assets/1e9cf84a-3ddc-4e8a-9f3c-117350a2226c)|
+|Hóa đơn đang chờ xác nhận|Thêm ghi chú cho hóa đơn|
+|:------------------------|:-----------------------|
+![image](https://github.com/user-attachments/assets/1e9cf84a-3ddc-4e8a-9f3c-117350a2226c)|![image](https://github.com/user-attachments/assets/bfc1dfd3-1de3-4ac6-84f4-8ac10d563a61)|
+
+|Xác nhận đơn|Xác nhận thành công(thêm thời gian xác nhận và nhân viên xác nhận)|
+|:-----------|:-----------------------------------------------------------------|
+|![image](https://github.com/user-attachments/assets/066734b2-4a09-4d87-8936-876060c94971)|![image](https://github.com/user-attachments/assets/cdea2c05-7bbe-42d2-a2e2-39bbbba1955c)|
+
+|Chi tiết hóa đơn|Khôi phục hóa đơn|
+|:---------------|:----------------|
+|![image](https://github.com/user-attachments/assets/12e936ac-70f1-429a-aaa7-ad408b88aa5a)|![image](https://github.com/user-attachments/assets/8c71e545-bc8d-417b-a353-8c64e42f6064)|
+
+|Sau khi khôi phụ hóa đơn|Hủy đơn|
+|:-----------------------|:------|
+|![image](https://github.com/user-attachments/assets/a22252c2-b4fa-4dcd-a7d1-66ec94903172)|![image](https://github.com/user-attachments/assets/321692e6-14a5-419f-8a53-ef739d2c0eec)|
+
+|Kết quả hủy đơn|
+|:--------------|
+|![image](https://github.com/user-attachments/assets/d567773a-a527-4fd8-8897-3ccace1e5d22)|
 
 ## **2. Thống kê thu nhập**
 |Hình ảnh thống kê|Thống kê khi hôm nay có thu nhập|
