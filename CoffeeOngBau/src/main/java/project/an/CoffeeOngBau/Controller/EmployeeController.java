@@ -123,7 +123,7 @@ public class EmployeeController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         nhanViens = nhanVienRepository.getAllNVList();
-        chucvunvs.put("", null);
+//        chucvunvs.put("", null);
         chucvunvs.putAll(nhanVienRepository.getLoainvs());
         setupCBB();
         showNVList(nhanViens);
@@ -306,9 +306,10 @@ public class EmployeeController implements Initializable {
             employeeNuRd.setSelected(false);
             return true;
         }
-        else{
+        if(employeeNuRd.isSelected()){
             employeeNamRd.setSelected(false);
             return false;
         }
+        return false;
     }
 }

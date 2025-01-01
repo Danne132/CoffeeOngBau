@@ -277,31 +277,35 @@ public class SellController implements Initializable {
             AlertUtils.setAlert(Alert.AlertType.ERROR, "Lỗi", "Hãy điền đủ thông tin hóa đơn");
         }
         else {
-            maHD = taoMaHD();
-            String maNV = current_data.userid;
-            System.out.println(maHD);
-            conn = DBUtils.openConnection("banhang", "root", "");
-            String sqlInsertHD = "INSERT INTO `hoadon`(`maHD`, `nguoiTao`, `tongTien`,`thanhToan`, `ghiChu`) VALUES (?,?,?,?,?)";
-            try{
-                prepare = conn.prepareStatement(sqlInsertHD);
-                prepare.setString(1, maHD);
-                prepare.setString(2, maNV);
-                prepare.setInt(3, Integer.parseInt(sellTongTienHDText.getText()));
-                prepare.setString(4, sellThanhToanCBB.getValue());
-                prepare.setString(5, "");
-                int rowsInserted = prepare.executeUpdate();
-                if (rowsInserted > 0) {
-                    System.out.println("Thêm hóa đơn thành công");
-                } else {
-                    System.out.println("Không thể thêm hóa đơn");
+            Optional<ButtonType> btn = AlertUtils.setAlert(Alert.AlertType.CONFIRMATION, "Xác nhận", "Bạn muốn tạo hóa đơn nay?");
+            if(btn.get().equals(ButtonType.OK)){
+                maHD = taoMaHD();
+                String maNV = current_data.userid;
+                System.out.println(maHD);
+                conn = DBUtils.openConnection("banhang", "root", "");
+                String sqlInsertHD = "INSERT INTO `hoadon`(`maHD`, `nguoiTao`, `tongTien`,`thanhToan`, `ghiChu`) VALUES (?,?,?,?,?)";
+                try{
+                    prepare = conn.prepareStatement(sqlInsertHD);
+                    prepare.setString(1, maHD);
+                    prepare.setString(2, maNV);
+                    prepare.setInt(3, Integer.parseInt(sellTongTienHDText.getText()));
+                    prepare.setString(4, sellThanhToanCBB.getValue());
+                    prepare.setString(5, "");
+                    int rowsInserted = prepare.executeUpdate();
+                    if (rowsInserted > 0) {
+                        System.out.println("Thêm hóa đơn thành công");
+                    } else {
+                        System.out.println("Không thể thêm hóa đơn");
+                    }
+                    taoCTHD(maHD);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    DBUtils.closeConnection(conn);
+                    clearHD();
                 }
-                taoCTHD(maHD);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            } finally {
-                DBUtils.closeConnection(conn);
-                clearHD();
             }
+            else AlertUtils.setAlert(Alert.AlertType.INFORMATION, "Thông tin", "Hủy tạo hóa đơn");
         }
 
     }

@@ -471,7 +471,7 @@ public class OrderController implements Initializable {
             if(optional.get().equals(ButtonType.OK)){
                 try{
                     conn = DBUtils.openConnection("banhang", "root", "");
-                    String sqlDelete = "UPDATE `hoadon` SET `trangThai`= 3, `ghiChu` = '"+orderGhiChuWaitingTxt.getText()+"', `nguoiXacNhan`='"+current_data.chucVu+"' WHERE `maHD` = '" + current_data.id+"'";
+                    String sqlDelete = "UPDATE `hoadon` SET `trangThai`= 3, `ghiChu` = '"+orderGhiChuWaitingTxt.getText()+"', `nguoiXacNhan`='"+current_data.userid+"' WHERE `maHD` = '" + current_data.id+"'";
                     prepare = conn.prepareStatement(sqlDelete);
                     prepare.executeUpdate();
                     DBUtils.closeConnection(conn);
@@ -495,7 +495,7 @@ public class OrderController implements Initializable {
             if(optional.get().equals(ButtonType.OK)){
                 try{
                     conn = DBUtils.openConnection("banhang", "root", "");
-                    String sqlDelete = "UPDATE `hoadon` SET `trangThai`= 1 WHERE `maHD` = '" + current_data.id+"'";
+                    String sqlDelete = "UPDATE `hoadon` SET `trangThai`= 1, `nguoiXacNhan` = null WHERE `maHD` = '" + current_data.id+"'";
                     prepare = conn.prepareStatement(sqlDelete);
                     prepare.executeUpdate();
                     DBUtils.closeConnection(conn);
