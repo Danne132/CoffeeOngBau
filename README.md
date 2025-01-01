@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/0b880661-12b6-4685-b8a8-ab2f6532055e)### CoffeeOngBau
+### CoffeeOngBau
 # Dự án cuối kỳ môn Java: Xây dựng phần mềm hệ thống quản lý bán cafe ở quán Cafe Ông Bầu
 -------------------------------------
 ### Phần mềm thực hiện được một số chức năng cơ bản của một phần mềm quản lý như:
