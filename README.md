@@ -18,6 +18,7 @@
 |![image](https://github.com/user-attachments/assets/f5f8baf7-842a-4d9f-aab1-b2425ee62687)|
 
 ### **_- Chức năng thêm sản phẩm_**
+_✍Khi thêm sản phẩm, mã sản phẩm sẽ tự động tạo theo loại sản phẩm_
 |Điền thông tin sản phẩm|Chọn loại sản phẩm|
 |:----------------------|:-----------------|
 |![image](https://github.com/user-attachments/assets/efeccd62-fb04-44fb-9275-fa4686225626)|![image](https://github.com/user-attachments/assets/73bb7fc2-0282-430b-a24c-44c177c819a4)|
@@ -57,7 +58,48 @@
 
 
 ## **2. Quản lý nhân viên** <br/>
+|Hình ảnh ban đầu của quản lý nhân viên|
+|:------------------------------------|
+|![image](https://github.com/user-attachments/assets/87d29b74-9910-46ea-a362-be525f461cb9)|
 
+### **_- Chức năng thêm nhân viên_**
+_✍Khi thêm nhân viên, mã nhân viên sẽ tự động tạo theo chức vụ_
+_🔐Nhân viên khi được tạo sẽ auto tạo tài khoản là email và mật khẩu là số điện thoại_
+|Điền thông tin nhân viên|Chọn chức vụ|
+|:----------------------|:-----------------|
+|![image](https://github.com/user-attachments/assets/0a2dd009-73a4-4ab9-b730-326a972d478e)|![image](https://github.com/user-attachments/assets/7f7f4819-120a-4484-a12a-96cd7f01ae14)|
+
+|Sau khi thêm thành công|Trường hợp điền thiếu thông tin nhân viên|
+|:----------------------|:---------------------------------------|
+|![image](https://github.com/user-attachments/assets/b725325d-4740-4ad1-a091-eea1d129f286)|![image](https://github.com/user-attachments/assets/92abd5e1-5c90-448f-a5ea-5a59cab64dbf)|
+
+### **_- Chức năng xem chi tiết nhân viên_**
+|Hình ảnh chi tiết|
+|:----------------------|
+|![image](https://github.com/user-attachments/assets/b7ea3de7-631c-4320-97f7-1d2cca67a7fb)|
+
+### **_- Chức năng chỉnh sửa nhân viên_**
+|Chỉnh sửa một số thông tin nhân viên|Xác nhận thay đổi|
+|:----------------------------------|:----------------|
+|![image](https://github.com/user-attachments/assets/635ecef4-101b-4b63-97a6-fb3460e958be)|![image](https://github.com/user-attachments/assets/7ce52bbc-811c-4031-9c6a-be1df7dbb454)|
+
+|Thay đổi thành công|
+|:------------------|
+|![image](https://github.com/user-attachments/assets/9abe70cc-5f34-44b7-9d64-7061eaeba4ef)|
+
+### **_- Chức năng xóa thông tin nhân viên_**
+|Xác nhận xóa nhân viên|Thông báo xóa thành công|
+|:--------------------|:-----------------------|
+|![image](https://github.com/user-attachments/assets/239439f5-0258-4a4d-bed8-88567f57e33b)|![image](https://github.com/user-attachments/assets/94d46618-688a-4751-9414-254049b0dd2d)|
+
+|Bảng dữ liệu sau khi xóa thông tin nhân viên (Mất thông tin nhân viên mã TN002)|
+|:------------------|
+|![image](https://github.com/user-attachments/assets/11f56a85-8646-4e80-9d45-39aef57f7906)|
+
+### **_- Chức năng tìm kiếm nhân viên_**
+|Tìm kiếm theo tên|Tìm kiếm theo chức vụ và trạng thái|
+|:----------------|:-------------------------------|
+|![image](https://github.com/user-attachments/assets/20eae0d2-b343-4f39-8b46-1eafd0249838)|![image](https://github.com/user-attachments/assets/71a9404c-f232-4891-8a6e-a72b02791ee7)|
 
 ## **2. Thống kê thu nhập**
 |Hình ảnh thống kê|Thống kê khi hôm nay có thu nhập|
