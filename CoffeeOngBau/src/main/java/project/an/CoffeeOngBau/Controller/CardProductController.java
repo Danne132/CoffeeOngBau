@@ -60,8 +60,21 @@ public class CardProductController implements Initializable {
 
 
     public void addCTHD(MouseEvent mouseEvent) {
-        SellController.cthds.add(new CTHD(sanPham.getMaSP() ,sanPham.getTenSP(), "", sanPham.getDonGia(), 1));
-        sell.clearTable();
-        sell.showCTHDList();
+        boolean exists = false;
+
+        // Kiểm tra danh sách xem mã sản phẩm đã tồn tại hay chưa
+        for (CTHD cthd : SellController.cthds) {
+            if (sanPham.getMaSP().equals(cthd.getMaSP())) {
+                exists = true; // Đánh dấu là đã tồn tại
+                break; // Thoát khỏi vòng lặp vì không cần kiểm tra thêm
+            }
+        }
+
+        // Nếu mã sản phẩm chưa tồn tại, thêm sản phẩm vào danh sách
+        if (!exists) {
+            SellController.cthds.add(new CTHD(sanPham.getMaSP(), sanPham.getTenSP(), "", sanPham.getDonGia(), 1));
+            sell.clearTable();
+            sell.showCTHDList();
+        }
     }
 }
