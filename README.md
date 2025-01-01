@@ -126,7 +126,15 @@ _🔐Nhân viên khi được tạo sẽ auto tạo tài khoản là email và m
 |:-------------------------|:--------------------------|
 |![image](https://github.com/user-attachments/assets/ca627a19-0f41-4ef9-87ce-42aec5b3dd7e)|![image](https://github.com/user-attachments/assets/a22d79b7-1660-458e-b4cc-99877a787536)|
 
+## **4. Quản lý hóa đơn** <br/>
+_Sau khi đơn hàng được thanh toán bên giao diện bán hàng, hóa đơn sẽ chuyển qua giao diện quản lý hóa đơn chờ xác nhận_
+|Giao diện hóa đơn chờ xác nhận|Giao diện lịch sử hóa đơn|
+|:-----------------------------|:------------------------|
+|![image](https://github.com/user-attachments/assets/26a71a7f-0901-418d-b1d8-3f479d5896f1)|![image](https://github.com/user-attachments/assets/f2b64fb5-f883-474a-8135-c64eadc30920)|
 
+|Hóa đơn đang chờ xác nhận|
+|:------------------------|
+![image](https://github.com/user-attachments/assets/1e9cf84a-3ddc-4e8a-9f3c-117350a2226c)|
 
 ## **2. Thống kê thu nhập**
 |Hình ảnh thống kê|Thống kê khi hôm nay có thu nhập|
